@@ -1,0 +1,17 @@
+﻿.TilesSon /*容纳单个磁贴的子容器的样式*/ 
+{
+    background-color: blueviolet;
+    display: flex
+}
+
+.TilesFather /*容纳所有磁贴的父容器的样式*/
+{
+    margin: auto
+}
+
+.TilesButton /*用于磁贴的按钮样式*/ 
+{
+    color: white;
+    font-family: 'Microsoft YaHei UI';
+    font-size: 4rem;
+}

@@ -1,0 +1,54 @@
+﻿using System.Collections.Generic;
+using System.DrawingFrancis.Graphics;
+using System.IO;
+using System.Maths;
+
+namespace System.DrawingFrancis
+{
+    /// <summary>
+    /// 这个类型代表一个存在于内存中的图像
+    /// </summary>
+    class ImageMemory : IImage
+    {
+        #region 关于图像的内容
+        #region 返回图像的二进制表示方式
+        /// <summary>
+        /// 返回图像的二进制表示方式
+        /// </summary>
+        private byte[] ImageBinary { get; }
+        #endregion
+        #region 获取或设置图片的大小
+        public ISize Size
+        {
+            get => throw new NotSupportedException("本类型仅提供从内存加载图片的服务，不支持读取图片的大小");
+            set => throw new NotSupportedException("本类型仅提供从内存加载图片的服务，不支持写入图片的大小");
+        }
+        #endregion
+        #region 返回图像的格式
+        public string Format { get; }
+        #endregion
+        #region 读取图像
+        public IStrongTypeStream ReadImage()
+            => CreateIO.Stream(new MemoryStream(ImageBinary, false), Format);
+        #endregion
+        #region 枚举图像的细节
+        public IEnumerable<IGraphics> Details
+            => throw new NotSupportedException("本类型只提供从内存加载图像的服务，不支持枚举图像的细节");
+        #endregion
+        #endregion
+        #region 构造函数
+        /// <summary>
+        /// 使用指定的字节数组和格式初始化对象
+        /// </summary>
+        /// <param name="ImageBinary">图片的字节数组形式</param>
+        /// <param name="Format">图片的格式</param>
+        public ImageMemory(byte[] ImageBinary, string Format)
+        {
+            if (Format.IsVoid())
+                throw new ArgumentException("图片的格式不能为null或空字符串");
+            this.ImageBinary = ImageBinary;
+            this.Format = Format;
+        }
+        #endregion
+    }
+}

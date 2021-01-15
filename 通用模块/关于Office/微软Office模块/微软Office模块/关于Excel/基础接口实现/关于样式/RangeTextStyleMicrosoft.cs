@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing.Text;
+using Microsoft.Office.Interop.Excel;
+using System.Maths;
+using System.DrawingFrancis;
+using System.DrawingFrancis.Text;
+using static System.Maths.CreateBaseMathObj;
+using Font = Microsoft.Office.Interop.Excel.Font;
+using ColorTranslator = System.Drawing.ColorTranslator;
+
+namespace System.Office.Excel
+{
+    /// <summary>
+    /// 这个类型代表Excel单元格的文本样式
+    /// </summary>
+    class RangeTextStyleMicrosoft : ITextStyleVar
+    {
+        #region 封装的字体对象
+        /// <summary>
+        /// 获取封装的字体对象，
+        /// 本对象的功能就是通过它实现的
+        /// </summary>
+        private Font PackFont { get; }
+        #endregion
+        #region 字体名称
+        public string FontName
+        {
+            get => PackFont.Name;
+            set => PackFont.Name = value;
+        }
+        #endregion
+        #region 字体的大小
+        public IUnit<IUTFontSize> Size
+        {
+            get => Unit(PackFont.Size, IUTFontSize.PoundsMetric);
+            set => PackFont.Size = (float)value.ConvertSingle(IUTFontSize.PoundsMetric);
+        }
+        #endregion
+        #region 文本颜色
+        public IColor TextColor
+        {
+            get => ColorTranslator.FromOle((int)PackFont.Color).ToColor();
+            set => PackFont.Color = ColorTranslator.ToOle(value.ToColor());
+        }
+        #endregion
+        #region 构造函数
+        /// <summary>
+        /// 用指定的字体初始化对象
+        /// </summary>
+        /// <param name="Font">指定的字体对象</param>
+        public RangeTextStyleMicrosoft(Font Font)
+        {
+            PackFont = Font;
+        }
+        #endregion
+    }
+}

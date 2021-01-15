@@ -1,0 +1,69 @@
+﻿@namespace Microsoft.AspNetCore.Components.Container
+@typeparam Content
+@inherits Container<IEnumerable<Content>>
+
+@Template.Invoke(this)
+
+@code
+{
+
+#pragma warning disable CS8618
+    //这个类型是所有具有多个子内容的组件的基类
+    #region 组件的项模板
+    #region 默认模板
+    /// <summary>
+    /// 获取默认的项模板
+    /// </summary>
+    internal static RenderFragment<(Multiple<Content> Components, Content Item)> DefaultItemTemplate { get; }
+    = x => __builder =>
+    {
+        var m = (Multiple<Content>)x.Components;
+        var item = x.Item;
+    @if (item is RenderFragment r)
+        @r
+            else
+            {
+            <p>@item</p>
+            }
+    };
+    #endregion
+    #region 正式属性
+    private RenderFragment<(Multiple<Content> Components, Content Item)> ItemTemplateField;
+    /// <summary>
+    /// 获取项模板，它决定组件的每个子元素如何渲染，
+    /// 委托的参数是一个元组，它的项分别是组件本身，以及要渲染的单个子元素
+    /// </summary>
+    [Parameter]
+    public RenderFragment<(Multiple<Content> Components, Content Item)> ItemTemplate
+    {
+        get => ItemTemplateField;
+        set
+        {
+            ItemTemplateField = value ?? throw new ArgumentNullException($"不能将项模板赋值为null");
+            StateHasChanged();
+        }
+    }
+    #endregion
+    #endregion
+    #region 重写OnInitialized
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ItemTemplate ??= ProvidedDefaultTemplate.GetItemTemplate<Content>(GetType());
+    }
+    #endregion
+    #region 静态构造函数
+    static Multiple()
+    {
+        RenderFragment<TemplatedComponents> Rendering = x => __builder =>
+        {
+            var m = (Multiple<RenderFragment>)x;
+        @foreach (var item in m.ChildContent)
+            {
+            @m.ItemTemplate((m, item))
+            }
+        };
+        ProvidedTemplate.CacheTemplate.Add(typeof(Multiple<RenderFragment>), Rendering);
+    }
+    #endregion
+}

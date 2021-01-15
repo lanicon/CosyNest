@@ -1,0 +1,79 @@
+﻿using System.Collections.Generic;
+using System.Maths;
+
+namespace System.Office.Excel.Realize
+{
+    /// <summary>
+    /// 在实现<see cref="IExcelCells"/>时，
+    /// 可以继承自本类型，以减少重复的工作
+    /// </summary>
+    public abstract class ExcelCells : ExcelRange, IExcelCells
+    {
+        #region 返回IExcelCells接口
+        /// <summary>
+        /// 返回这个对象的接口形式，
+        /// 它可以用来访问一些显式实现的成员
+        /// </summary>
+        protected IExcelCells Interface
+            => this;
+        #endregion
+        #region 关于单元格本身
+        #region 关于单元格内容
+        #region 设置或者获取值
+        public abstract RangeValue? Value { get; set; }
+        #endregion
+        #region 设置或者获取公式
+        public abstract string? FormulaR1C1 { get; set; }
+        #endregion
+        #region 格式化后的文本
+        public abstract string? Text { get; set; }
+        #endregion
+        #region 获取或设置超链接
+        public abstract string? Link { get; set; }
+        #endregion
+        #endregion
+        #region 关于单元格地址
+        #region 获取完整地址
+        public (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
+        #endregion
+        #endregion
+        #region 返回视觉位置
+        public abstract ISizePos VisualPosition { get; }
+        #endregion
+        #endregion 
+        #region 关于子单元格和其他单元格
+        #region 关于合并单元格
+        #region 返回合并的单元格
+        /// <summary>
+        /// 如果<see cref="IsMerge"/>为<see langword="true"/>，则返回包含这个单元格的合并单元格，
+        /// 如果为<see langword="false"/>，则返回这个单元格自己
+        /// </summary>
+        public abstract IExcelCells MergeRange { get; }
+        #endregion
+        #region 合并和取消合并
+        public abstract bool IsMerge { get; set; }
+        #endregion
+        #endregion
+        #region 返回子单元格的索引器
+        #region 根据绝对位置
+        public abstract IExcelCells this[int BeginRow, int BeginCol, int EndRow = -1, int EndCol = -1] { get; }
+        #endregion
+        #endregion
+        #region 枚举所有子单元格
+        public abstract IEnumerable<IExcelCells> CellsAll { get; }
+        #endregion
+        #endregion
+        #region 构造方法
+        /// <summary>
+        /// 用指定的工作表和地址初始化单元格
+        /// </summary>
+        /// <param name="Sheet">指定的工作表</param>
+        /// <param name="Address">单元格的地址，包含起始和结束的行列数</param>
+        public ExcelCells(IExcelSheet Sheet, (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address)
+            : base(Sheet)
+        {
+            this.Address = Address;
+        }
+        #endregion
+    }
+}

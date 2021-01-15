@@ -1,0 +1,34 @@
+﻿@namespace Microsoft.AspNetCore.Components.Container
+
+@code
+{
+    //这个组件无法被构造，它的作用在于通过静态方法为容器组件提供模板
+
+    #region 提供磁贴的模板
+    /// <summary>
+    /// 提供磁贴的模板，
+    /// 它能让放置在其中的子元素自动具备磁贴风格
+    /// </summary>
+    /// <typeparam name="Content">容器所容纳的元素类型</typeparam>
+    /// <returns></returns>
+    public static RenderFragment<TemplatedComponents> Tile<Content>()
+        => x => __builder =>
+        {
+            var component = (Multiple<Content>)x;
+        <div class="@CSSContainerVocabulary.TilesFather">
+            @foreach (var item in component.ChildContent)
+                {
+                <div class="@CSSContainerVocabulary.TilesSon">
+                    @component.ItemTemplate((component, item))
+                </div>
+                }
+        </div>
+        };
+    #endregion
+    #region 构造函数
+    private ContainerTemplate()
+    {
+
+    }
+    #endregion
+}
