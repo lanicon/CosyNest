@@ -29,7 +29,6 @@ namespace Microsoft.AspNetCore.Components
             {
                 x.AddFormatterJson();
             });
-            services.AddHttpContextAccessor();
             services.AddJSWindow();
         }
 
@@ -39,6 +38,10 @@ namespace Microsoft.AspNetCore.Components
 
             if (env.IsDevelopment())
             {
+                app.UseReview(x =>
+                {
+                    var b = x.Request.Headers;
+                });
                 app.UseDeveloperExceptionPage();
             }
             else

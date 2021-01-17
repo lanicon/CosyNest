@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Linq;
 using System.Maths;
+using System.Text.RegularExpressions;
 
 namespace System.DrawingFrancis
 {
@@ -18,8 +18,8 @@ namespace System.DrawingFrancis
         /// <returns></returns>
         public static IColor GetColorFrom16(string Sys16)
         {
-            var match = @$"(?<color>{RegexCom.Sys16}{{2}}){{4}}".ToRegex().MatcheFirst(Sys16);
-            if (match == null)
+            var match = @$"(?<color>{ToolRegex.Sys16}{{2}}){{4}}".ToRegex().MatcheFirst(Sys16);
+            if (match is null)
                 throw new Exception($"{Sys16}不是合法的16进制字符串");
             var ARGB = match["color"].Groups
                 .Select(x => Convert.ToByte(x.Match, 16)).ToArray();

@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
-using System.NetFrancis.Http;
+﻿using System;
+using System.Safety.Authentication;
+using System.Security.Claims;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.TreeObject;
 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Json;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.AspNetCore
 {
@@ -47,21 +52,43 @@ namespace Microsoft.AspNetCore
         #endregion
         #endregion
         #endregion
-        #region 有关ProvideHttpRequest
-        #region 基础Uri为本地主机
+        #region 有关IHttpAuthentication
+        #region 通过Authentication标头以及Cookie验证身份
+        #region 直接创建
         /// <summary>
-        /// 返回一个<see cref="ProvideHttpRequest"/>，
-        /// 它可以用来创建一个<see cref="HttpRequestRecording"/>，且它的基础Uri已经填入本地主机的Uri
+        /// 返回一个<see cref="IHttpAuthentication"/>，
+        /// 它通过Http请求的Authentication标头以及Cookie来确认身份，
+        /// 但不会将验证结果记住，这个操作由前端负责
         /// </summary>
-        /// <param name="configuration">用来获取本地主机URI的配置对象</param>
-        /// <param name="key">用于从配置中提取本地主机Uri的键名，如果键不存在，会引发异常</param>
-        /// <exception cref="KeyNotFoundException">配置中不存在<paramref name="key"/>所指示的键名，无法获取本机URI</exception>
-        public static ProvideHttpRequest ProvideHttpRequestLocal(IConfiguration configuration, string key = "applicationUrl")
-        {
-            var uri = configuration[key] ?? throw new KeyNotFoundException($"在配置中找不到名为{key}的键，无法获取本机URI");
-            var request = new HttpRequestRecording(new() { UriBase = uri });
-            return () => request;
-        }
+        /// <param name="VerifyUser">这个委托的参数是待验证的用户名和密码，返回值是验证结果</param>
+        /// <param name="ExtractionHeader">这个委托的参数是HTTP请求的Authentication标头，返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/></param>
+        /// <param name="ExtractionCookie">这个委托的参数是附加在请求中的Cookie，返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/></param>
+        public static IHttpAuthentication HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
+            Func<StringValues, UnsafeCredentials?> ExtractionHeader,
+            Func<IRequestCookieCollection, UnsafeCredentials?> ExtractionCookie)
+            => new HttpAuthentication(VerifyUser, ExtractionHeader, ExtractionCookie);
+        #endregion
+        #region 指定用户名和密码的键值对
+        /// <summary>
+        /// 返回一个<see cref="IHttpAuthentication"/>，
+        /// 它通过指定的键名在Http请求的Authentication标头和Cookie中提取用户名和密码，
+        /// 并执行身份验证
+        /// </summary>
+        /// <param name="VerifyUser">这个委托的参数是待验证的用户名和密码，返回值是验证结果</param>
+        /// <param name="UserNameKey">用于提取用户名的键</param>
+        /// <param name="PasswordKey">用于提取密码的键</param>
+        /// <returns></returns>
+        public static IHttpAuthentication HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
+            string UserNameKey = "UserName", string PasswordKey = "Password")
+            => HttpAuthentication(VerifyUser, x =>
+            {
+                var d = ToolRegex.KeyValuePairExtraction(x.ToString(), "; ,");
+                return d.TryGetValue(UserNameKey, out var UserName) && d.TryGetValue(PasswordKey, out var Password) ?
+                 new(UserName, Password) : null;
+            },
+            x => x.TryGetValue(UserNameKey, out var UserName) && x.TryGetValue(PasswordKey, out var Password) ?
+                 new(UserName!, Password!) : null);
+        #endregion
         #endregion
         #endregion
     }

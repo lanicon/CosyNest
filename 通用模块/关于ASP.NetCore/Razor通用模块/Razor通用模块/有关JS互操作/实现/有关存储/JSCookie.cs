@@ -32,13 +32,6 @@ namespace Microsoft.JSInterop
             => JSRuntime.SetProperty("document.cookie", cookie);
         #endregion
         #endregion
-        #region 用于提取键值对的正则表达式
-        /// <summary>
-        /// 通过这个正则表达式可以从Cookie字符串中提取键值对
-        /// </summary>
-        private static IRegex Extraction { get; }
-        = /*language=regex*/@"[^;](?<key>\S+?)=(?<value>\S+?)[^;]".ToRegex();
-        #endregion
         #region 返回最小UTC时间的字符串
         /// <summary>
         /// 返回JS中UTC最小时间的字符串格式，
@@ -68,9 +61,9 @@ namespace Microsoft.JSInterop
         #region 枚举所有键值对
         public async IAsyncEnumerator<KeyValuePair<string, string>> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
-            foreach (var item in Extraction.Matches(await GetCookie()).Matches)
+            foreach (var item in ToolRegex.KeyValuePairExtraction(await GetCookie(), ";"))
             {
-                yield return new(item["key"].Match, item["value"].Match);
+                yield return item;
             }
         }
         #endregion

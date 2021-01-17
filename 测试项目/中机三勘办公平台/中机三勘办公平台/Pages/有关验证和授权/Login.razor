@@ -4,9 +4,10 @@
 @using System.Net.Http
 @using System.DataFrancis
 @using Microsoft.JSInterop
+@using System.Net.Http.Headers
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Components.Controller
-@inject IHttpContextAccessor HttpContextAccessor
+@inject ProvideHttpRequest ProvideHttpRequest
 @inject IJSWindow JSWindow
 @inject AspNetCore.Routing.LinkGenerator LinkGenerator
 
@@ -23,7 +24,13 @@
     private string? Json { get; set; }
     private async Task aaa()
     {
-        var a = JSWindow.LocalStorage;
-        var b = await a.AsyncRemove("aaa");
+        var a = this.ProvideHttpRequest();
+        var b = a with
+        {
+            Uri = a.Uri with { UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login)) },
+            Header = a.Header with { Authentication = new("aaa", "bbb") },
+            HttpMethod = HttpMethod.Post
+        };
+        await CreateNet.HttpClient.SendAsync(b);
     }
 }

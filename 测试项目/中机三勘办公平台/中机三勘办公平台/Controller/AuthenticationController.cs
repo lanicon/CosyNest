@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Components.Controller
         [Consumes(MediaTypeName.Json)]
         public bool Login(IDirect obj, [FromServices] IHttpAuthentication authentication)
         {
-            HttpContext.User = authentication.Verify(new UnsafeCredentials(obj["uid"]!.ToString()!, obj["pwd"]!.ToString()!)).Result;
+            //HttpContext.User = authentication.Verify(new UnsafeCredentials(obj["uid"]!.ToString()!, obj["pwd"]!.ToString()!)).Result;
             return true;
         }
         #endregion

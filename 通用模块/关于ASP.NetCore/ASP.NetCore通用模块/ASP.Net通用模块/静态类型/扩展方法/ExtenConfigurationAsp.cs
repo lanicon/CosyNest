@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.NetFrancis.Http;
 using System.Text.Json.Serialization;
 using System.TreeObject;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using static Microsoft.AspNetCore.CreateWebApi;
@@ -57,6 +59,23 @@ namespace System
         #endregion
         #endregion
         #region 依赖注入服务
+        #region 注入UriFrancis
+        #region 基础Uri为本地主机
+        /// <summary>
+        /// 以单例模式注入一个<see cref="UriFrancis"/>，
+        /// 它的基础Uri已经填入本地主机的Uri
+        /// </summary>
+        /// <param name="services">待注入服务的容器</param>
+        /// <param name="configuration">用来获取本地主机URI的配置对象</param>
+        /// <param name="key">用于从配置中提取本地主机Uri的键名，如果键不存在，会引发异常</param>
+        /// <exception cref="KeyNotFoundException">配置中不存在<paramref name="key"/>所指示的键名，无法获取本机URI</exception>
+        public static IServiceCollection AddUriFrancis(this IServiceCollection services, IConfiguration configuration, string key = "applicationUrl")
+        {
+            var uri = configuration[key] ?? throw new KeyNotFoundException($"在配置中找不到名为{key}的键，无法获取本机URI");
+            return services.AddSingleton(new UriFrancis() { UriBase = uri });
+        }
+        #endregion
+        #endregion
         #region 注入HttpRequest
         /// <summary>
         /// 注入一个<see cref="ProvideHttpRequest"/>，
@@ -85,7 +104,7 @@ namespace System
           另外，无论在何种情况下，请求的基础Uri都是本机地址，
           这种需求可以通过本API按照以下方法实现：
           1.provideTemplate参数传入一个委托，调用它可以获得一个HttpRequestRecording，
-          它的基础Uri已经填好，这个委托可以通过调用CreateWebApi.ProvideHttpRequestLocal(IConfiguration,string)方法来获得
+          它的基础Uri已经填好，ExtenWebApi.AddUriFrancis方法可以提供获取基础Uri的服务
           2.provide参数传入一个委托，它通过IServiceProvider参数来请求一个可以读取Cookies的对象，
           然后调用ProvideHttpRequest参数来获取模板，并通过with表达式来更改模板的Authentication标头，至此功能实现完成*/
         #endregion
