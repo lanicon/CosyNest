@@ -43,6 +43,7 @@ namespace System.NetFrancis.Http
         #endregion
         #region 构造函数
 #pragma warning disable CS8618
+        #region 指定Uri
         /// <summary>
         /// 使用指定的Uri初始化对象
         /// </summary>
@@ -51,6 +52,13 @@ namespace System.NetFrancis.Http
         {
             this.Uri = Uri;
         }
+        #endregion
+        #region 无参数构造函数
+        public HttpRequestRecording()
+        {
+            Uri = new();
+        }
+        #endregion
 #pragma warning restore
         #endregion
     }

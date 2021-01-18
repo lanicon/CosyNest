@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Components
             {
                 x.AddFormatterJson();
             });
+            services.AddSingleton(CreateWebApi.Uri(Configuration));
             services.AddJSWindow();
         }
 

@@ -7,8 +7,8 @@
 @using System.Net.Http.Headers
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Components.Controller
-@inject ProvideHttpRequest ProvideHttpRequest
 @inject IJSWindow JSWindow
+@inject UriFrancis UriFrancis
 @inject AspNetCore.Routing.LinkGenerator LinkGenerator
 
 <input type="text" value="@UID" />
@@ -24,13 +24,11 @@
     private string? Json { get; set; }
     private async Task aaa()
     {
-        var a = this.ProvideHttpRequest();
-        var b = a with
+        var b = new HttpRequestRecording(UriFrancis with { UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login)) })
         {
-            Uri = a.Uri with { UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login)) },
-            Header = a.Header with { Authentication = new("aaa", "bbb") },
+            Header = new() { Authentication = new("aaa", "bbb") },
             HttpMethod = HttpMethod.Post
         };
-        await CreateNet.HttpClient.SendAsync(b);
+        var x = await CreateNet.HttpClient.SendAsync(b);
     }
 }

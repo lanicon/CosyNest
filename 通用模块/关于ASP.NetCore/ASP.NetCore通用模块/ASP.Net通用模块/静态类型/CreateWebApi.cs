@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.NetFrancis.Http;
 using System.Safety.Authentication;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Json;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.AspNetCore
@@ -52,6 +55,22 @@ namespace Microsoft.AspNetCore
         #endregion
         #endregion
         #endregion
+        #region 有关UriFrancis
+        #region 基础Uri为本地主机
+        /// <summary>
+        /// 返回一个<see cref="UriFrancis"/>，
+        /// 它的基础Uri已经填入本地主机的Uri
+        /// </summary>
+        /// <param name="configuration">用来获取本地主机URI的配置对象</param>
+        /// <param name="key">用于从配置中提取本地主机Uri的键名，如果键不存在，会引发异常</param>
+        /// <exception cref="KeyNotFoundException">配置中不存在<paramref name="key"/>所指示的键名，无法获取本机URI</exception>
+        public static UriFrancis Uri(IConfiguration configuration, string key = "applicationUrl")
+        {
+            var uri = configuration[key] ?? throw new KeyNotFoundException($"在配置中找不到名为{key}的键，无法获取本机URI");
+            return new UriFrancis() { UriBase = uri };
+        }
+        #endregion
+        #endregion
         #region 有关IHttpAuthentication
         #region 通过Authentication标头以及Cookie验证身份
         #region 直接创建
@@ -69,6 +88,19 @@ namespace Microsoft.AspNetCore
             => new HttpAuthentication(VerifyUser, ExtractionHeader, ExtractionCookie);
         #endregion
         #region 指定用户名和密码的键值对
+        #region 用户名的默认键名
+        /// <summary>
+        /// 获取用来提取用户名的默认键名
+        /// </summary>
+        public const string DefaultKeyUserName = "UserName";
+        #endregion
+        #region 密码的默认键名
+        /// <summary>
+        /// 获取用来提取密码的默认键名
+        /// </summary>
+        public const string DefaultKeyPassword = "Password";
+        #endregion
+        #region 正式方法
         /// <summary>
         /// 返回一个<see cref="IHttpAuthentication"/>，
         /// 它通过指定的键名在Http请求的Authentication标头和Cookie中提取用户名和密码，
@@ -79,7 +111,7 @@ namespace Microsoft.AspNetCore
         /// <param name="PasswordKey">用于提取密码的键</param>
         /// <returns></returns>
         public static IHttpAuthentication HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
-            string UserNameKey = "UserName", string PasswordKey = "Password")
+            string UserNameKey = DefaultKeyUserName, string PasswordKey = DefaultKeyPassword)
             => HttpAuthentication(VerifyUser, x =>
             {
                 var d = ToolRegex.KeyValuePairExtraction(x.ToString(), "; ,");
@@ -89,6 +121,7 @@ namespace Microsoft.AspNetCore
             x => x.TryGetValue(UserNameKey, out var UserName) && x.TryGetValue(PasswordKey, out var Password) ?
                  new(UserName!, Password!) : null);
         #endregion
+        #endregion 
         #endregion
         #endregion
     }

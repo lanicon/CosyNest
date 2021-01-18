@@ -7,7 +7,7 @@ namespace Microsoft.JSInterop
     /// 凡是实现这个接口的类型，
     /// 都可以作为JS中的Document对象的Net封装
     /// </summary>
-    public interface IJSDocument : IJSRuntime
+    public interface IJSDocument
     {
         #region 返回Cookie对象
         /// <summary>

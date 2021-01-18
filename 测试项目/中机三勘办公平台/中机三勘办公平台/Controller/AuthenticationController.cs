@@ -1,6 +1,7 @@
 ﻿using System.Design.Direct;
 using System.NetFrancis;
 using System.Safety.Authentication;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,11 @@ namespace Microsoft.AspNetCore.Components.Controller
         [Consumes(MediaTypeName.Json)]
         public bool Login(IDirect obj, [FromServices] IHttpAuthentication authentication)
         {
+            HttpContext.Response.OnStarting(() =>
+            {
+                HttpContext.Response.Cookies.Append("aaa", "bbb");
+                return Task.CompletedTask;
+            });
             //HttpContext.User = authentication.Verify(new UnsafeCredentials(obj["uid"]!.ToString()!, obj["pwd"]!.ToString()!)).Result;
             return true;
         }

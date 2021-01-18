@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.JSInterop
 {
@@ -19,6 +20,14 @@ namespace Microsoft.JSInterop
 
         public IAsyncDictionary<string, string> LocalStorage
              => LocalStorageField ??= new(JSRuntime);
+        #endregion
+        #region 弹出消息窗
+        public ValueTask Alert(string message)
+               => this.InvokeVoidAsync("alert", message);
+        #endregion
+        #region 打印窗口
+        public ValueTask Print()
+              => this.InvokeVoidAsync("print");
         #endregion
         #region 构造函数
         /// <summary>
