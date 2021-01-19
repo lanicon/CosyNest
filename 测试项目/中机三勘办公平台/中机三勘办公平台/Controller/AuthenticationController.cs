@@ -1,6 +1,4 @@
 ﻿using System.Design.Direct;
-using System.NetFrancis;
-using System.Safety.Authentication;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication;
@@ -19,20 +17,9 @@ namespace Microsoft.AspNetCore.Components.Controller
         /// <summary>
         /// 执行登录操作，并返回登录结果
         /// </summary>
-        /// <param name="obj">这个<see cref="IDirect"/>封装了用户名和密码</param>
         /// <returns></returns>
-        [HttpPost]
-        [Consumes(MediaTypeName.Json)]
-        public bool Login(IDirect obj, [FromServices] IHttpAuthentication authentication)
-        {
-            HttpContext.Response.OnStarting(() =>
-            {
-                HttpContext.Response.Cookies.Append("aaa", "bbb");
-                return Task.CompletedTask;
-            });
-            //HttpContext.User = authentication.Verify(new UnsafeCredentials(obj["uid"]!.ToString()!, obj["pwd"]!.ToString()!)).Result;
-            return true;
-        }
+        public async Task<IDirect> Login([FromServices] IHttpAuthentication authentication)
+            => (await ToolWebApi.VerifySerialization(() => authentication.Verify(HttpContext))).Serialization;
         #endregion
     }
 }

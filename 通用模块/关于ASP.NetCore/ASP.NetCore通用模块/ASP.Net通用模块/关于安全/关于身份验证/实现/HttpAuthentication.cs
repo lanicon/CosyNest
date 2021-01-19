@@ -50,12 +50,14 @@ namespace Microsoft.AspNetCore.Authentication
         public async Task<ClaimsPrincipal> Verify(HttpContext context)
         {
             var request = context.Request;
-            if (request.Headers.TryGetValue("Authentication", out var authentication) &&
-                 ExtractionHeader(authentication) is { } credentialsHeader)
-                return await Verify(credentialsHeader);
-            if (ExtractionCookie(request.Cookies) is { } credentialsCookie)
-                return await Verify(credentialsCookie);
-            return CreateSafety.PrincipalDefault;
+            var results = request.Headers.TryGetValue("Authentication", out var authentication) &&
+                 ExtractionHeader(authentication) is { } credentialsHeader ?
+                 await Verify(credentialsHeader) :
+                 ExtractionCookie(request.Cookies) is { } credentialsCookie ?
+                 await Verify(credentialsCookie) : CreateSafety.PrincipalDefault;
+            if (results.IsAuthenticated())
+                context.User = results;
+            return results;
         }
         #endregion
         #region 验证用户名和密码

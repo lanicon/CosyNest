@@ -48,9 +48,7 @@ namespace System
             application.Use(static async (context, next) =>
              {
                  var auth = context.RequestServices.GetRequiredService<IHttpAuthentication>();
-                 var (_, Return) = await ToolException.IgnoreBusinessAsync(() => auth.Verify(context));
-                 if (Return is { Identity: { IsAuthenticated: true } })
-                     context.User = Return;
+                 await ToolException.IgnoreBusinessAsync(() => auth.Verify(context));
                  context.Response.OnStarting(() => auth.SetVerify(context.User, context));      //在后面的中间件全部执行完毕后，将验证结果写回响应中
                  await next();
              });
@@ -61,6 +59,16 @@ namespace System
         #region 依赖注入服务
         #region 注入ProvideHttpRequest
         #region 根据身份验证信息动态返回HttpRequestRecording
+        /// <summary>
+        /// 以单例模式注入一个<see cref="ProvideHttpRequestAsync"/>，
+        /// 它会检查Cookies中的身份验证信息，如果存在，会在HTTP请求中自动加入Authentication标头
+        /// </summary>
+        /// <param name="services">待注入服务的容器</param>
+        /// <param name="provideTemplate">用来提供模板的委托，
+        /// 如果为<see langword="null"/>，则默认返回一个调用无参数构造函数的<see cref="HttpRequestRecording"/></param>
+        /// <param name="UserNameKey">从Cookies中提取用户名的键名</param>
+        /// <param name="PasswordKey">从Cookies中提取密码的键名</param>
+        /// <returns></returns>
         public static IServiceCollection AddHttpRequestAuthentication(this IServiceCollection services,
             ProvideHttpRequestAsync? provideTemplate = null,
             string UserNameKey = DefaultKeyUserName,
@@ -84,7 +92,7 @@ namespace System
         #endregion
         #region 使用模板来获取
         /// <summary>
-        /// 注入一个<see cref="ProvideHttpRequestAsync"/>，
+        /// 以单例模式注入一个<see cref="ProvideHttpRequestAsync"/>，
         /// 它先通过一个<see cref="ProvideHttpRequestAsync"/>来获取<see cref="HttpRequestRecording"/>的模板，
         /// 然后再通过一个委托对它进行改动，并返回最终的<see cref="HttpRequestRecording"/>
         /// </summary>

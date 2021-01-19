@@ -17,7 +17,8 @@ namespace Microsoft.AspNetCore.Authentication
         /// <summary>
         /// 验证一个Http上下文，并返回验证结果
         /// </summary>
-        /// <param name="context">需要验证的Http上下文</param>
+        /// <param name="context">需要验证的Http上下文，
+        /// 如果验证通过，还会将结果写入<see cref="HttpContext.User"/>属性</param>
         /// <returns></returns>
         Task<ClaimsPrincipal> Verify(HttpContext context);
         #endregion

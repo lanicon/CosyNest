@@ -24,10 +24,13 @@
     private string? Json { get; set; }
     private async Task aaa()
     {
-        var b = new HttpRequestRecording(UriFrancis with { UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login)) })
+        var b = new HttpRequestRecording()
         {
+            Uri = UriFrancis with
+            {
+                UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login))
+            },
             Header = new() { Authentication = new("aaa", "bbb") },
-            HttpMethod = HttpMethod.Post
         };
         var x = await CreateNet.HttpClient.SendAsync(b);
     }

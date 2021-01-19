@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Principal;
 
 namespace System
 {
@@ -15,7 +16,7 @@ namespace System
         /// <param name="principal">待检查验证状态的主体，
         /// 如果为<see langword="null"/>，则直接返回<see langword="false"/></param>
         /// <returns></returns>
-        public static bool IsAuthenticated(this IPrincipal? principal)
+        public static bool IsAuthenticated([NotNullWhen(true)] this IPrincipal? principal)
             => principal is { Identity: { IsAuthenticated: true } };
         #endregion
         #endregion
