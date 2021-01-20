@@ -5,33 +5,40 @@
 @using System.DataFrancis
 @using Microsoft.JSInterop
 @using System.Net.Http.Headers
+@using System.Design.Direct
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Components.Controller
 @inject IJSWindow JSWindow
-@inject UriFrancis UriFrancis
+@inject ProvideHttpRequestAsync ProvideHttpRequest
 @inject AspNetCore.Routing.LinkGenerator LinkGenerator
 
-<input type="text" value="@UID" />
-<input type="text" value="@PWD" />
+<input type="text" @bind="UID" @bind:event="oninput" />
+<input type="text" @bind="PWD" @bind:event="oninput" />
 <button @onclick="aaa">提交</button>
 <p>@Json</p>
 
 @code
 {
     //这个组件用于登录
-    private string UID { get; set; } = "aaa";
-    private string PWD { get; set; } = "bbb";
+    private string? UID { get; set; }
+    private string? PWD { get; set; }
     private string? Json { get; set; }
     private async Task aaa()
     {
-        var b = new HttpRequestRecording()
+        if (UID is null || PWD is null)
+            return;
+        var cookies = JSWindow.Document.Cookie;
+        await cookies.AsyncSetValue(CreateWebApi.DefaultKeyUserName, UID);
+        await cookies.AsyncSetValue(CreateWebApi.DefaultKeyPassword, PWD);
+        var template = await ProvideHttpRequest();
+        var request = template with
         {
-            Uri = UriFrancis with
+            Uri = template.Uri with
             {
                 UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login))
-            },
-            Header = new() { Authentication = new("aaa", "bbb") },
+            }
         };
-        var x = await CreateNet.HttpClient.SendAsync(b);
+        var Return = (await CreateNet.HttpClient.SendAsync(request)).Content.ToJson<IDirect>(CreateDataObj.JsonOptionsDirect())!;
+        await JSWindow.Alert(Return["IsAuthenticated"] is true ? "登陆成功" : "登录失败");
     }
 }

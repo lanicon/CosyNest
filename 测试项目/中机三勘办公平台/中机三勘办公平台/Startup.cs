@@ -1,4 +1,7 @@
 using System;
+using System.NetFrancis.Http;
+using System.Safety;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Services;
@@ -29,8 +32,10 @@ namespace Microsoft.AspNetCore.Components
             {
                 x.AddFormatterJson();
             });
-            services.AddSingleton(CreateWebApi.Uri(Configuration));
+            var uri = new HttpRequestRecording(CreateWebApi.Uri(Configuration));
+            services.AddHttpRequestAuthentication(() => Task.FromResult(uri));
             services.AddJSWindow();
+            services.AddSingleton(CreateWebApi.HttpAuthentication(x => Task.FromResult(CreateSafety.Principal("Cookies", x.ID))));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +59,7 @@ namespace Microsoft.AspNetCore.Components
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthenticationFrancis();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

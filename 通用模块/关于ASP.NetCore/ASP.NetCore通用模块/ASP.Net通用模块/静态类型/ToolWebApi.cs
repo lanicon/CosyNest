@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore
             var (Exception, Return) = await ToolException.IgnoreBusinessAsync(verify);
             return Return.IsAuthenticated() ?
                 (Return, CreateDataObj.Data(("IsAuthenticated", true))) :
-                (CreateSafety.PrincipalDefault, CreateDataObj.Data(("IsAuthenticated", false), ("Message", Exception!.Message)));
+                (CreateSafety.PrincipalDefault, CreateDataObj.Data(("IsAuthenticated", false), ("Message", Exception?.Message ?? "未知原因")));
         }
         #endregion
         #endregion
