@@ -133,9 +133,9 @@ namespace System.Office.Excel.Realize
         /// <returns></returns>
         public static (int BeginRow, int BeginCol, int EndRow, int EndCol) AddressToTupts(string AddressA1)
         {
-            var mathce = $@"^\$?(?<bc>{RegexCom.Letters(true)}+)\$?(?<br>{RegexCom.Integ}+)(?<end>:\$?(?<ec>{RegexCom.Letters(true)}+)\$?(?<er>{RegexCom.Integ}+))?$".
+            var mathce = /*language=regex*/@"^\$?(?<bc>[A-Z]+)\$?(?<br>\d+)(?<end>:\$?(?<ec>[A-Z]+)\$?(?<er>\d+))?$".
                 ToRegex().MatcheFirst(AddressA1)?.GroupsNamed;
-            if (mathce == null)
+            if (mathce is null)
                 throw new Exception($"{AddressA1}不是合法的A1地址格式");
             #region 用来获取列号的本地函数
             static int Get(IMatch add)
