@@ -36,7 +36,7 @@ namespace System.Text.RegularExpressions
         /// 如果存在多个分隔符，则将它们全部塞在这个字符串中，中间不要有空格</param>
         /// <returns></returns>
         public static string KeyValuePair(string Separator)
-            => @$"[^{Separator}](?<key>\S+?)=(?<value>\S+?)[^{Separator}]";
+            => @$"(?<key>[^{Separator}]+)=(?<value>[^{Separator}]+)";
         #endregion
         #region 提取键值对
         /// <summary>

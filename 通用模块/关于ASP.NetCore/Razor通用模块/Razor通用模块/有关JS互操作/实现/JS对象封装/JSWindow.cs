@@ -9,6 +9,7 @@ namespace Microsoft.JSInterop
     /// </summary>
     class JSWindow : JSRuntimeBase, IJSWindow
     {
+        #region JS对象
         #region 返回Document对象
         private IJSDocument? DocumentField;
 
@@ -21,14 +22,23 @@ namespace Microsoft.JSInterop
         public IAsyncDictionary<string, string> LocalStorage
              => LocalStorageField ??= new(JSRuntime);
         #endregion
+        #region 返回Location对象
+        private JSLocation? LocationField;
+
+        public IJSLocation Location
+            => LocationField ??= new(JSRuntime);
+        #endregion
+        #endregion
+        #region JS方法
         #region 弹出消息窗
         public ValueTask Alert(string message)
-               => this.InvokeVoidAsync("alert", message);
+               => JSRuntime.InvokeVoidAsync("alert", message);
         #endregion
         #region 打印窗口
         public ValueTask Print()
-              => this.InvokeVoidAsync("print");
+              => JSRuntime.InvokeVoidAsync("print");
         #endregion
+        #endregion 
         #region 构造函数
         /// <summary>
         /// 使用指定的JS运行时初始化对象

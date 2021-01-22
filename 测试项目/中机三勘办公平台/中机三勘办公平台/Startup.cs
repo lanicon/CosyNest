@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Components
             {
                 x.AddFormatterJson();
             });
-            var uri = new HttpRequestRecording(CreateWebApi.Uri(Configuration));
+            var uri = new HttpRequestRecording(CreateASP.Uri(Configuration));
             services.AddHttpRequestAuthentication(() => Task.FromResult(uri));
             services.AddJSWindow();
             services.AddSingleton(CreateWebApi.HttpAuthentication(x => Task.FromResult(CreateSafety.Principal("Cookies", x.ID))));
@@ -41,7 +41,6 @@ namespace Microsoft.AspNetCore.Components
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseReview(x =>

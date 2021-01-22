@@ -9,6 +9,7 @@ namespace Microsoft.JSInterop
     /// </summary>
     public interface IJSWindow
     {
+        #region JS对象
         #region 返回Document对象
         /// <summary>
         /// 返回JS中的Document对象
@@ -21,6 +22,14 @@ namespace Microsoft.JSInterop
         /// </summary>
         IAsyncDictionary<string, string> LocalStorage { get; }
         #endregion
+        #region 返回Location对象
+        /// <summary>
+        /// 返回JS中的Location对象
+        /// </summary>
+        IJSLocation Location { get; }
+        #endregion
+        #endregion
+        #region JS方法
         #region 弹出消息窗
         /// <summary>
         /// 弹出一个消息窗
@@ -36,5 +45,6 @@ namespace Microsoft.JSInterop
         /// <returns></returns>
         ValueTask Print();
         #endregion
+        #endregion 
     }
 }

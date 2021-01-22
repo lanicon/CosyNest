@@ -28,17 +28,27 @@
         if (UID is null || PWD is null)
             return;
         var cookies = JSWindow.Document.Cookie;
-        await cookies.AsyncSetValue(CreateWebApi.DefaultKeyUserName, UID);
-        await cookies.AsyncSetValue(CreateWebApi.DefaultKeyPassword, PWD);
+
         var template = await ProvideHttpRequest();
         var request = template with
         {
             Uri = template.Uri with
             {
                 UriExtended = this.LinkGenerator.GetPathByAction<AuthenticationController>(nameof(AuthenticationController.Login))
+            },
+            Header = template.Header with
+            {
+                Authentication = CreateASP.AuthenticationHeader(UID, PWD)
             }
         };
         var Return = (await CreateNet.HttpClient.SendAsync(request)).Content.ToJson<IDirect>(CreateDataObj.JsonOptionsDirect())!;
-        await JSWindow.Alert(Return["IsAuthenticated"] is true ? "登陆成功" : "登录失败");
+        if (Return["IsAuthenticated"] is true)
+        {
+            await cookies.AsyncSetValue(CreateASP.DefaultKeyUserName, UID);
+            await cookies.AsyncSetValue(CreateASP.DefaultKeyPassword, PWD);
+            await JSWindow.Alert("登陆成功");
+            await JSWindow.Location.Reload();
+        }
+        else await JSWindow.Alert($"登录失败，原因：{Return["Message"]}");
     }
 }

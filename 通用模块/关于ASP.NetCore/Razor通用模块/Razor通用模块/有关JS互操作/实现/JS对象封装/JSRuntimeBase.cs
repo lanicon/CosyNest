@@ -6,7 +6,7 @@ namespace Microsoft.JSInterop
     /// <summary>
     /// 这个抽象类是所有JS对象封装的基类
     /// </summary>
-    abstract class JSRuntimeBase : IJSRuntime
+    abstract class JSRuntimeBase
     {
         #region 封装的JS对象
         /// <summary>
@@ -14,16 +14,6 @@ namespace Microsoft.JSInterop
         /// 本对象的功能就是通过它实现的
         /// </summary>
         protected IJSRuntime JSRuntime { get; }
-        #endregion
-        #region 执行JS函数
-        #region 带取消令牌
-        public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
-            => JSRuntime.InvokeAsync<TValue>(identifier, cancellationToken, args);
-        #endregion
-        #region 不带取消令牌
-        public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
-            => JSRuntime.InvokeAsync<TValue>(identifier, args);
-        #endregion
         #endregion
         #region 构造函数
         /// <summary>
