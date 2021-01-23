@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.NetFrancis.Http;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using System.TreeObject;
 
 using Microsoft.AspNetCore;
@@ -44,17 +43,13 @@ namespace System
         /// <param name="application">待添加中间件的<see cref="IApplicationBuilder"/></param>
         /// <returns></returns>
         public static IApplicationBuilder UseAuthenticationFrancis(this IApplicationBuilder application)
-        {
-            application.ApplicationServices.CheckService<IHttpAuthentication>();
-            application.Use(static async (context, next) =>
-             {
-                 var auth = context.RequestServices.GetRequiredService<IHttpAuthentication>();
-                 await ToolException.IgnoreBusinessAsync(() => auth.Verify(context));
-                 context.Response.OnStarting(() => auth.SetVerify(context.User, context));      //在后面的中间件全部执行完毕后，将验证结果写回响应中
-                 await next();
-             });
-            return application;
-        }
+            => application.Use(static async (context, next) =>
+            {
+                var auth = context.RequestServices.GetRequiredService<IHttpAuthentication>();
+                await ToolException.IgnoreBusinessAsync(() => auth.Verify(context));
+                context.Response.OnStarting(() => auth.SetVerify(context.User, context));      //在后面的中间件全部执行完毕后，将验证结果写回响应中
+                await next();
+            });
         #endregion
         #endregion
         #region 依赖注入服务
@@ -75,7 +70,7 @@ namespace System
             string UserNameKey = CreateASP.DefaultKeyUserName,
             string PasswordKey = CreateASP.DefaultKeyPassword)
         {
-            provideTemplate ??= () => Task.FromResult(new HttpRequestRecording());
+            provideTemplate ??= () => new HttpRequestRecording().ToTask();
             return services.AddScoped<ProvideHttpRequestAsync>(serviceProvider => async () =>
               {
                   var template = await provideTemplate();

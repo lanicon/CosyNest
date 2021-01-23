@@ -41,20 +41,5 @@ namespace System
         #endregion
         #endregion
         #endregion
-        #region 关于IServiceProvider
-        #region 检查服务是否存在
-        /// <summary>
-        /// 检查一个服务是否存在，
-        /// 如果不存在，则引发异常
-        /// </summary>
-        /// <typeparam name="Service">要检查的服务的类型</typeparam>
-        /// <param name="serviceProvider">用来提供服务的对象</param>
-        public static void CheckService<Service>(this IServiceProvider serviceProvider)
-        {
-            if (serviceProvider.GetService(typeof(Service)) is null)
-                throw new InvalidOperationException($"服务{typeof(Service)}没有注册");
-        }
-        #endregion 
-        #endregion
     }
 }

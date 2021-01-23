@@ -4,7 +4,6 @@ using System.Safety;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,15 +26,14 @@ namespace Microsoft.AspNetCore.Components
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IProvidedDefaultTemplate>(ProvidedTemplate.Only);
+            services.AddFront();
             services.AddControllers(x =>
             {
                 x.AddFormatterJson();
             });
             var uri = new HttpRequestRecording(CreateASP.Uri(Configuration));
             services.AddHttpRequestAuthentication(() => Task.FromResult(uri));
-            services.AddJSWindow();
-            services.AddSingleton(CreateWebApi.HttpAuthentication(x => Task.FromResult(CreateSafety.Principal("Cookies", x.ID))));
+            services.AddSingleton(CreateWebApi.HttpAuthentication(x => CreateSafety.Principal("Cookies", x.ID).ToTask()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,10 +41,6 @@ namespace Microsoft.AspNetCore.Components
         {
             if (env.IsDevelopment())
             {
-                app.UseReview(x =>
-                {
-                    var b = x.Request.Headers;
-                });
                 app.UseDeveloperExceptionPage();
             }
             else

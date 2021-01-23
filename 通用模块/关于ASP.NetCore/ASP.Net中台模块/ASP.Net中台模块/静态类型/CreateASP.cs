@@ -31,6 +31,7 @@ namespace Microsoft.AspNetCore
         #endregion
         #region 有关标头
         #region 根据身份验证信息创建AuthenticationHeaderValue
+        #region 辅助成员
         #region 用户名的默认键名
         /// <summary>
         /// 获取用来提取用户名的默认键名
@@ -43,6 +44,7 @@ namespace Microsoft.AspNetCore
         /// </summary>
         public const string DefaultKeyPassword = "Password";
         #endregion
+        #endregion 
         #region 根据用户名和密码
         /// <summary>
         /// 根据用户名和密码，创建一个<see cref="AuthenticationHeaderValue"/>对象

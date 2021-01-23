@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Components.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
@@ -67,7 +68,20 @@ namespace System
         #endregion
         #endregion
         #endregion
-        #region 关于IServiceCollection
+        #region 关于依赖注入
+        #region 注入前端对象
+        /// <summary>
+        /// 向服务容器注入常用前端对象
+        /// </summary>
+        /// <param name="services">待注入的服务容器</param>
+        /// <returns></returns>
+        public static IServiceCollection AddFront(this IServiceCollection services)
+        {
+            services.AddJSWindow();
+            services.AddSingleton<IProvidedDefaultTemplate>(ProvidedTemplate.Only);
+            return services;
+        }
+        #endregion
         #region 注入IJSWindow
         /// <summary>
         /// 向服务容器注入一个<see cref="IJSWindow"/>
