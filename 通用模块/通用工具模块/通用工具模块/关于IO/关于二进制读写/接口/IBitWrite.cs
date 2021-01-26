@@ -11,7 +11,7 @@ namespace System.IO
     {
         #region 数据的当前长度
         /// <summary>
-        /// 返回二进制数据的当前长度
+        /// 返回二进制数据的当前长度（以字节为单位）
         /// </summary>
         long Length { get; }
         #endregion
