@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Maths;
-using System.Text;
+﻿using System.Maths;
 
 namespace System.IO
 {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Maths;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Maths;
 
 namespace System.IO
 {

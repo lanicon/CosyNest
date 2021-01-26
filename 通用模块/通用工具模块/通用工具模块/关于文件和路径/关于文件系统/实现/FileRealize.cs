@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Maths;
-using System.Text;
 
 namespace System.IO
 {
@@ -47,7 +45,7 @@ namespace System.IO
         #region 复制
         public override IIO Copy(IDirectory? Target, string? NewName = null, Func<string, int, string>? Rename = null)
         {
-            Target ??= File.Father ?? throw new ArgumentNullException("父目录不能为null");
+            Target ??= File.Father ?? throw new ArgumentNullException($"父目录不能为null");
             NewName ??= File.NameFull;
             if (Rename != null)
             {

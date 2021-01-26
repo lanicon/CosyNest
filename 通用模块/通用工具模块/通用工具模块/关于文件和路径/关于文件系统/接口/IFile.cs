@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace System.IO
@@ -20,7 +18,7 @@ namespace System.IO
         {
             get => IO.Path.GetFileNameWithoutExtension(Path);
             set => Path = ToolPath.RefactoringPath(Path,
-                value ?? throw new ArgumentNullException("文件名称禁止写入null值"), null);
+                value ?? throw new ArgumentNullException($"文件名称禁止写入null值"), null);
         }
         #endregion
         #region 读写扩展名
@@ -33,7 +31,7 @@ namespace System.IO
         {
             get => ToolPath.Split(Path, false).Extended;
             set => Path = ToolPath.RefactoringPath(Path, null,
-                value ?? throw new ArgumentNullException("扩展名禁止写入null值"));
+                value ?? throw new ArgumentNullException($"扩展名禁止写入null值"));
         }
         #endregion
         #region 关于文件类型
@@ -46,10 +44,10 @@ namespace System.IO
             get
             {
                 var Extension = NameExtension;
-                return Extension == null ?
-                    new IFileType[] { } :
+                return Extension is null ?
+                    Array.Empty<IFileType>() :
                     IFileType.RegisteredFileType.
-               TryGetValue(Extension).Value ?? new IFileType[] { };
+               TryGetValue(Extension).Value ?? Array.Empty<IFileType>();
             }
         }
         #endregion
@@ -78,7 +76,7 @@ namespace System.IO
         /// 否则执行该委托赋予一个新的名称，委托的第一个参数是不带扩展名的原始名称，
         /// 第二个参数是尝试重命名失败的次数，从2开始，返回值就是重命名后的新名称，以上名称均不带扩展名</param>
         /// <returns>复制后的新文件</returns>
-        IFile Copy(IDirectory? Target, string? NewSimple, string? NewExtension, Func<string, int, string>? Rename)
+        IFile Copy(IDirectory? Target, string? NewSimple, string? NewExtension, Func<string, int, string>? Rename = null)
             => (IFile)Copy(Target,
                 ToolPath.GetFullName(NewSimple ?? NameSimple, NewExtension ?? NameExtension), Rename);
         #endregion
