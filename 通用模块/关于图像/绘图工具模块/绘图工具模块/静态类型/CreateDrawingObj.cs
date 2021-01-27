@@ -1,7 +1,10 @@
-﻿using System.IO;
+﻿using System.DrawingFrancis.Graphics;
 using System.DrawingFrancis.Text;
+using System.IO;
+using System.IOFrancis;
+using System.Linq;
 using System.Maths;
-using System.DrawingFrancis.Graphics;
+using System.Threading.Tasks;
 
 namespace System.DrawingFrancis
 {
@@ -42,14 +45,14 @@ namespace System.DrawingFrancis
             => new GraphicsPixel(Color, Position, Layer);
         #endregion
         #region 创建内存图像
-        #region 指定字节数组和格式
+        #region 指定二进制内容和格式
         /// <summary>
-        /// 使用指定的字节数组和格式创建一个存在于内存中的图像
+        /// 使用指定的二进制内容和格式创建一个存在于内存中的图像
         /// </summary>
-        /// <param name="ImageBinary">图片的字节数组形式</param>
+        /// <param name="ImageBinary">图片的二进制形式</param>
         /// <param name="Format">图片的格式</param>
         /// <returns></returns>
-        public static IImage ImageMemory(byte[] ImageBinary, string Format)
+        public static IImage ImageMemory(ReadOnlyMemory<byte> ImageBinary, string Format)
             => new ImageMemory(ImageBinary, Format);
         #endregion
         #region 指定流和格式
@@ -59,8 +62,11 @@ namespace System.DrawingFrancis
         /// <param name="stream">用来读取图像内容的流</param>
         /// <param name="Format">图片的格式</param>
         /// <returns></returns>
-        public static IImage ImageMemory(Stream stream, string Format)
-            => ImageMemory(stream.ToArray(), Format);
+        public static async Task<IImage> ImageMemory(Stream stream, string Format)
+        {
+            var arry = await stream.ReadAll();
+            return ImageMemory(arry, Format);
+        }
         #endregion
         #region 指定文件和格式
         /// <summary>
@@ -68,10 +74,10 @@ namespace System.DrawingFrancis
         /// </summary>
         /// <param name="Path">图片所在的文件</param>
         /// <returns></returns>
-        public static IImage ImageMemory(PathText Path)
+        public static async Task<IImage> ImageMemory(PathText Path)
         {
-            using var stream = CreateIO.File(Path).GetStream().Stream;
-            return ImageMemory(stream, ToolPath.Split(Path).Extended);
+            using var stream = CreateIO.File(Path).GetBitPipe();
+            return ImageMemory(await stream.Read().FirstAsync(), ToolPath.Split(Path).Extended);
         }
         #endregion
         #endregion

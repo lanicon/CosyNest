@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.DrawingFrancis.Graphics;
 using System.IO;
+using System.IOFrancis;
 using System.Maths;
 
 namespace System.DrawingFrancis
@@ -15,7 +16,7 @@ namespace System.DrawingFrancis
         /// <summary>
         /// 返回图像的二进制表示方式
         /// </summary>
-        private byte[] ImageBinary { get; }
+        private ReadOnlyMemory<byte> ImageBinary { get; }
         #endregion
         #region 获取或设置图片的大小
         public ISize Size
@@ -28,8 +29,8 @@ namespace System.DrawingFrancis
         public string Format { get; }
         #endregion
         #region 读取图像
-        public IStrongTypeStream ReadImage()
-            => CreateIO.Stream(new MemoryStream(ImageBinary, false), Format);
+        public IBitRead Read()
+            => new MemoryStream(ImageBinary.ToArray(), false).ToBitPipe(Format);
         #endregion
         #region 枚举图像的细节
         public IEnumerable<IGraphics> Details
@@ -40,9 +41,9 @@ namespace System.DrawingFrancis
         /// <summary>
         /// 使用指定的字节数组和格式初始化对象
         /// </summary>
-        /// <param name="ImageBinary">图片的字节数组形式</param>
+        /// <param name="ImageBinary">图片的二进制形式</param>
         /// <param name="Format">图片的格式</param>
-        public ImageMemory(byte[] ImageBinary, string Format)
+        public ImageMemory(ReadOnlyMemory<byte> ImageBinary, string Format)
         {
             if (Format.IsVoid())
                 throw new ArgumentException("图片的格式不能为null或空字符串");

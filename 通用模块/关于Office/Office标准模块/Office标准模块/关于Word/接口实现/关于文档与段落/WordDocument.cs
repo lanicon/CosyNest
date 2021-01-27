@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Linq;
-using System.Performance;
-using System.Office.Realize;
+﻿using System.Collections.Generic;
 using System.DrawingFrancis;
-using System.Office.Chart;
+using System.IOFrancis;
+using System.Linq;
+using System.Office.Realize;
+using System.Performance;
 
 namespace System.Office.Word.Realize
 {

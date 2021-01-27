@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Design;
-using System.IO;
+﻿using System.IOFrancis;
 using System.Office.Realize;
 
 namespace System.Office.Excel.Realize

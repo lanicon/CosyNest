@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Design.Direct;
 using System.IO;
+using System.IOFrancis;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -44,8 +44,7 @@ namespace System.DataFrancis
         public void Add(IDirectView<IData> Data, bool Binding)
             => CreateIO.File(Path, false).Atomic(x =>
              {
-                 using var steam = x.To<IFile>().GetStream().Stream;
-                 using var writer = new StreamWriter(steam);
+                 using var writer = new StreamWriter(x.To<IFile>().Path);
                  Data.ForEachSplit((data, del) =>
                  {
                      writer.WriteLine(data.Keys.Join(Separated));      //写入标头

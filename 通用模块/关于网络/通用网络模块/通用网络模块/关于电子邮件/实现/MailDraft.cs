@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.IOFrancis;
 
 namespace System.NetFrancis.Mail
 {
@@ -17,11 +17,11 @@ namespace System.NetFrancis.Mail
         public (bool IsText, string Body) Body { get; init; } = (true, "");
         #endregion
         #region 附件
-        IEnumerable<IStrongTypeStream> IMail.Attachment
+        IEnumerable<IBitRead> IMail.Attachment
             => Attachment;
 
-        public IList<IStrongTypeStream> Attachment { get; }
-        = new List<IStrongTypeStream>();
+        public IList<IBitRead> Attachment { get; }
+        = new List<IBitRead>();
         #endregion
         #region 收件人
         public IList<string> To { get; }

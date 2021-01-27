@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 在这里储存了一些常用的文件类型对象

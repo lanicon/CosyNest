@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.IO;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 表示在进行IO操作时引发的异常

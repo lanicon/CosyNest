@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.DrawingFrancis;
-using System.IO;
+using System.IOFrancis;
 using System.Linq;
 using System.Maths;
 using System.Performance;
@@ -40,9 +40,8 @@ namespace System.Office
         public static IFile SaveImage(IImage image)
         {
             var file = ToolPerfo.CreateTemporaryFile(image.Format);
-            using var read = image.ReadImage().Stream;
-            using var write = file.GetStream().Stream;
-            read.CopyTo(write);
+            using var read = image.Read();
+            read.Save(file.Path).Wait();
             return file;
         }
         #endregion

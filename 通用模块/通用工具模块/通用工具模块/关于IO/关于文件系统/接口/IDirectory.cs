@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 所有实现这个接口的类型，

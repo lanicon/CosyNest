@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Maths;
-using System.IO;
 using System.DrawingFrancis.Graphics;
+using System.IOFrancis;
+using System.Maths;
 
 namespace System.DrawingFrancis
 {
@@ -50,7 +50,7 @@ namespace System.DrawingFrancis
         /// 读取图像，并返回图像的流
         /// </summary>
         /// <returns></returns>
-        IStrongTypeStream ReadImage();
+        IBitRead Read();
         #endregion
     }
 }

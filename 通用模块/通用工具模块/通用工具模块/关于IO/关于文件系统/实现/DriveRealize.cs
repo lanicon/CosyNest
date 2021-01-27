@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Maths;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 这个类型是<see cref="IDrive"/>的实现，

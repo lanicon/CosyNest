@@ -30,7 +30,7 @@ namespace System.NetFrancis.Mail
             body.Add(mail.Attachment.Select(x =>
             new MimePart()
             {
-                FileName = x.Describe ?? "附件" + "." + x.NameExtension,
+                FileName = x.Describe ?? "附件" + (x.Format.IsVoid() ? null : $".{x.Format}"),
                 Content = new MimeContent(x.Stream)
             }));
             var m = new MimeMessage()

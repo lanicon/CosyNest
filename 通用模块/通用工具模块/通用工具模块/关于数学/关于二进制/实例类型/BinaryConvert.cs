@@ -1,6 +1,4 @@
-﻿
-using System.Buffers;
-using System.IO.Pipelines;
+﻿using System.IOFrancis;
 using System.Threading.Tasks;
 
 namespace System.Maths
@@ -24,7 +22,7 @@ namespace System.Maths
     /// </summary>
     /// <param name="reader">待读取的管道</param>
     /// <returns>一个新的管道，通过它可以读取转换后的二进制数据</returns>
-    public delegate Task<PipeReader> BinaryConvert(PipeReader reader);
+    public delegate Task<IBitRead> BinaryConvert(IBitRead reader);
     #endregion
     #region 读取并验证管道
     /// <summary>
@@ -33,6 +31,6 @@ namespace System.Maths
     /// <param name="reader">待读取的管道</param>
     /// <param name="comparison">用来和管道内容进行对比的数据</param>
     /// <returns>如果验证通过，则为<see langword="true"/>，否则为<see langword="false"/></returns>
-    public delegate Task<bool> BinaryVerify(PipeReader reader, ReadOnlySequence<byte> comparison);
+    public delegate Task<bool> BinaryVerify(IBitRead reader, byte[] comparison);
     #endregion
 }

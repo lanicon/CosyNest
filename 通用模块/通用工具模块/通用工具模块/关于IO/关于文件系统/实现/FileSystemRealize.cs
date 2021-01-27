@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Maths;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 这个类型是<see cref="IFileSystem"/>的实现，

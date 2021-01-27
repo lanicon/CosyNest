@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IOFrancis;
 using System.Linq;
 using System.Office.Excel;
 using System.Office.Word;
