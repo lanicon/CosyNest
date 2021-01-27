@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.IOFrancis;
 using System.Linq;
 
 using MailKit;
@@ -56,12 +56,11 @@ namespace System.NetFrancis.Mail
         }
         #endregion
         #region 附件
-        public IEnumerable<IStrongTypeStream> Attachment
+        public IEnumerable<IBitRead> Attachment
              => PackMessage.Attachments.Select(x =>
              {
                  var att = x.To<MimePart>();
-                 return CreateIO.StreamFull
-                 (att.Content.Open(), att.FileName);
+                 return att.Content.Open().ToBitPipe(att.FileName);
              });
         #endregion
         #region 收件时间

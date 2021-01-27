@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using System.IO;
+using System.IOFrancis;
 
 namespace System.Performance
 {

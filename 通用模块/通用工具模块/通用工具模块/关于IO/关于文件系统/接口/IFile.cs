@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 所有实现这个接口的类型，都可以视为一个文件
@@ -81,14 +82,14 @@ namespace System.IO
                 ToolPath.GetFullName(NewSimple ?? NameSimple, NewExtension ?? NameExtension), Rename);
         #endregion
         #endregion
-        #region 返回文件流
+        #region 创建数据管道
         /// <summary>
-        /// 通过这个文件创建一个强类型流
+        /// 创建一个可以读写文件的数据管道
         /// </summary>
-        /// <param name="Mod">指定创建文件流的方式</param>
-        /// <returns>新创建的强类型流</returns>
-        IStrongTypeStream GetStream(FileMode Mod = FileMode.Open)
-            => CreateIO.StreamFull(new FileStream(Path, Mod), NameFull);
+        /// <param name="Mod">指定打开文件的方式</param>
+        /// <returns></returns>
+        IBitPipe GetBitPipe(FileMode Mod = FileMode.Open)
+            => new FileStream(Path, Mod).ToBitPipe(NameExtension);
         #endregion
     }
 }

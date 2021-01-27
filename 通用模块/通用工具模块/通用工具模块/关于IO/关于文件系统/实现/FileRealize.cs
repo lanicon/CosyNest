@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Maths;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 这个类型是<see cref="IFile"/>的实现，
@@ -68,8 +69,8 @@ namespace System.IO
         /// <param name="CheckExist">在文件不存在的时候，如果这个值为<see langword="true"/>，
         /// 则抛出一个异常，为<see langword="false"/>，则不会抛出异常，而是会创建一个新文件</param>
         public FileRealize(PathText Path, bool CheckExist = true)
+            : base(new FileInfo(Path))
         {
-            PackFS = new FileInfo(Path);
             if (!PackFS.Exists)
             {
                 if (CheckExist)

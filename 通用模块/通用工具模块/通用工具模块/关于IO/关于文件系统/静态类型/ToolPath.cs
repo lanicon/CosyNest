@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Security;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 与路径有关的方法类

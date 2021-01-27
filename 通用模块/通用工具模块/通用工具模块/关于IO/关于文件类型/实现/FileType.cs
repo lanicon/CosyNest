@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 表示文件的类型（例如音乐文件），不考虑文件是否存在

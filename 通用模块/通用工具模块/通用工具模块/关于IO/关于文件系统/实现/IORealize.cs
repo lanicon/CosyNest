@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Maths;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 这个类型是文件和目录接口实现的共同基类
@@ -9,13 +10,11 @@ namespace System.IO
     abstract class IORealize : IIO
     {
         #region 封装的对象
-#nullable disable
         /// <summary>
         /// 获取封装的文件目录对象，
         /// 本对象的功能就是通过它实现的
         /// </summary>
         protected FileSystemInfo PackFS { get; set; }
-#nullable restore
         #endregion
         #region 关于文件系统树
         #region 返回根节点
@@ -128,6 +127,17 @@ namespace System.IO
         public override string ToString()
             => Path;
         #endregion
+        #endregion
+        #region 构造函数
+        /// <summary>
+        /// 使用指定的文件目录对象初始化对象
+        /// </summary>
+        /// <param name="PackFS">指定的文件目录对象，
+        /// 本对象的功能就是通过它实现的</param>
+        public IORealize(FileSystemInfo PackFS)
+        {
+            this.PackFS = PackFS;
+        }
         #endregion
     }
 }

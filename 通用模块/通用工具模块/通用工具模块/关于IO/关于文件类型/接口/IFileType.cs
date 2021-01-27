@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

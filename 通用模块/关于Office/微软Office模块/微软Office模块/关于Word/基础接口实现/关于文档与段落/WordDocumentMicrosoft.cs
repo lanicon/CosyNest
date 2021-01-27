@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Office.Word.Realize;
-using Microsoft.Office.Interop.Word;
-using Microsoft.Office.Core;
-using System.Office.Word.Chart;
 using System.DrawingFrancis;
+using System.IO;
+using System.IOFrancis;
+using System.Linq;
+using System.Office.Word.Chart;
+using System.Office.Word.Realize;
+
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 
 namespace System.Office.Word
 {

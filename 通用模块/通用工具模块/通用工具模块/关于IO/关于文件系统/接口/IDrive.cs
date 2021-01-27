@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Maths;
 
-namespace System.IO
+namespace System.IOFrancis
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Design;
-using System.Office.Word.Realize;
 using System.DrawingFrancis;
+using System.IOFrancis;
+using System.Linq;
 using System.Office.Chart;
+using System.Office.Word.Realize;
 
 namespace System.Office.Word
 {

@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.IOFrancis;
 
 namespace System.DrawingFrancis.Graphics
 {
@@ -21,7 +21,7 @@ namespace System.DrawingFrancis.Graphics
         /// 如果为<see langword="null"/>，则使用默认格式</param>
         /// <exception cref="NotSupportedException"><paramref name="format"/>不是合法的格式</exception>
         /// <returns></returns>
-        IStrongTypeStream Output(string? format = null);
+        IBitRead Output(string? format = null);
         #endregion
     }
 }

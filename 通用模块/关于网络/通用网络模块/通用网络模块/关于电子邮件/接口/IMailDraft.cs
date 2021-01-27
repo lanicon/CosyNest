@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using System.IOFrancis;
 
 namespace System.NetFrancis.Mail
 {
@@ -35,7 +35,7 @@ namespace System.NetFrancis.Mail
         /// <summary>
         /// 枚举邮件中的所有附件
         /// </summary>
-        new IList<IStrongTypeStream> Attachment { get; }
+        new IList<IBitRead> Attachment { get; }
         #endregion
         #region 收件人
         /// <summary>
