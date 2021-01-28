@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 与路径有关的方法类

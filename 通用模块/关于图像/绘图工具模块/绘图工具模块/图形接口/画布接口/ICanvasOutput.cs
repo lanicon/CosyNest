@@ -1,4 +1,5 @@
-﻿using System.IOFrancis;
+﻿using System.IOFrancis.Bit;
+using System.IOFrancis.FileSystem;
 
 namespace System.DrawingFrancis.Graphics
 {

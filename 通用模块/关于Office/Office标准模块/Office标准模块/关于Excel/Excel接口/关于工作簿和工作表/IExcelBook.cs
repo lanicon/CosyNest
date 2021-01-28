@@ -1,6 +1,6 @@
 ﻿using System.Design;
 using System.IO;
-using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 
 namespace System.Office.Excel
 {

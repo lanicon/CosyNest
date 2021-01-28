@@ -1,6 +1,6 @@
 ﻿using System.Performance;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 表示一个专用于文件路径的文本，

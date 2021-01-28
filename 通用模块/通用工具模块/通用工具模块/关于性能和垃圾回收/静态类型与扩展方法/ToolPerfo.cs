@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 
 namespace System.Performance
 {

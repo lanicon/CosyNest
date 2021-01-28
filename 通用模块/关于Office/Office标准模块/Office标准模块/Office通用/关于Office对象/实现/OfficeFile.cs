@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Design;
 using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 
 namespace System.Office.Realize
 {

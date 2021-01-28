@@ -2,6 +2,7 @@
 using System.DrawingFrancis.Text;
 using System.IO;
 using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Maths;
 using System.Threading.Tasks;

@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.IOFrancis.Bit;
+using System.IOFrancis.FileSystem;
 using System.Linq;
+using System.Text;
 
 namespace System.IOFrancis
 {
@@ -65,6 +69,56 @@ namespace System.IOFrancis
         /// <returns></returns>
         public static dynamic? IODy(PathText path)
             => IO(path);
+        #endregion
+        #endregion
+        #endregion
+        #region 创建委托
+        #region 有关读写字符串
+        #region 读取
+        /// <summary>
+        /// 创建一个<see cref="ObjRead{Obj}"/>，
+        /// 它能够通过二进制管道读取文本，文本按行返回
+        /// </summary>
+        /// <param name="encoder">文本的编码，
+        /// 如果为<see langword="null"/>，则自动获取</param>
+        /// <returns></returns>
+        public static ObjRead<string> ObjReadString(Encoding? encoder = null)
+            => read =>
+            {
+                #region 本地函数
+                static async IAsyncEnumerable<string> Fun(Encoding? encoder, IBitRead read)
+                {
+                    var stream = read.ToStream();
+                    using StreamReader streamReader = encoder is null ? new(stream) : new(stream, encoder);
+                    while (true)
+                    {
+                        var text = await streamReader.ReadLineAsync();
+                        if (text is null)
+                            yield break;
+                        yield return text;
+                    }
+                }
+                #endregion
+                return Fun(encoder, read);
+            };
+        #endregion
+        #region 写入
+        /// <summary>
+        /// 创建一个<see cref="ObjWrite{Obj}"/>，
+        /// 它能够向二进制管道写入文本
+        /// </summary>
+        /// <param name="encoder">文本的编码，
+        /// 如果为<see langword="null"/>，则为UTF8</param>
+        /// <returns></returns>
+        public static ObjWrite<string> ObjWriteString(Encoding? encoder = null)
+        {
+            encoder ??= Encoding.UTF8;
+            return async (write, text) =>
+            {
+                var bytes = encoder.GetBytes(text);
+                await write.Write(bytes);
+            };
+        }
         #endregion
         #endregion
         #endregion

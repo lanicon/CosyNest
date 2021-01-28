@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IOFrancis;
+using System.IOFrancis.Bit;
 using System.Linq;
 
 using MailKit;

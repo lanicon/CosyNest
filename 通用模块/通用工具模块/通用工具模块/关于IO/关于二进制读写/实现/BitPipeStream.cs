@@ -3,7 +3,7 @@ using System.Design;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.Bit
 {
     /// <summary>
     /// 这个类型是<see cref="IBitPipe"/>的实现，
@@ -58,6 +58,10 @@ namespace System.IOFrancis
         #region 写入数据
         public Task Write(byte[] data)
             => Stream.WriteAsync(data).AsTask();
+        #endregion
+        #region 转换为流
+        public Stream ToStream()
+         => Stream;
         #endregion
         #endregion
         #region 释放对象

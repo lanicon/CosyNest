@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.IOFrancis;
+using System.IOFrancis.Bit;
+using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,8 +38,6 @@ namespace System
             return arry;
         }
         #endregion
-        #endregion
-        #region 关于读取二进制数据
         #region 将Stream转换为IBitPipe
         /// <summary>
         /// 将一个<see cref="Stream"/>转换为等效的<see cref="IBitPipe"/>

@@ -139,8 +139,9 @@ namespace System.NetFrancis.Mail
         public Task MailsSend(params IMailDraft[] draft)
             => Request<SmtpClient, int>(SmtpConnection, async server =>
             {
-                var id = Credentials.ID;
-                await Task.WhenAll(draft.Select(mail => server.SendAsync(mail.ToMail(id))));
+                await Task.WhenAll(draft.Select
+                    (mail => server.SendAsync
+                   (mail.ToMail(Credentials.ID))));
                 return 0;
             });
         #endregion

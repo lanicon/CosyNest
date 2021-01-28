@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Maths;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 这个类型是<see cref="IFileSystem"/>的实现，

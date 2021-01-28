@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.DrawingFrancis;
-using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Maths;
 using System.Performance;

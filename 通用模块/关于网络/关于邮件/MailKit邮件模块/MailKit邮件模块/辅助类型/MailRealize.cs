@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 using MimeKit;
 using MimeKit.Text;
@@ -6,7 +7,7 @@ using MimeKit.Text;
 namespace System.NetFrancis.Mail
 {
     /// <summary>
-    /// 这个静态类是帮助实现的辅助类型
+    /// 这个静态类是帮助实现电子邮件的辅助类型
     /// </summary>
     static class MailRealize
     {
@@ -31,7 +32,7 @@ namespace System.NetFrancis.Mail
             new MimePart()
             {
                 FileName = x.Describe ?? "附件" + (x.Format.IsVoid() ? null : $".{x.Format}"),
-                Content = new MimeContent(x.Stream)
+                Content = new MimeContent(x.ToStream())
             }));
             var m = new MimeMessage()
             {

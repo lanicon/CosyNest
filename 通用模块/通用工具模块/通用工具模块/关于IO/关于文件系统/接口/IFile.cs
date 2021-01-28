@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.IOFrancis.Bit;
 using System.Linq;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 所有实现这个接口的类型，都可以视为一个文件

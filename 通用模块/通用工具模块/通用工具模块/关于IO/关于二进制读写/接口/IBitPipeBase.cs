@@ -1,13 +1,20 @@
-﻿using System;
+﻿using System.Design;
+using System.IO;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.Bit
 {
     /// <summary>
-    /// 凡是实现这个接口的类型，
-    /// 都可以作为一个二进制数据的基本信息
+    /// 这个接口是所有二进制管道的基接口
     /// </summary>
-    public interface IBitInfo
+    public interface IBitPipeBase : IDisposablePro
     {
+        #region 转换为流
+        /// <summary>
+        /// 将这个二进制管道转换为等效的<see cref="Stream"/>
+        /// </summary>
+        /// <returns></returns>
+        Stream ToStream();
+        #endregion
         #region 数据的描述
         /// <summary>
         /// 对数据的描述，如果没有描述，

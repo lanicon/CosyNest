@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.Bit
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

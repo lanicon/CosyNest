@@ -1,6 +1,6 @@
 ﻿using System.Maths;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 这个类型是<see cref="IUTStorage"/>的实现，
@@ -9,7 +9,7 @@ namespace System.IOFrancis
     class UTStorage : UT, IUTStorage
     {
         #region 返回单位的类型
-        protected override Type UTType 
+        protected override Type UTType
             => typeof(IUTStorage);
         #endregion
         #region 构造方法

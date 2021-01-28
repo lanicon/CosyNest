@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.DrawingFrancis.Graphics;
 using System.IO;
-using System.IOFrancis;
+using System.IOFrancis.Bit;
 using System.Maths;
 
 namespace System.DrawingFrancis

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Maths;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 这个类型是文件和目录接口实现的共同基类

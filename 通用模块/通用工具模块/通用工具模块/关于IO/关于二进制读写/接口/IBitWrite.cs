@@ -1,13 +1,12 @@
-﻿using System.Design;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.Bit
 {
     /// <summary>
     /// 凡是实现这个接口的类型，
     /// 都可以直接写入二进制数据
     /// </summary>
-    public interface IBitWrite : IDisposablePro, IBitInfo
+    public interface IBitWrite : IBitPipeBase
     {
         #region 写入数据
         /// <summary>

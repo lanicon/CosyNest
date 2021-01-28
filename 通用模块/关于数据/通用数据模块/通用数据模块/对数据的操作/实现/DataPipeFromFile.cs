@@ -2,6 +2,7 @@
 using System.Design.Direct;
 using System.IO;
 using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Linq.Expressions;
 

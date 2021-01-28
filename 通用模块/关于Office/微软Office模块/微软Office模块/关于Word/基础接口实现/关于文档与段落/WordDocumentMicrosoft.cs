@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.DrawingFrancis;
 using System.IO;
-using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Office.Word.Chart;
 using System.Office.Word.Realize;

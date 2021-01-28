@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Design;
 using System.IO;
+using System.IOFrancis.FileSystem;
 using System.Threading.Tasks;
 
-namespace System.IOFrancis
+namespace System.IOFrancis.Bit
 {
     /// <summary>
     /// 凡是实现这个接口的类型，
     /// 都可以直接读取二进制数据
     /// </summary>
-    public interface IBitRead : IDisposablePro, IBitInfo
+    public interface IBitRead : IBitPipeBase
     {
         #region 说明文档
         /*问：新版Net推荐使用值类型（例如Memory）来代替字节数组，
@@ -51,6 +51,23 @@ namespace System.IOFrancis
           #如果bufferSize为null或Length，
           则Read方法应该只返回一个字节数组，
           也就是该数据的全部内容*/
+        #endregion
+        #region 复制二进制数据
+        /// <summary>
+        /// 读取这个管道的二进制数据，
+        /// 并将其复制到另一个管道中
+        /// </summary>
+        /// <param name="write">复制的目标管道</param>
+        /// <param name="bufferSize">指定缓冲区的字节数量，
+        /// 如果为<see langword="null"/>，则一次复制全部数据</param>
+        /// <returns></returns>
+        async Task CopyTo(IBitWrite write, long? bufferSize = null)
+        {
+            await foreach (var item in Read(bufferSize))
+            {
+                await write.Write(item);
+            }
+        }
         #endregion
     }
 }

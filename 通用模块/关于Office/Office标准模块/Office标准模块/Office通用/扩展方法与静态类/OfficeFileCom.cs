@@ -1,4 +1,5 @@
 ﻿using System.IOFrancis;
+using System.IOFrancis.FileSystem;
 
 namespace System.Office
 {

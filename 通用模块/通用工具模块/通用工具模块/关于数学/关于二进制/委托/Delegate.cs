@@ -1,4 +1,4 @@
-﻿using System.IOFrancis;
+﻿using System.IOFrancis.Bit;
 using System.Threading.Tasks;
 
 namespace System.Maths
