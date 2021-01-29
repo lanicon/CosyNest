@@ -22,7 +22,7 @@ namespace System.Maths
     /// </summary>
     /// <param name="reader">待读取的管道</param>
     /// <returns>一个新的管道，通过它可以读取转换后的二进制数据</returns>
-    public delegate Task<IBitRead> BinaryConvert(IBitRead reader);
+    public delegate IBitRead BinaryConvert(IBitRead reader);
     #endregion
     #region 读取并验证管道
     /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.Maths;
 
-namespace System.IOFrancis.FileSystem
+namespace System.IOFrancis
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

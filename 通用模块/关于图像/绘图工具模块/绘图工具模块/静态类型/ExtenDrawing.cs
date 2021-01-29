@@ -28,5 +28,22 @@ namespace System
             return CreateDrawingObj.Color(r, g, b, a);
         }
         #endregion
+        #region 解构Color
+        /// <summary>
+        /// 将一个<see cref="Color"/>解构为RGBA
+        /// </summary>
+        /// <param name="color">待解构的颜色</param>
+        /// <param name="R">这个对象接收颜色的R值</param>
+        /// <param name="G">这个对象接收颜色的G值</param>
+        /// <param name="B">这个对象接收颜色的B值</param>
+        /// <param name="A">这个对象接收颜色的A值</param>
+        public static void Deconstruct(this Drawing.Color color, out byte R, out byte G, out byte B, out byte A)
+        {
+            R = color.R;
+            G = color.G;
+            B = color.B;
+            A = color.A;
+        }
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Maths;
 
-namespace System.IOFrancis.FileSystem
+namespace System.IOFrancis
 {
     /// <summary>
     /// 这个类型是<see cref="IUTStorage"/>的实现，
