@@ -91,10 +91,10 @@ namespace System.DataFrancis
         /// </summary>
         /// <param name="PropertyName">发生更改的属性名称，可自动填入</param>
         /// <param name="NewValue">属性的新值</param>
-        protected void Changed([CallerMemberName] string? PropertyName = null, object? NewValue = null)
+        protected void Changed([CallerMemberName] string PropertyName = "", object? NewValue = null)
         {
             Interface.Binding?.NoticeUpdateToSource(PropertyName!, NewValue);
-            ExtenUI.Changed(this, PropertyChangedField, PropertyName);
+            this.Changed(PropertyChangedField, PropertyName);
         }
         #endregion
         #region 读写属性，会引发异常
@@ -217,7 +217,7 @@ namespace System.DataFrancis
         #endregion
         #region 刷新数据
         void IData.Refresh()
-            => this.Changed(PropertyChangedField, string.Empty);
+            => Changed(string.Empty);
         #endregion
         #endregion
     }
