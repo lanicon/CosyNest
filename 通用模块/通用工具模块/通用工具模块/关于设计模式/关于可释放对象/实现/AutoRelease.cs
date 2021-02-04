@@ -18,9 +18,9 @@ namespace System.Design
         #region 正式方法
         public void Dispose()
         {
-            if (!IsFree)
+            if (IsAvailable)
             {
-                IsFree = true;
+                IsAvailable = false;
                 GC.SuppressFinalize(this);
                 DisposeRealize();
             }
@@ -33,8 +33,8 @@ namespace System.Design
         protected abstract void DisposeRealize();
         #endregion
         #endregion
-        #region 指示对象是否被释放
-        public bool IsFree { get; private set; }
+        #region 指示对象是否可用
+        public bool IsAvailable { get; private set; } = true;
         #endregion
         #region 析构函数
         /// <summary>

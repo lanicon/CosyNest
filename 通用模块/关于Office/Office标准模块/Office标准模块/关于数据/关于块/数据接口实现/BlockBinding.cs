@@ -28,14 +28,14 @@ namespace System.DataFrancis.Excel.Block
         #region 通知修改
         public void NoticeUpdateToSource(string ColumnName, object? NewValue)
         {
-            if (!Block.Book.IsFree)
+            if (Block.Book.IsAvailable)
                 Property[ColumnName].SetValue(Block, NewValue);
         }
         #endregion
         #region 通知删除
         public void NoticeDeleteToSource()
         {
-            if (!Block.Book.IsFree)
+            if (Block.Book.IsAvailable)
                 Block.Value = null;
         }
         #endregion

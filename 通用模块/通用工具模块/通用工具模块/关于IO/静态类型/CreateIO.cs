@@ -136,6 +136,30 @@ namespace System.IOFrancis
             => new MemoryStream(memory.ToArray()).ToBitPipe(Format, Describe);
         #endregion
         #endregion
+        #region 创建流
+        #region 通过迭代器枚举数据
+        #region 同步迭代器
+        /// <summary>
+        /// 创建一个<see cref="Stream"/>，
+        /// 它通过迭代器获取二进制数据
+        /// </summary>
+        /// <param name="datas">用来获取数据的迭代器</param>
+        /// <returns></returns>
+        public static Stream StreamEnumerable(IEnumerable<byte[]> datas)
+            => new EnumerableStream(datas.GetEnumerator());
+        #endregion
+        #region 异步迭代器
+        /// <summary>
+        /// 创建一个<see cref="Stream"/>，
+        /// 它通过异步流获取二进制数据
+        /// </summary>
+        /// <param name="datas">用来获取数据的异步流</param>
+        /// <returns></returns>
+        public static Stream StreamEnumerable(IAsyncEnumerable<byte[]> datas)
+            => StreamEnumerable(datas.ToEnumerable());
+        #endregion
+        #endregion
+        #endregion
         #region 创建IFileType
         #region 传入文件名
         /// <summary>

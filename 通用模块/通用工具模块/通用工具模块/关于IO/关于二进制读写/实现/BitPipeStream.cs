@@ -78,7 +78,7 @@ namespace System.IOFrancis.Bit
         public BitPipeStream(Stream Stream, string Format, string? Describe)
         {
             this.Stream = Stream;
-            this.Format = Format ?? string.Empty;
+            this.Format = Format;
             this.Describe = Describe;
         }
         #endregion
