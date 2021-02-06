@@ -7,7 +7,7 @@ namespace System.IOFrancis.Bit
     /// 这个类型是<see cref="IBitRead"/>的实现，
     /// 它可以通过<see cref="IAsyncEnumerable{T}"/>来读取二进制数据
     /// </summary>
-    class BitPipeEnumerable : IBitRead
+    class BitReadEnumerable : IBitRead
     {
         #region 封装的异步迭代器
         /// <summary>
@@ -45,9 +45,7 @@ namespace System.IOFrancis.Bit
         #endregion
         #region 读取数据
         public IAsyncEnumerable<byte[]> Read(long? bufferSize = null)
-        {
-            throw new NotImplementedException();
-        }
+            => Bytes.Buffer(bufferSize);
         #endregion
         #region 构造函数
         /// <summary>
@@ -56,7 +54,7 @@ namespace System.IOFrancis.Bit
         /// <param name="Bytes">指定的异步迭代器对象，本对象的功能就是通过它实现的</param>
         /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
         /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
-        public BitPipeEnumerable(IAsyncEnumerable<byte[]> Bytes, string Format, string? Describe)
+        public BitReadEnumerable(IAsyncEnumerable<byte[]> Bytes, string Format, string? Describe)
         {
             this.Bytes = Bytes;
             this.Format = Format;

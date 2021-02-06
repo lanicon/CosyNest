@@ -4,7 +4,7 @@ namespace System.Linq
 {
     public static partial class ExtenIEnumerable
     {
-        //这个部分类声明了有关字典的扩展方法
+        /*所有有关字典的扩展方法，全部放在这个部分类中*/
 
         #region 关于索引器
         #region 安全索引

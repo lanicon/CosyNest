@@ -50,5 +50,41 @@ namespace System
             => new BitPipeStream(Stream, Format, Describe);
         #endregion
         #endregion
+        #region 分割缓冲区
+        /// <summary>
+        /// 将异步迭代器中的数组的元素按照缓冲区分割
+        /// </summary>
+        /// <typeparam name="Obj">数组的元素类型</typeparam>
+        /// <param name="datas">待分割的异步迭代器</param>
+        /// <param name="bufferSize">缓冲区的大小，返回的新集合中的每个数组的元素数量最高不会超过这个参数，
+        /// 如果为<see langword="null"/>，则一次返回所有元素</param>
+        /// <returns></returns>
+        public static async IAsyncEnumerable<Obj[]> Buffer<Obj>(this IAsyncEnumerable<Obj[]> datas, long? bufferSize = null)
+        {
+            if (bufferSize is null)
+            {
+                yield return Array.Empty<Obj>().Union(await datas.ToArrayAsync());
+                yield break;
+            }
+            var bs = (int)bufferSize.Value;
+            await using var enumerator = datas.GetAsyncEnumerator();
+            var buffer = Array.Empty<Obj>();
+            while (true)
+            {
+                if (!await enumerator.MoveNextAsync())
+                {
+                    if (buffer.Any())
+                        yield return buffer;
+                    yield break;
+                }
+                buffer = buffer.Union(enumerator.Current);
+                if (buffer.Length >= bs)
+                {
+                    yield return buffer[0..bs];
+                    buffer = buffer.ElementAt(bs.., false);
+                }
+            }
+        }
+        #endregion
     }
 }

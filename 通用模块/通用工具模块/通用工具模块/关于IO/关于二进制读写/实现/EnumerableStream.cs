@@ -95,14 +95,9 @@ namespace System.IOFrancis.Bit
                   以确保最终获取的数组元素数量不低于count，
                   或遍历至Bytes的末尾*/
                 #endregion
-                var ol = old.Length;
-                if (ol >= count || !Bytes.MoveNext())
+                if (old.Length >= count || !Bytes.MoveNext())
                     return old;
-                var @new = Bytes.Current;
-                var nl = @new.Length;
-                var sum = new byte[ol + nl];
-                old.CopyTo(sum, 0);
-                @new.CopyTo(sum, ol);
+                var sum = old.Union(Bytes.Current);
                 return Fun(sum);
             }
             #endregion

@@ -6,7 +6,8 @@ namespace System.Linq
 {
     public static partial class ExtenIEnumerable
     {
-        //所有关于集合的转化的方法，全部放在这个类型中
+        /*所有关于集合的转化的方法，全部放在这个部分类中，
+          集合的转化指的是：API返回一个新的集合*/
 
         #region 关于排序
         #region 默认排序
@@ -123,17 +124,6 @@ namespace System.Linq
             return Distinct ? Get().Distinct() : Get();
         }
         #endregion
-        #endregion
-        #region 将多个集合的元素添加到一个集合
-        /// <summary>
-        /// 将多个集合的所有元素添加到一个集合，但是不返回新对象，注意：
-        /// 这个方法不会去除重复的元素
-        /// </summary>
-        /// <typeparam name="Obj">集合的元素集合</typeparam>
-        /// <param name="List">所有其他集合的元素会被添加到这个集合</param>
-        /// <param name="OtList">要与第一个集合合并的其他集合</param>
-        public static void UnionAdd<Obj>(this ICollection<Obj> List, params IEnumerable<Obj>[] OtList)
-            => OtList.ForEach(x => x.ForEach(List.Add));
         #endregion
         #endregion
         #region 关于拆分集合
@@ -342,6 +332,34 @@ namespace System.Linq
         /// <returns></returns>
         public static Obj[] ToArray<Obj>(this IEnumerable list)
             => list.OfType<Obj>().ToArray();
+        #endregion
+        #endregion
+        #region 返回迭代器的缓存
+        #region 缓存同步迭代器
+        /// <summary>
+        /// 返回一个迭代器的缓存
+        /// </summary>
+        /// <typeparam name="Obj">迭代器的元素类型</typeparam>
+        /// <param name="list">要返回缓存的迭代器</param>
+        /// <param name="CacheAll">如果这个值为<see langword="true"/>，表示在获取第一个元素时缓存全部元素，
+        /// 否则代表逐个缓存元素，正确指定这个参数可以改善性能</param>
+        /// <returns>一个新的迭代器，它仍然通过延迟迭代返回元素，
+        /// 但是在遍历过一次以后，这些元素会被缓存起来</returns>
+        public static IEnumerable<Obj> Cache<Obj>(this IEnumerable<Obj> list, bool CacheAll = false)
+            => new EnumerableCacheRealize<Obj>(list, CacheAll);
+        #endregion
+        #region 缓存异步迭代器
+        /// <summary>
+        /// 返回一个异步迭代器的缓存
+        /// </summary>
+        /// <typeparam name="Obj">异步迭代器的元素类型</typeparam>
+        /// <param name="list">要返回缓存的异步迭代器</param>
+        /// <param name="CacheAll">如果这个值为<see langword="true"/>，表示在获取第一个元素时缓存全部元素，
+        /// 否则代表逐个缓存元素，正确指定这个参数可以改善性能</param>
+        /// <returns>一个新的迭代器，它仍然通过延迟迭代返回元素，
+        /// 但是在遍历过一次以后，这些元素会被缓存起来</returns>
+        public static IEnumerable<Obj> Cache<Obj>(this IAsyncEnumerable<Obj> list, bool CacheAll = false)
+            => list.ToEnumerable().Cache(CacheAll);
         #endregion
         #endregion
     }
