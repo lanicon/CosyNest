@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.IOFrancis.FileSystem;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace System.IOFrancis.Bit
@@ -51,6 +52,15 @@ namespace System.IOFrancis.Bit
           #如果bufferSize为null或Length，
           则Read方法应该只返回一个字节数组，
           也就是该数据的全部内容*/
+        #endregion
+        #region 读取全部二进制数据
+        /// <summary>
+        /// 一次性读取全部二进制数据，
+        /// 如果没有任何数据，则返回一个空数组
+        /// </summary>
+        /// <returns></returns>
+        async Task<byte[]> ReadAll()
+             => (await Read().FirstOrDefaultAsync()) ?? Array.Empty<byte>();
         #endregion
         #region 复制二进制数据
         /// <summary>

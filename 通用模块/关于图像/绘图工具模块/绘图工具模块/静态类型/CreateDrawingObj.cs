@@ -25,6 +25,7 @@ namespace System.DrawingFrancis
             => new TextStyleVar(FontName, Size, Color);
         #endregion
         #region 创建IColor
+        #region 指定RGBA
         /// <summary>
         /// 使用指定的红色，绿色，蓝色和透明度创建<see cref="IColor"/>
         /// </summary>
@@ -35,6 +36,36 @@ namespace System.DrawingFrancis
         public static IColor Color(byte R, byte G, byte B, byte A = 255)
             => new Color(R, G, B, A);
         #endregion
+        #region 指定16进制字符串
+        /// <summary>
+        /// 根据一个用16进制表示的字符串，创建一个<see cref="IColor"/>并返回
+        /// </summary>
+        /// <param name="Sys16">指示ARGB值的十六进制字符串，格式为FF001122</param>
+        /// <returns></returns>
+        public static IColor Color(string Sys16)
+        {
+            var array = Convert.FromHexString(Sys16);
+            if (array.Length is not 4)
+                throw new ArgumentException($"{nameof(Sys16)}不是合法的表示颜色的字符串");
+            return Color(array[0], array[1], array[2], array[3]);
+        }
+        #endregion
+        #region 生成随机颜色
+        /// <summary>
+        /// 生成透明度指定，但RGB随机的颜色
+        /// </summary>
+        /// <param name="alpha">颜色的透明度</param>
+        /// <param name="Rand">用来生成随机数的对象，如果为<see langword="null"/>，则使用一个默认对象</param>
+        /// <returns></returns>
+        public static IColor ColorRandom(byte alpha = 255, IRandom? Rand = null)
+        {
+            Rand ??= CreateBaseMathObj.RandomOnly;
+            byte Get()
+                => (byte)Rand.RandRange(0, 255);
+            return Color(Get(), Get(), Get(), alpha);
+        }
+        #endregion
+        #endregion 
         #region 创建像素点
         /// <summary>
         /// 使用指定的颜色，位置和图层创建像素点

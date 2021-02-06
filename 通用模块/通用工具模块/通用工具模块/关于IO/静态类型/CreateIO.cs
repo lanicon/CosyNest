@@ -147,6 +147,18 @@ namespace System.IOFrancis
         public static IBitRead BitReadEnumerable(IAsyncEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
             => new BitReadEnumerable(Bytes, Format, Describe);
         #endregion
+        #region 指定同步迭代器
+        /// <summary>
+        /// 创建一个<see cref="IBitRead"/>对象，
+        /// 它通过同步迭代器读取数据
+        /// </summary>
+        /// <param name="Bytes">用来枚举数据的同步迭代器</param>
+        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <returns></returns>
+        public static IBitRead BitReadEnumerable(IEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
+            => new BitReadEnumerable(Bytes.ToAsyncEnumerable(), Format, Describe);
+        #endregion
         #endregion
         #region 创建流
         #region 通过迭代器枚举数据
