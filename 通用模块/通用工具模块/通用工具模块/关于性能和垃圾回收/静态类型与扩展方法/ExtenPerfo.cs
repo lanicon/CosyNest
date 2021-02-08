@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System
 {
@@ -17,9 +14,9 @@ namespace System
         /// 删除一个弱引用集合中，所有目标引用丢失的元素
         /// </summary>
         /// <typeparam name="Weak">集合元素的类型</typeparam>
-        public static void RemNull<Weak>(this ICollection<Weak> WeakList)
+        public static void RemoveNull<Weak>(this ICollection<Weak> WeakList)
             where Weak : WeakReference
-            => WeakList.RemoveWhere(x => x.Target == null);
+            => WeakList.RemoveWhere(x => x.Target is null);
         #endregion
         #endregion
         #region 关于IDisposable
@@ -33,7 +30,7 @@ namespace System
         /// <param name="obj">待求值和释放的对象</param>
         /// <param name="Del">用于获取返回值的委托</param>
         /// <returns>执行<paramref name="Del"/>所获取到的返回值</returns>
-        public static Ret Release<Obj, Ret>(this Obj obj, Func<Obj, Ret> Del)
+        public static Ret AutoRelease<Obj, Ret>(this Obj obj, Func<Obj, Ret> Del)
             where Obj : IDisposable
         {
             using (obj)
