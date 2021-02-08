@@ -88,7 +88,7 @@ namespace System.IOFrancis
                 #region 本地函数
                 static async IAsyncEnumerable<string> Fun(Encoding? encoder, IBitRead read)
                 {
-                    var stream = read.ToStream();
+                    using var stream = read.ToStream();
                     using StreamReader streamReader = encoder is null ? new(stream) : new(stream, encoder);
                     while (true)
                     {

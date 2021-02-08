@@ -14,6 +14,12 @@ namespace System.IOFrancis.Bit
         /// </summary>
         /// <returns></returns>
         Stream ToStream();
+
+        /*实现本API请遵循以下规范：
+          #本方法应该是一个纯函数，换言之，
+          在本方法返回的Stream对象被释放后，IBitPipeBase对象不受影响
+          但是考虑到这样一来，有可能需要复制流中的数据，这会造成严重的性能问题，
+          因此在找到更好的办法以前，本规范是建议而不是强制，大家尽量遵守即可*/
         #endregion
         #region 数据的描述
         /// <summary>
