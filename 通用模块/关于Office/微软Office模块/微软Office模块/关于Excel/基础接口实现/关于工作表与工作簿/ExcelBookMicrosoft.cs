@@ -132,7 +132,7 @@ namespace System.Office.Excel
                 FileValidation = Microsoft.Office.Core.MsoFileValidationMode.msoFileValidationSkip
             };
             var books = PackExcel.Workbooks;
-            PackBook = Path == null || !File.Exists(Path) ?
+            PackBook = Path is null || !File.Exists(Path) ?
                 books.Add() : books.Open(Path.Path);
             Sheets = new ExcelSheetCollectionMS(this);
         }

@@ -108,7 +108,7 @@ namespace System.Safety
         /// <param name="toBitRead">将<typeparamref name="Obj"/>转换为二进制管道的函数</param>
         /// <param name="toString">读取计算好的哈希值，并将其编码为字符串的函数</param>
         /// <returns></returns>
-        public static Func<Obj, Task<string>> HashCalculationString<Obj>(BitTranslation hash,
+        public static Func<Obj, Task<string>> HashCalculation<Obj>(BitTranslation hash,
             Func<Obj, IBitRead> toBitRead,
             Func<IBitRead, Task<string>> toString)
             => async obj =>
@@ -124,8 +124,8 @@ namespace System.Safety
         /// </summary>
         /// <param name="hash">用来计算哈希值的函数</param>
         /// <returns></returns>
-        public static Func<string, Task<string>> HashCalculationString(BitTranslation hash)
-            => HashCalculationString<string>(hash,
+        public static Func<string, Task<string>> HashCalculation(BitTranslation hash)
+            => HashCalculation<string>(hash,
                 x =>
                 {
                     var bytes = Encoding.Unicode.GetBytes(x);
