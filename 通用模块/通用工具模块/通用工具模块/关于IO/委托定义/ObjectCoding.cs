@@ -40,6 +40,6 @@ namespace System.IOFrancis.Bit
     /// <typeparam name="Obj">要解码的对象类型</typeparam>
     /// <param name="data">要解码的字节数组</param>
     /// <returns></returns>
-    public delegate Task<Obj> ObjDecoding<Obj>(IAsyncEnumerable<byte[]> data);
+    public delegate IAsyncEnumerable<Obj> ObjDecoding<out Obj>(IAsyncEnumerable<byte[]> data);
     #endregion
 }

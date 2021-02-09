@@ -28,5 +28,27 @@ namespace System.Linq
             return newArray;
         }
         #endregion
+        #region 比较数组的值相等性
+        /// <summary>
+        /// 比较数组的值相等性
+        /// </summary>
+        /// <typeparam name="Obj">数组的元素类型</typeparam>
+        /// <param name="arrayA">要比较的第一个数组</param>
+        /// <param name="arrayB">要比较的第二个数组</param>
+        /// <returns>如果两个数组的长度和对应索引的元素完全一致，
+        /// 则返回<see langword="true"/>，否则返回<see langword="false"/></returns>
+        public static bool SequenceEqual<Obj>(this Obj[] arrayA, Obj[] arrayB)
+        {
+            var len = arrayA.Length;
+            if (len != arrayB.Length)
+                return false;
+            for (int i = 0; i < len; i++)
+            {
+                if (!Equals(arrayA[i], arrayB[i]))
+                    return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }
