@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Design;
-using System.Maths;
-using System.Drawing;
+﻿using System.Maths;
 using System.Runtime.InteropServices;
 
 namespace System.Underlying.PC
@@ -12,7 +7,7 @@ namespace System.Underlying.PC
     /// 这个类型是<see cref="IScreen"/>的实现，
     /// 封装了当前PC硬件屏幕的信息
     /// </summary>
-    class ScreenPC : Singleton<ScreenPC>, IScreen
+    class ScreenPC : IScreen
     {
         #region 获取屏幕的分辨率
         public ISizePixel Resolution { get; }
@@ -29,7 +24,7 @@ namespace System.Underlying.PC
         /// <summary>
         /// 无参数构造函数
         /// </summary>
-        private ScreenPC()
+        public ScreenPC()
         {
             DPIX = DpiX();
             DPIY = DpiY();

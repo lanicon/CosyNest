@@ -114,8 +114,8 @@ namespace System.Office.Excel
             #endregion
             var NewImage = PackSheet.Shapes.AddPicture
                 (path.Path, MsoTriState.msoFalse, MsoTriState.msoTrue, 0, 0,
-                Conver(W, PCHardware.Screen.LengthPixelX),
-                Conver(H, PCHardware.Screen.LengthPixelY));
+                Conver(W, CreateHardwarePC.Screen.LengthPixelX),
+                Conver(H, CreateHardwarePC.Screen.LengthPixelY));
             return new ExcelImageObj(this, NewImage);
         }
         #endregion

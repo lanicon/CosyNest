@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Diagnostics;
-using System.Design;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace System.Underlying.PC
@@ -12,7 +7,7 @@ namespace System.Underlying.PC
     /// 这个类型是<see cref="IPower"/>的实现，
     /// 封装了一些有关电源的API
     /// </summary>
-    class PowerPC : Singleton<PowerPC>, IPower
+    class PowerPC : IPower
     {
         #region 是否允许休眠
         #region Win32API调用
@@ -30,9 +25,11 @@ namespace System.Underlying.PC
                 const uint ES_SYSTEM_REQUIRED = 0x00000001;
                 const uint ES_DISPLAY_REQUIRED = 0x00000002;
                 const uint ES_CONTINUOUS = 0x80000000;
+#pragma warning disable CA1806
                 if (value)
                     SetThreadExecutionState(ES_CONTINUOUS);
                 else SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
+#pragma warning restore
                 CanDormancyField = value;
             }
         }

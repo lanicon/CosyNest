@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Design;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Printing;
-using System.Text;
 
 namespace System.Underlying.PC
 {
@@ -11,7 +8,7 @@ namespace System.Underlying.PC
     /// 这个类型是<see cref="IPrinterPanel"/>的实现，
     /// 可以视为一个PC平台上的打印机面板
     /// </summary>
-    class PrinterPanelPC : Singleton<PrinterPanelPC>, IPrinterPanel
+    class PrinterPanelPC : IPrinterPanel
     {
         #region 封装的打印机对象
         /// <summary>
@@ -32,7 +29,7 @@ namespace System.Underlying.PC
         }
         #endregion
         #region 构造函数
-        private PrinterPanelPC()
+        public PrinterPanelPC()
         {
             Printers = PackPrinter.GetPrintQueues().
                 ToDictionary(x => (x.Name, (IPrinter)new PrinterPC(x)), true);

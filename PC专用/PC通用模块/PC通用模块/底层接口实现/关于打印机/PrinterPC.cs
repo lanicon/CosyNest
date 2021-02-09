@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Printing;
-using System.Text;
+﻿using System.Printing;
 
 namespace System.Underlying.PC
 {
