@@ -27,7 +27,7 @@ namespace System.IOFrancis.Bit
     #endregion
     #region 验证二进制数据（不需要比较）
     /// <summary>
-    /// 对二进制数据进行验证
+    /// 对二进制数据进行验证，不需要与另一个对象进行比较
     /// </summary>
     /// <param name="read">用来读取待验证二进制数据的管道</param>
     /// <returns>如果返回<see langword="true"/>，代表验证通过，否则为不通过</returns>

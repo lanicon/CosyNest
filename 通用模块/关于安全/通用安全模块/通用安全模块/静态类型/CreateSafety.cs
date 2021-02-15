@@ -50,7 +50,7 @@ namespace System.Safety
         #endregion
         #endregion
         #region 有关哈希值
-        #region 有关计算和验证哈希值
+        #region 通用方法
         #region 输入且输出IBitRead（使用SHA512Managed）
         /// <summary>
         /// 返回一个元组，它的项分别是用来计算哈希值的委托，
@@ -87,9 +87,7 @@ namespace System.Safety
             #region 用于验证哈希值的本地函数
             static async Task<bool> Verify(IBitRead read, byte[] comparison)
             {
-                using var hash = new Hash();
-                using var stream = read.ToStream();
-                var hashValue = await hash.ComputeHashAsync(stream);
+                var hashValue = await Calculation(read).ReadAll();
                 return comparison.SequenceEqual(hashValue);
             }
             #endregion
@@ -97,8 +95,8 @@ namespace System.Safety
         }
         #endregion
         #endregion
-        #region 有关计算哈希值
-        #region 输出String
+        #region 专为String优化
+        #region 计算哈希值，输出String
         /// <summary>
         /// 返回一个函数，它接受<typeparamref name="Obj"/>类型的参数，
         /// 并计算它的哈希值，然后以字符串的形式返回
@@ -117,15 +115,16 @@ namespace System.Safety
                  return await toString(hash(read));
              };
         #endregion
-        #region 输入且输出String
+        #region 计算哈希值，输入且输出String
         /// <summary>
         /// 返回一个函数，它接受字符串参数，并计算它的哈希值，
         /// 然后将哈希值编码为十六进制字符串，并返回
         /// </summary>
         /// <param name="hash">用来计算哈希值的函数</param>
         /// <returns></returns>
-        public static Func<string, Task<string>> HashCalculation(BitTranslation hash)
-            => HashCalculation<string>(hash,
+        public static Func<string, string> HashCalculation(BitTranslation hash)
+        {
+            var fun = HashCalculation<string>(hash,
                 x =>
                 {
                     var bytes = Encoding.Unicode.GetBytes(x);
@@ -136,6 +135,27 @@ namespace System.Safety
                     var bytes = await x.ReadAll();
                     return Convert.ToHexString(bytes);
                 });
+            return x => fun(x).Result;
+        }
+        #endregion
+        #region 验证哈希值，输入String
+        /// <summary>
+        /// 返回一个函数，它可以用于验证字符串的哈希值
+        /// </summary>
+        /// <param name="verify">用于验证哈希值的委托</param>
+        /// <param name="encoding">指定待验证的字符串的编码，
+        /// 注意，不是哈希值字符串的编码，如果为<see langword="null"/>，默认为UTF16</param>
+        /// <returns>这个函数的第一个参数是待验证的字符串，
+        /// 第二个参数是用来进行比较的哈希值，只支持通过十六进制字符串编码，返回值是验证是否通过</returns>
+        public static Func<string, string, bool> HashVerify(BitVerify<byte[]> verify, Encoding? encoding = null)
+        {
+            encoding ??= Encoding.Unicode;
+            return (text, hash) =>
+            {
+                var read = CreateIO.BitReadEnumerable(new[] { encoding.GetBytes(text) });
+                return verify(read, Convert.FromHexString(hash)).Result;
+            };
+        }
         #endregion
         #endregion
         #endregion
