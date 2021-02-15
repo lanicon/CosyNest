@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Performance;
 using System.Reflection;
@@ -163,8 +161,7 @@ namespace System
         /// <param name="target">调用方法的目标，如果是静态方法，则为<see langword="null"/></param>
         /// <param name="parameters">方法的参数列表</param>
         /// <returns>方法的返回值</returns>
-        [return:MaybeNull]
-        public static Ret Invoke<Ret>(this MethodInfo method, object? target, params object?[] parameters)
+        public static Ret? Invoke<Ret>(this MethodInfo method, object? target, params object?[] parameters)
             => (Ret)method.Invoke(target, parameters);
         #endregion
         #region 调用构造函数

@@ -5,7 +5,7 @@ namespace System.Reflection
     /// <summary>
     /// 这个类型表示构造函数的签名
     /// </summary>
-    public class ConstructSignature : MethodBaseSignature
+    public sealed class ConstructSignature : MethodBaseSignature
     {
         #region 重写的方法
         #region 重写ToString

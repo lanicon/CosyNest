@@ -20,9 +20,8 @@ namespace System
             var Now = now ?? DateTimeOffset.Now;
             ExceptionIntervalOut.Check(birthday, null, Now);
             var age = Now.Year - birthday.Year;
-            if (birthday.DayOfYear > Now.DayOfYear)             //如果有未满一年的部分，则舍去
-                age--;
-            return Math.Max(0, age);
+            return Math.Max(0,
+                birthday.DayOfYear > Now.DayOfYear ? age - 1 : age);        //如果有未满一年的部分，则舍去
         }
         #endregion
     }

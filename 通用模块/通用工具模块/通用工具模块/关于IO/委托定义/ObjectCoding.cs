@@ -26,20 +26,20 @@ namespace System.IOFrancis.Bit
     #endregion
     #region 编码对象
     /// <summary>
-    /// 这个委托可以将对象编码为字节数组
+    /// 这个委托可以将对象编码为二进制数据
     /// </summary>
     /// <typeparam name="Obj">要编码的对象类型</typeparam>
     /// <param name="obj">要编码的对象</param>
-    /// <returns></returns>
-    public delegate IAsyncEnumerable<byte[]> ObjCoding<in Obj>(Obj obj);
+    /// <returns>用来读取编码后二进制数据的管道</returns>
+    public delegate IBitRead ObjCoding<in Obj>(Obj obj);
     #endregion
     #region 解码对象
     /// <summary>
-    /// 这个委托可以将字节数组解码为对象
+    /// 这个委托可以将二进制数据解码为对象
     /// </summary>
     /// <typeparam name="Obj">要解码的对象类型</typeparam>
-    /// <param name="data">要解码的字节数组</param>
+    /// <param name="data">读取待解码二进制数据的管道</param>
     /// <returns></returns>
-    public delegate IAsyncEnumerable<Obj> ObjDecoding<out Obj>(IAsyncEnumerable<byte[]> data);
+    public delegate IAsyncEnumerable<Obj> ObjDecoding<out Obj>(IBitRead data);
     #endregion
 }

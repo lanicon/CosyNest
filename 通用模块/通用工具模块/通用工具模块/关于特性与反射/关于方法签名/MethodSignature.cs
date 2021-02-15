@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
 namespace System.Reflection
 {
     /// <summary>
     /// 这个类型表示一个方法的签名
     /// </summary>
-    public class MethodSignature : MethodBaseSignature
+    public sealed class MethodSignature : MethodBaseSignature
     {
         #region 返回值类型
         /// <summary>
