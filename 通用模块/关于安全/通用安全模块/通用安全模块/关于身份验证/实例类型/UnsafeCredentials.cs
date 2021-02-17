@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace System.Safety.Authentication
+namespace System.SafetyFrancis.Authentication
 {
     /// <summary>
     /// 代表一个不安全的凭据，

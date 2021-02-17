@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Design;
 using System.Linq;
-using System.Safety.Authentication;
+using System.SafetyFrancis.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Time;

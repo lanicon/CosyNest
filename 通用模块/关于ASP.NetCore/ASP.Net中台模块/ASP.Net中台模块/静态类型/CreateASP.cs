@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.NetFrancis.Http;
-using System.Safety.Authentication;
+using System.SafetyFrancis.Authentication;
 
 using Microsoft.Extensions.Configuration;
 

@@ -8,7 +8,7 @@ using System.Text;
 namespace System.IOFrancis
 {
     /// <summary>
-    /// 这个静态类为创建IO对象提供帮助
+    /// 这个静态类可以用来创建和IO有关的对象
     /// </summary>
     public static class CreateIO
     {
@@ -123,18 +123,6 @@ namespace System.IOFrancis
         #endregion
         #endregion
         #region 创建IBitRead
-        #region 指定内存
-        /// <summary>
-        /// 创建一个<see cref="IBitRead"/>对象，
-        /// 它封装了指定的内存数据
-        /// </summary>
-        /// <param name="memory">待封装的内存数据</param>
-        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
-        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
-        /// <returns></returns>
-        public static IBitRead BitReadMemory(ReadOnlyMemory<byte> memory, string Format = "", string? Describe = null)
-            => new MemoryStream(memory.ToArray()).ToBitPipe(Format, Describe);
-        #endregion
         #region 指定异步迭代器
         /// <summary>
         /// 创建一个<see cref="IBitRead"/>对象，
@@ -147,7 +135,7 @@ namespace System.IOFrancis
         public static IBitRead BitReadEnumerable(IAsyncEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
             => new BitReadEnumerable(Bytes, Format, Describe);
         #endregion
-        #region 指定同步迭代器
+        #region 指定枚举字节数组的同步迭代器
         /// <summary>
         /// 创建一个<see cref="IBitRead"/>对象，
         /// 它通过同步迭代器读取数据
@@ -158,6 +146,18 @@ namespace System.IOFrancis
         /// <returns></returns>
         public static IBitRead BitReadEnumerable(IEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
             => new BitReadEnumerable(Bytes.ToAsyncEnumerable(), Format, Describe);
+        #endregion
+        #region 指定枚举字节的同步迭代器
+        /// <summary>
+        /// 创建一个<see cref="IBitRead"/>对象，
+        /// 它通过同步迭代器读取数据
+        /// </summary>
+        /// <param name="Bytes">用来枚举数据的同步迭代器</param>
+        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <returns></returns>
+        public static IBitRead BitReadEnumerable(IEnumerable<byte> Bytes, string Format = "", string? Describe = null)
+            => BitReadEnumerable(new[] { Bytes.ToArray() }, Format, Describe);
         #endregion
         #endregion
         #region 创建流

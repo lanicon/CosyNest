@@ -51,7 +51,11 @@ namespace System.IOFrancis.Bit
         
           #如果bufferSize为null或Length，
           则Read方法应该只返回一个字节数组，
-          也就是该数据的全部内容*/
+          也就是该数据的全部内容
+        
+          #本API应该是一个纯函数，换言之，
+          修改返回的字节数组中的值，不应该影响下一次调用方法返回的数据，
+          由于本API需要分割缓冲区，因此这个规范很容易满足*/
         #endregion
         #region 读取全部二进制数据
         /// <summary>

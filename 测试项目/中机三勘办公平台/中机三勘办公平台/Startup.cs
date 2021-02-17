@@ -1,6 +1,6 @@
 using System;
 using System.NetFrancis.Http;
-using System.Safety;
+using System.SafetyFrancis;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;

@@ -5,7 +5,7 @@
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <AssemblyName>ToolSafety</AssemblyName>
-    <RootNamespace>System.Safety</RootNamespace>
+    <RootNamespace>System.SafetyFrancis</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Safety;
-using System.Safety.Authentication;
+using System.SafetyFrancis;
+using System.SafetyFrancis.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

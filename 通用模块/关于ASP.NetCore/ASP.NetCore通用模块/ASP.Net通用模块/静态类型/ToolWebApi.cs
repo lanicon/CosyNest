@@ -1,7 +1,7 @@
 ﻿using System;
 using System.DataFrancis;
 using System.Design.Direct;
-using System.Safety;
+using System.SafetyFrancis;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

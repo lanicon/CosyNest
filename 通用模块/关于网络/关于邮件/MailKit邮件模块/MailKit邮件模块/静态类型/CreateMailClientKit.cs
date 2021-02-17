@@ -1,4 +1,4 @@
-﻿using System.Safety.Authentication;
+﻿using System.SafetyFrancis.Authentication;
 
 namespace System.NetFrancis.Mail
 {
