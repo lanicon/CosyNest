@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IOFrancis;
 using System.IOFrancis.Bit;
 using System.Security.Cryptography;
 
-namespace System.SafetyFrancis.Algorithm.Hash
+namespace System.SafetyFrancis.Algorithm
 {
     /// <summary>
     /// 这个类型是<see cref="IHash"/>的实现，
@@ -24,7 +23,7 @@ namespace System.SafetyFrancis.Algorithm.Hash
                 yield return await hash.ComputeHashAsync(stream);
             }
             #endregion
-            return CreateIO.BitReadEnumerable(Fun());
+            return Fun().ToBitRead();
         }
         #endregion 
     }

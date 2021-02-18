@@ -50,6 +50,41 @@ namespace System
             => new BitPipeStream(Stream, Format, Describe);
         #endregion
         #endregion
+        #region 将迭代器转换为IBitRead
+        #region 转换异步迭代器
+        /// <summary>
+        /// 将异步迭代器转换为<see cref="IBitRead"/>
+        /// </summary>
+        /// <param name="Bytes">用来枚举数据的异步迭代器</param>
+        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <returns></returns>
+        public static IBitRead ToBitRead(this IAsyncEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
+            => new BitReadEnumerable(Bytes, Format, Describe);
+        #endregion
+        #region 转换枚举字节数组的同步迭代器
+        /// <summary>
+        /// 将枚举字节数组的同步迭代器转换为<see cref="IBitRead"/>
+        /// </summary>
+        /// <param name="Bytes">用来枚举数据的同步迭代器</param>
+        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <returns></returns>
+        public static IBitRead ToBitRead(this IEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
+            => new BitReadEnumerable(Bytes.ToAsyncEnumerable(), Format, Describe);
+        #endregion
+        #region 转换枚举字节的同步迭代器
+        /// <summary>
+        /// 将枚举字节的同步迭代器转换为<see cref="IBitRead"/>
+        /// </summary>
+        /// <param name="Bytes">用来枚举数据的同步迭代器</param>
+        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <returns></returns>
+        public static IBitRead ToBitRead(this IEnumerable<byte> Bytes, string Format = "", string? Describe = null)
+            => ToBitRead(new[] { Bytes.ToArray() }, Format, Describe);
+        #endregion
+        #endregion
         #region 分割缓冲区
         /// <summary>
         /// 将异步迭代器中的数组的元素按照缓冲区分割

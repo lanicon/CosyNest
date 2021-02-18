@@ -4,7 +4,7 @@ using System.IOFrancis.Bit;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace System.SafetyFrancis.Algorithm.Hash
+namespace System.SafetyFrancis.Algorithm
 {
     /// <summary>
     /// 凡是实现这个接口的类型，
@@ -12,7 +12,7 @@ namespace System.SafetyFrancis.Algorithm.Hash
     /// </summary>
     public interface IHash : IEncryption
     {
-        #region 验证哈希值，传入IBitRead
+        #region 验证哈希值
         /// <summary>
         /// 验证哈希值是否相符
         /// </summary>
@@ -20,10 +20,10 @@ namespace System.SafetyFrancis.Algorithm.Hash
         /// <param name="hash">用来作为对比的哈希值，
         /// 函数会对比这个参数和<paramref name="data"/>的哈希值是否完全一致</param>
         /// <returns>如果哈希值一致，则为<see langword="true"/>，否则为<see langword="false"/></returns>
-        async Task<bool> Verify(IBitRead data, IList<byte> hash)
+        async Task<bool> Verify(IBitRead data, IEnumerable<byte> hash)
         {
             using var ciphertext = Encryption(data);
-            return hash.SequenceEqual(await ciphertext.ReadAll());
+            return hash.SequenceEqual(await ciphertext.ReadComplete());
         }
         #endregion
     }

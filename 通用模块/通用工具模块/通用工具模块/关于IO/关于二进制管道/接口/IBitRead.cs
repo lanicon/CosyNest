@@ -57,13 +57,13 @@ namespace System.IOFrancis.Bit
           修改返回的字节数组中的值，不应该影响下一次调用方法返回的数据，
           由于本API需要分割缓冲区，因此这个规范很容易满足*/
         #endregion
-        #region 读取全部二进制数据
+        #region 读取二进制流（不拆分缓冲区）
         /// <summary>
-        /// 一次性读取全部二进制数据，
+        /// 一次性读取全部二进制数据，且不拆分缓冲区，
         /// 如果没有任何数据，则返回一个空数组
         /// </summary>
         /// <returns></returns>
-        async Task<byte[]> ReadAll()
+        async Task<byte[]> ReadComplete()
              => (await Read().FirstOrDefaultAsync()) ?? Array.Empty<byte>();
         #endregion
         #region 复制二进制数据

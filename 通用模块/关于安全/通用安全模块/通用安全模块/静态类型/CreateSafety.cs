@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using System.SafetyFrancis.Algorithm.Hash;
+using System.SafetyFrancis.Algorithm;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
