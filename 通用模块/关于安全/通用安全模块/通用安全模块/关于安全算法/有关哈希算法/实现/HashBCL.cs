@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Design;
 using System.IOFrancis.Bit;
 using System.Security.Cryptography;
 
@@ -9,7 +10,7 @@ namespace System.SafetyFrancis.Algorithm
     /// 它通过BCL内置的<see cref="HashAlgorithm"/>来计算哈希值
     /// </summary>
     /// <typeparam name="Hash">用来计算哈希值的BCL对象类型</typeparam>
-    class HashBCL<Hash> : IHash
+    class HashBCL<Hash> : WithoutRelease, IHash
         where Hash : HashAlgorithm, new()
     {
         #region 计算哈希值
@@ -25,6 +26,6 @@ namespace System.SafetyFrancis.Algorithm
             #endregion
             return Fun().ToBitRead();
         }
-        #endregion 
+        #endregion
     }
 }

@@ -67,5 +67,16 @@ namespace System.SafetyFrancis
             => Hash<SHA512Managed>();
         #endregion
         #endregion
+        #region 创建加密算法
+        #region 使用RSA
+        /// <summary>
+        /// 使用RSA非对称算法创建<see cref="ICryptology"/>
+        /// </summary>
+        /// <param name="algorithm">用于执行算法的对象，必须已经导入密钥</param>
+        /// <returns></returns>
+        public static ICryptology CryptologyRSA(RSA algorithm)
+            => new RSABCL(algorithm);
+        #endregion
+        #endregion
     }
 }

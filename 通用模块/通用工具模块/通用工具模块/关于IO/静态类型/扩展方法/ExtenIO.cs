@@ -50,7 +50,7 @@ namespace System
             => new BitPipeStream(Stream, Format, Describe);
         #endregion
         #endregion
-        #region 将迭代器转换为IBitRead
+        #region 将对象转换为IBitRead
         #region 转换异步迭代器
         /// <summary>
         /// 将异步迭代器转换为<see cref="IBitRead"/>

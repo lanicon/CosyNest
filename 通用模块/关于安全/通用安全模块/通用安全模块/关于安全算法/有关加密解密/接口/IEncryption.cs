@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Design;
 using System.IOFrancis.Bit;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace System.SafetyFrancis.Algorithm
     /// 凡是实现这个接口的类型，
     /// 都可以将数据加密
     /// </summary>
-    public interface IEncryption
+    public interface IEncryption : IDisposablePro
     {
         #region 执行加密
         /// <summary>
