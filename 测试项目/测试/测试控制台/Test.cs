@@ -15,7 +15,7 @@ namespace System
             var readString = CreateIO.ObjReadString();
             return CreateIO.Directory(@"‪C:\CosyNest").SonAll.OfType<IFile>().
                 Where(x => x.NameExtension is "cs" or "html" or "cshtml" or "razor").
-                Sum(x => x.GetBitPipe().ReadComplete().Result.Length);
+                Sum(x => readString(x.GetBitPipe()).CountAsync().Result());
         }
         #endregion
     }
