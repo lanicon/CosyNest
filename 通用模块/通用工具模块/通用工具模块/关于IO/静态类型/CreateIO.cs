@@ -102,7 +102,7 @@ namespace System.IOFrancis
                 return Fun(encoder, read);
             };
         #endregion
-        #region 写入
+        #region 写入（直接写入）
         /// <summary>
         /// 创建一个<see cref="ObjWrite{Obj}"/>，
         /// 它能够向二进制管道写入文本
@@ -118,6 +118,20 @@ namespace System.IOFrancis
                 var bytes = encoder.GetBytes(text);
                 await write.Write(bytes);
             };
+        }
+        #endregion
+        #region 写入（按行写入）
+        /// <summary>
+        /// 创建一个<see cref="ObjWrite{Obj}"/>，
+        /// 它能够向二进制管道按行写入文本
+        /// </summary>
+        /// <param name="encoder">文本的编码，
+        /// 如果为<see langword="null"/>，则为UTF8</param>
+        /// <returns></returns>
+        public static ObjWrite<string> ObjWriteStringLine(Encoding? encoder = null)
+        {
+            var write = ObjWriteString(encoder);
+            return (w, t) => write(w, t + Environment.NewLine);
         }
         #endregion
         #endregion

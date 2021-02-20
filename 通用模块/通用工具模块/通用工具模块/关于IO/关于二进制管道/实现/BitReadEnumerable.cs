@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Design;
 using System.IO;
 
 namespace System.IOFrancis.Bit
@@ -8,7 +7,7 @@ namespace System.IOFrancis.Bit
     /// 这个类型是<see cref="IBitRead"/>的实现，
     /// 它可以通过<see cref="IAsyncEnumerable{T}"/>来读取二进制数据
     /// </summary>
-    class BitReadEnumerable : WithoutRelease, IBitRead
+    class BitReadEnumerable : IBitRead
     {
         #region 封装的异步迭代器
         /// <summary>

@@ -7,7 +7,7 @@ namespace System.NetFrancis.Mail
     /// 凡是实现这个接口的类型，
     /// 都可以作为一个电子邮件草稿
     /// </summary>
-    public interface IMailDraft : IMail, IDisposable
+    public interface IMailDraft : IMail
     {
         #region 说明文档
         /*问：既然本接口实现IDisposable是为了释放附件，

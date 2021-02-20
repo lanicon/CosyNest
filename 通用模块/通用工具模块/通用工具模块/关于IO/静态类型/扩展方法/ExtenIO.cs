@@ -38,7 +38,9 @@ namespace System
             return arry;
         }
         #endregion
-        #region 将Stream转换为IBitPipe
+        #endregion
+        #region 将对象转换为IBitRead
+        #region 转换流
         /// <summary>
         /// 将一个<see cref="Stream"/>转换为等效的<see cref="IBitPipe"/>
         /// </summary>
@@ -49,8 +51,6 @@ namespace System
         public static IBitPipe ToBitPipe(this Stream Stream, string Format = "", string? Describe = null)
             => new BitPipeStream(Stream, Format, Describe);
         #endregion
-        #endregion
-        #region 将对象转换为IBitRead
         #region 转换异步迭代器
         /// <summary>
         /// 将异步迭代器转换为<see cref="IBitRead"/>

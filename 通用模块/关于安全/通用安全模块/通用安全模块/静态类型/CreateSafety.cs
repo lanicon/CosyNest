@@ -67,7 +67,7 @@ namespace System.SafetyFrancis
             => Hash<SHA512Managed>();
         #endregion
         #endregion
-        #region 创建加密算法
+        #region 创建ICryptology
         #region 使用RSA
         /// <summary>
         /// 使用RSA非对称算法创建<see cref="ICryptology"/>
@@ -76,6 +76,20 @@ namespace System.SafetyFrancis
         /// <returns></returns>
         public static ICryptology CryptologyRSA(RSA algorithm)
             => new RSABCL(algorithm);
+        #endregion
+        #endregion
+        #region 创建IEncryption
+        #region 先计算哈希，然后加密
+        /// <summary>
+        /// 创建一个<see cref="IEncryption"/>，
+        /// 它先对明文计算哈希值，然后对哈希值加密，
+        /// 这种操作常用于传递密码
+        /// </summary>
+        /// <param name="Hash">用于计算哈希值的对象</param>
+        /// <param name="Encryption">用于对哈希值进行加密的对象</param>
+        /// <returns></returns>
+        public static IEncryption EncryptionHash(IHash Hash, IEncryption Encryption)
+            => new CryptologyHash(Hash, Encryption);
         #endregion
         #endregion
     }

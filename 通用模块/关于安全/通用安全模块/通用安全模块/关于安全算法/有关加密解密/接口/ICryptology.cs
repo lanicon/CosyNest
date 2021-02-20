@@ -29,8 +29,7 @@ namespace System.SafetyFrancis.Algorithm
         /// <returns></returns>
         string Decrypt(IEnumerable<byte> ciphertext, Func<IEnumerable<byte>, string>? decoding = null)
         {
-            using var Ciphertext = ciphertext.ToBitRead();
-            using var plaintext = Decrypt(Ciphertext);
+            var plaintext = Decrypt(ciphertext.ToBitRead());
             var bytes = plaintext.ReadComplete().Result;
             return decoding is null ? Encoding.Unicode.GetString(bytes) : decoding(bytes);
         }

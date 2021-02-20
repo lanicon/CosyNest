@@ -40,8 +40,7 @@ namespace System.Office
         public static IFile SaveImage(IImage image)
         {
             var file = ToolPerfo.CreateTemporaryFile(image.Format);
-            using var read = image.Read();
-            read.Save(file.Path).Wait();
+            image.Read().SaveToFile(file.Path).Wait();
             return file;
         }
         #endregion

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Design;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -9,7 +8,7 @@ namespace System.IOFrancis.Bit
     /// 这个类型是<see cref="IBitPipe"/>的实现，
     /// 它通过流来读写二进制数据
     /// </summary>
-    class BitPipeStream : AutoRelease, IBitPipe
+    class BitPipeStream : IBitPipe
     {
         #region 封装的对象
         #region Stream对象
@@ -56,17 +55,22 @@ namespace System.IOFrancis.Bit
         }
         #endregion
         #region 写入数据
-        public Task Write(byte[] data)
-            => Stream.WriteAsync(data).AsTask();
+        public async Task Write(byte[] data)
+        {
+            await Stream.WriteAsync(data);
+            await Stream.FlushAsync();
+        }
         #endregion
         #region 转换为流
         public Stream ToStream()
-         => Stream;
+            => new BufferedStream(Stream);
         #endregion
         #endregion
-        #region 释放对象
-        protected override void DisposeRealize()
-            => Stream.Dispose();
+        #region 析构函数
+        ~BitPipeStream()
+        {
+            Stream.Dispose();
+        }
         #endregion
         #region 构造函数
         /// <summary>

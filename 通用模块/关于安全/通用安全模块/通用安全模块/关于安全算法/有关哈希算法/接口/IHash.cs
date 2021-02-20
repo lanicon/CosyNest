@@ -22,7 +22,7 @@ namespace System.SafetyFrancis.Algorithm
         /// <returns>如果哈希值一致，则为<see langword="true"/>，否则为<see langword="false"/></returns>
         async Task<bool> Verify(IBitRead data, IEnumerable<byte> hash)
         {
-            using var ciphertext = Encryption(data);
+            var ciphertext = Encryption(data);
             return hash.SequenceEqual(await ciphertext.ReadComplete());
         }
         #endregion

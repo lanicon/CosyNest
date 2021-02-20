@@ -28,9 +28,5 @@ namespace System.NetFrancis.Mail
         = new List<string>();
         #endregion
         #endregion 
-        #region 释放所有附件
-        public void Dispose()
-            => Attachment.DisposableAll();
-        #endregion
     }
 }

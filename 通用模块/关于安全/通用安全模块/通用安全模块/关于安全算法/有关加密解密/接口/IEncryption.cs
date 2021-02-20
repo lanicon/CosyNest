@@ -31,9 +31,7 @@ namespace System.SafetyFrancis.Algorithm
         byte[] Encryption(string plaintext, Func<string, IEnumerable<byte>>? coding = null)
         {
             var bytes = coding is null ? Encoding.Unicode.GetBytes(plaintext) : coding(plaintext);
-            using var Plaintext = bytes.ToBitRead();
-            using var ciphertext = Encryption(Plaintext);
-            return ciphertext.ReadComplete().Result;
+            return Encryption(bytes.ToBitRead()).ReadComplete().Result;
         }
         #endregion
     }

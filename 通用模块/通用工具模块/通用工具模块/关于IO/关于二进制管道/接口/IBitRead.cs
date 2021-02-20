@@ -23,11 +23,11 @@ namespace System.IOFrancis.Bit
         /// 将数据保存到文件中
         /// </summary>
         /// <param name="path">要保存的路径，
-        /// 如果<see cref="Format"/>不为<see langword="null"/>，不要加上扩展名</param>
+        /// 如果<see cref="IBitPipeBase.Format"/>不为<see langword="null"/>，不要加上扩展名</param>
         /// <param name="bufferSize">指定缓冲区的字节数量，
         /// 如果为<see langword="null"/>，则一次写入全部数据</param>
         /// <returns></returns>
-        async Task Save(PathText path, long? bufferSize = null)
+        async Task SaveToFile(PathText path, long? bufferSize = null)
         {
             using var stream = new FileStream($"{(Format.IsVoid() ? path : $"{path}.{Format}")}", FileMode.Create);
             await foreach (var item in Read(bufferSize))
