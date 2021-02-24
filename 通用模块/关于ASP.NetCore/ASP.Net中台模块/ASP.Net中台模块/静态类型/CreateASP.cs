@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore
         public static UriFrancis Uri(IConfiguration configuration, string key = "applicationUrl")
         {
             var uri = configuration[key] ?? throw new KeyNotFoundException($"在配置中找不到名为{key}的键，无法获取本机URI");
-            return new UriFrancis() { UriBase = uri };
+            return new() { UriBase = uri };
         }
         #endregion
         #endregion

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.NetFrancis.Http;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Components.Services;
@@ -69,6 +70,42 @@ namespace System
         #endregion
         #endregion
         #region 关于依赖注入
+        #region 注入ProvideHttpRequest
+        #region 根据身份验证信息动态返回HttpRequestRecording
+        /// <summary>
+        /// 以Scoped模式注入一个<see cref="ProvideHttpRequestAsync"/>，
+        /// 它会检查Cookies中的身份验证信息，如果存在，会在HTTP请求中自动加入Authentication标头
+        /// </summary>
+        /// <param name="services">待注入服务的容器</param>
+        /// <param name="provideTemplate">用来提供模板的委托，
+        /// 如果为<see langword="null"/>，则默认返回一个调用无参数构造函数的<see cref="HttpRequestRecording"/></param>
+        /// <param name="UserNameKey">从Cookies中提取用户名的键名</param>
+        /// <param name="PasswordKey">从Cookies中提取密码的键名</param>
+        /// <returns></returns>
+        public static IServiceCollection AddHttpRequestAuthentication(this IServiceCollection services,
+            ProvideHttpRequestAsync? provideTemplate = null,
+            string UserNameKey = CreateASP.DefaultKeyUserName,
+            string PasswordKey = CreateASP.DefaultKeyPassword)
+        {
+            provideTemplate ??= () => new HttpRequestRecording().ToTask();
+            return services.AddScoped<ProvideHttpRequestAsync>(serviceProvider => async () =>
+            {
+                var template = await provideTemplate();
+                var cookies = serviceProvider.GetRequiredService<IJSWindow>().Document.Cookie;
+                var (existUserName, valueUserName) = await cookies.AsyncTryGetValue(UserNameKey);
+                var (existPassword, valuePassword) = await cookies.AsyncTryGetValue(PasswordKey);
+                return existUserName && existPassword ?
+                template with
+                {
+                    Header = template.Header with
+                    {
+                        Authentication = CreateASP.AuthenticationHeader(valueUserName!, valuePassword!, UserNameKey: UserNameKey, PasswordKey: PasswordKey)
+                    }
+                } : template;
+            });
+        }
+        #endregion
+        #endregion 
         #region 注入前端对象
         /// <summary>
         /// 向服务容器注入常用前端对象
@@ -78,8 +115,7 @@ namespace System
         public static IServiceCollection AddFront(this IServiceCollection services)
         {
             services.AddJSWindow();
-            services.AddSingleton<IProvidedDefaultTemplate>(ProvidedTemplate.Only);
-            return services;
+            return services.AddSingleton<IProvidedDefaultTemplate>(ProvidedTemplate.Only);
         }
         #endregion
         #region 注入IJSWindow
