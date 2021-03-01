@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace System.Time
 {
@@ -12,7 +10,11 @@ namespace System.Time
     {
         #region 说明文档
         /*在实现本接口时，请遵循以下规范：
-          #当定时器最后一次执行完毕后，销毁定时器*/
+          #如果定时器只执行指定的次数，
+          则当定时器最后一次执行完毕后，销毁定时器
+        
+          #虽然Due事件是同步方法，
+          但是执行它的时候，不要阻塞当前线程*/
         #endregion
         #region 定时器触发时执行的事件
         /// <summary>

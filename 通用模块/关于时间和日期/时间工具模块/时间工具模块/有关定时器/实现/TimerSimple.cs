@@ -43,12 +43,12 @@ namespace System.Time
         #region 启动计时器
         public void Start()
         {
-            if (PackTimer == null)
+            if (PackTimer is null)
             {
                 PackTimer = new Timer(x =>
                   {
                       Due?.Invoke();
-                      if (Repeat != null && --Repeat <= 0)
+                      if (Repeat is { } && --Repeat <= 0)
                           Dispose();
                   }, null, TimeSpan.Zero, Interval);
             }

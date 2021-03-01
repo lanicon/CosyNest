@@ -4,7 +4,6 @@ using System.Linq;
 using System.SafetyFrancis.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Time;
 
 using MailKit;
 using MailKit.Net.Imap;
@@ -146,68 +145,24 @@ namespace System.NetFrancis.Mail
             });
         #endregion
         #region 有关新邮件到达时的事件
-        #region 用于检查新邮件的计时器
+        #region 延迟事件
         /// <summary>
-        /// 用来检查新邮件的计时器
+        /// <see cref="NewMail"/>事件的延迟加载封装
         /// </summary>
-        private ITimer? CheckTimer { get; set; }
-        #endregion
-        #region 检查新邮件的间隔
-        /// <summary>
-        /// 获取用来检查新邮件的间隔
-        /// </summary>
-        private TimeSpan CheckInterval { get; }
-        #endregion
-        #region 用于缓存旧邮件的集合
-        /// <summary>
-        /// 用于缓存旧邮件的集合
-        /// </summary>
-        private IMailServed[]? OldMail { get; set; }
+        private NewMailEvent NewMailEvent { get; set; }
         #endregion
         #region 事件本体
-        private Action<IMailClient, IMailServed>? NewMailField;
-
         public event Action<IMailClient, IMailServed>? NewMail
         {
-            add
-            {
-                NewMailField += value;          //仅当事件被注册后，才会执行检查新邮件的操作
-                if (CheckTimer == null && NewMailField != null)
-                {
-                    #region 用来检查新邮件的本地函数
-                    void CheckNewMail()
-                    {
-                        var NewMails = this.ToArrayAsync().Result();
-                        foreach (var item in NewMails.Except(OldMail, FastRealize.EqualityComparer<IMailServed>(x => x.Data)))
-                        {
-                            NewMailField(this, item);
-                        }
-                        OldMail = NewMails;
-                    }
-                    #endregion
-                    OldMail = this.ToArrayAsync().Result();
-                    CheckTimer = CreateTimer.Timer(CheckInterval, null);
-                    CheckTimer.Due += CheckNewMail;
-                    CheckTimer.Start();
-                }
-            }
-            remove
-            {
-                NewMailField -= value;          //如果事件中注册的委托被全部删除，则会停止检查新邮件
-                if (NewMailField == null)
-                    DisposeRealize();
-            }
+            add => NewMailEvent += value;
+            remove => NewMailEvent -= value;
         }
         #endregion
         #endregion
         #endregion
         #region 释放资源
         protected override void DisposeRealize()
-        {
-            CheckTimer?.Dispose();
-            CheckTimer = null;
-            OldMail = null;
-        }
+            => NewMailEvent.Dispose();
         #endregion
         #region 构造函数
         /// <summary>
@@ -223,7 +178,7 @@ namespace System.NetFrancis.Mail
             SmtpConnection = Smtp;
             ImapConnection = Imap;
             this.Credentials = Credentials;
-            this.CheckInterval = CheckInterval ?? TimeSpan.FromMinutes(1);
+            NewMailEvent = new(this, CheckInterval ?? TimeSpan.FromMinutes(1));
         }
         #endregion
     }
