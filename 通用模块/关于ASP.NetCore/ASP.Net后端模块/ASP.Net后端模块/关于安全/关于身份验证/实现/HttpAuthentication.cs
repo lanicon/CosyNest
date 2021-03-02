@@ -28,14 +28,14 @@ namespace Microsoft.AspNetCore.Authentication
         /// 这个委托的参数是HTTP请求的Authentication标头，
         /// 返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/>
         /// </summary>
-        private Func<StringValues, UnsafeCredentials?> ExtractionHeader { get; }
+        private Func<StringValues, Task<UnsafeCredentials?>> ExtractionHeader { get; }
         #endregion
         #region 通过Cookie提取用户名和密码的委托
         /// <summary>
         /// 这个委托的参数是附加在请求中的Cookie，
         /// 返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/>
         /// </summary>
-        private Func<IRequestCookieCollection, UnsafeCredentials?> ExtractionCookie { get; }
+        private Func<IRequestCookieCollection, Task<UnsafeCredentials?>> ExtractionCookie { get; }
         #endregion
         #region 验证用户名和密码的委托
         /// <summary>
@@ -50,10 +50,10 @@ namespace Microsoft.AspNetCore.Authentication
         public async Task<ClaimsPrincipal> Verify(HttpContext context)
         {
             var request = context.Request;
-            var results = request.Headers.TryGetValue("Authentication", out var authentication) &&
-                 ExtractionHeader(authentication) is { } credentialsHeader ?
+            var results = request.Headers.TryGetValue("Authentication", out var authentication) &&      //尝试从Authentication标头提取用户名和密码
+                (await ExtractionHeader(authentication)) is { } credentialsHeader ?
                  await Verify(credentialsHeader) :
-                 ExtractionCookie(request.Cookies) is { } credentialsCookie ?
+               (await ExtractionCookie(request.Cookies)) is { } credentialsCookie ?         //尝试从Cookie提取用户名和密码
                  await Verify(credentialsCookie) : CreateSafety.PrincipalDefault;
             if (results.IsAuthenticated())
                 context.User = results;
@@ -77,8 +77,8 @@ namespace Microsoft.AspNetCore.Authentication
         /// <param name="ExtractionHeader">这个委托的参数是HTTP请求的Authentication标头，返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/></param>
         /// <param name="ExtractionCookie">这个委托的参数是附加在请求中的Cookie，返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/></param>
         public HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
-            Func<StringValues, UnsafeCredentials?> ExtractionHeader,
-            Func<IRequestCookieCollection, UnsafeCredentials?> ExtractionCookie)
+            Func<StringValues, Task<UnsafeCredentials?>> ExtractionHeader,
+            Func<IRequestCookieCollection, Task<UnsafeCredentials?>> ExtractionCookie)
         {
             this.VerifyUser = VerifyUser;
             this.ExtractionHeader = ExtractionHeader;

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.SafetyFrancis.Algorithm;
 using System.SafetyFrancis.Authentication;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.TreeObject;
@@ -54,6 +56,27 @@ namespace Microsoft.AspNetCore
         #endregion
         #region 有关IHttpAuthentication
         #region 通过Authentication标头以及Cookie验证身份
+        #region 辅助方法
+        /// <summary>
+        /// 辅助方法，它将原始的提取凭据的委托，
+        /// 转换为支持加密的版本
+        /// </summary>
+        /// <typeparam name="Obj">委托的输入类型</typeparam>
+        /// <param name="fun">原始的提取凭据的委托</param>
+        /// <param name="cryptology">指定用于解密的对象，
+        /// 如果为<see langword="null"/>，代表不需要解密，无需执行任何操作</param>
+        /// <returns></returns>
+        private static Func<Obj, Task<UnsafeCredentials?>> Convert<Obj>(Func<Obj, Task<UnsafeCredentials?>> fun, ICryptology? cryptology)
+            => cryptology is null ? fun : async x =>
+            {
+                var redentials = await fun(x);
+                if (redentials is null)
+                    return redentials;
+                var plaintext = cryptology.Decrypt(Encoding.Unicode.GetBytes(redentials.Password));
+                return redentials with { Password = plaintext };
+            };
+
+        #endregion
         #region 直接创建
         /// <summary>
         /// 返回一个<see cref="IHttpAuthentication"/>，
@@ -63,10 +86,15 @@ namespace Microsoft.AspNetCore
         /// <param name="VerifyUser">这个委托的参数是待验证的用户名和密码，返回值是验证结果</param>
         /// <param name="ExtractionHeader">这个委托的参数是HTTP请求的Authentication标头，返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/></param>
         /// <param name="ExtractionCookie">这个委托的参数是附加在请求中的Cookie，返回值是提取到的用户名和密码，如果提取失败，则返回<see langword="null"/></param>
+        /// <param name="Cryptology">如果这个参数不为<see langword="null"/>，则代表密码部分是加密的，
+        /// 需要通过这个参数解密还原原始密码</param>
         public static IHttpAuthentication HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
-            Func<StringValues, UnsafeCredentials?> ExtractionHeader,
-            Func<IRequestCookieCollection, UnsafeCredentials?> ExtractionCookie)
-            => new HttpAuthentication(VerifyUser, ExtractionHeader, ExtractionCookie);
+            Func<StringValues, Task<UnsafeCredentials?>> ExtractionHeader,
+            Func<IRequestCookieCollection, Task<UnsafeCredentials?>> ExtractionCookie,
+            ICryptology? Cryptology = null)
+            => new HttpAuthentication(VerifyUser,
+                Convert(ExtractionHeader, Cryptology),
+                Convert(ExtractionCookie, Cryptology));
         #endregion
         #region 指定用户名和密码的键值对
         /// <summary>
@@ -77,17 +105,19 @@ namespace Microsoft.AspNetCore
         /// <param name="VerifyUser">这个委托的参数是待验证的用户名和密码，返回值是验证结果</param>
         /// <param name="UserNameKey">用于提取用户名的键</param>
         /// <param name="PasswordKey">用于提取密码的键</param>
+        /// <param name="Cryptology">如果这个参数不为<see langword="null"/>，则代表密码部分是加密的，
+        /// 需要通过这个参数解密还原原始密码</param>
         /// <returns></returns>
         public static IHttpAuthentication HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
-            string UserNameKey = CreateASP.DefaultKeyUserName, string PasswordKey = CreateASP.DefaultKeyPassword)
+            string UserNameKey = CreateASP.DefaultKeyUserName, string PasswordKey = CreateASP.DefaultKeyPassword, ICryptology? Cryptology = null)
             => HttpAuthentication(VerifyUser, x =>
             {
                 var d = ToolRegex.KeyValuePairExtraction(x.ToString(), "; ,");
-                return d.TryGetValue(UserNameKey, out var UserName) && d.TryGetValue(PasswordKey, out var Password) ?
-                 new(UserName, Password) : null;
+                return (d.TryGetValue(UserNameKey, out var UserName) && d.TryGetValue(PasswordKey, out var Password) ?
+                 new UnsafeCredentials(UserName, Password) : null).ToTask();
             },
-            x => x.TryGetValue(UserNameKey, out var UserName) && x.TryGetValue(PasswordKey, out var Password) ?
-                 new(UserName!, Password!) : null);
+            x => (x.TryGetValue(UserNameKey, out var UserName) && x.TryGetValue(PasswordKey, out var Password) ?
+                 new UnsafeCredentials(UserName!, Password!) : null).ToTask(), Cryptology);
         #endregion
         #endregion
         #endregion
