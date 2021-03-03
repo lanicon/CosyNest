@@ -31,7 +31,7 @@ namespace Microsoft.AspNetCore
         #endregion
         #region 有关标头
         #region 根据身份验证信息创建AuthenticationHeaderValue
-        #region 辅助成员
+        #region 辅助成员：默认键名
         #region 用户名的默认键名
         /// <summary>
         /// 获取用来提取用户名的默认键名

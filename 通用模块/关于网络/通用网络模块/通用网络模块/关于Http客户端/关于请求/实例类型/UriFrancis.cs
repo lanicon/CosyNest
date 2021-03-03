@@ -14,6 +14,13 @@ namespace System.NetFrancis.Http
             => new(UriComplete);
         #endregion
         #region 关于Uri
+        #region 获取协议部分
+        /// <summary>
+        /// 获取Uri的协议部分
+        /// </summary>
+        public string Agreement
+            => UriBase[0..UriBase.IndexOf(":")];
+        #endregion
         #region 获取基础URI
         private readonly string UriBaseField;
         /// <summary>

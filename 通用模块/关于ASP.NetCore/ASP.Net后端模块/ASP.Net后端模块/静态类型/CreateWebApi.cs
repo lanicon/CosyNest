@@ -1,4 +1,5 @@
 ﻿using System;
+using System.SafetyFrancis;
 using System.SafetyFrancis.Algorithm;
 using System.SafetyFrancis.Authentication;
 using System.Security.Claims;
@@ -54,7 +55,7 @@ namespace Microsoft.AspNetCore
         #endregion
         #endregion
         #endregion
-        #region 有关IHttpAuthentication
+        #region 创建IHttpAuthentication
         #region 通过Authentication标头以及Cookie验证身份
         #region 辅助方法
         /// <summary>
@@ -103,13 +104,13 @@ namespace Microsoft.AspNetCore
         /// 并执行身份验证
         /// </summary>
         /// <param name="VerifyUser">这个委托的参数是待验证的用户名和密码，返回值是验证结果</param>
-        /// <param name="UserNameKey">用于提取用户名的键</param>
-        /// <param name="PasswordKey">用于提取密码的键</param>
         /// <param name="Cryptology">如果这个参数不为<see langword="null"/>，则代表密码部分是加密的，
         /// 需要通过这个参数解密还原原始密码</param>
+        /// <param name="UserNameKey">用于提取用户名的键</param>
+        /// <param name="PasswordKey">用于提取密码的键</param>
         /// <returns></returns>
         public static IHttpAuthentication HttpAuthentication(Func<UnsafeCredentials, Task<ClaimsPrincipal>> VerifyUser,
-            string UserNameKey = CreateASP.DefaultKeyUserName, string PasswordKey = CreateASP.DefaultKeyPassword, ICryptology? Cryptology = null)
+            ICryptology? Cryptology = null, string UserNameKey = CreateASP.DefaultKeyUserName, string PasswordKey = CreateASP.DefaultKeyPassword)
             => HttpAuthentication(VerifyUser, x =>
             {
                 var d = ToolRegex.KeyValuePairExtraction(x.ToString(), "; ,");

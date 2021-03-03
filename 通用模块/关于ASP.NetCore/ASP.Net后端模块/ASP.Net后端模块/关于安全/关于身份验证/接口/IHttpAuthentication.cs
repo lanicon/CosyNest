@@ -15,10 +15,10 @@ namespace Microsoft.AspNetCore.Authentication
         #region 验证身份
         #region 指定HttpContext
         /// <summary>
-        /// 验证一个Http上下文，并返回验证结果
+        /// 验证一个Http上下文，并返回验证结果，
+        /// 如果验证通过，还会将结果写入<see cref="HttpContext.User"/>属性
         /// </summary>
-        /// <param name="context">需要验证的Http上下文，
-        /// 如果验证通过，还会将结果写入<see cref="HttpContext.User"/>属性</param>
+        /// <param name="context">需要验证的Http上下文</param>
         /// <returns></returns>
         Task<ClaimsPrincipal> Verify(HttpContext context);
         #endregion

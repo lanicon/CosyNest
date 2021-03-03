@@ -43,7 +43,7 @@ namespace System
             => application.Use(static async (context, next) =>
             {
                 var auth = context.RequestServices.GetRequiredService<IHttpAuthentication>();
-                await ToolException.IgnoreBusinessAsync(() => auth.Verify(context));
+                await auth.Verify(context);
                 context.Response.OnStarting(() => auth.SetVerify(context.User, context));      //在后面的中间件全部执行完毕后，将验证结果写回响应中
                 await next();
             });
