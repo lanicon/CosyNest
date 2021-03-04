@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.TreeObject;
 
 namespace System.NetFrancis.Http
 {
@@ -20,12 +21,35 @@ namespace System.NetFrancis.Http
           它是一个记录，通过C#9.0新支持的with表达式，能够更加方便的替换请求内容的任何部分*/
         #endregion
         #region 发起Http请求
+        #region 直接返回IHttpResponse
         /// <summary>
         /// 发起Http请求，并返回结果
         /// </summary>
         /// <param name="request">请求消息的内容</param>
         /// <returns></returns>
-        Task<IHttpResponse> SendAsync(IHttpRequestRecording request);
+        Task<IHttpResponse> Request(IHttpRequestRecording request);
+        #endregion
+        #region 返回文本
+        /// <summary>
+        /// 发起Http请求，并以文本格式返回结果
+        /// </summary>
+        /// <param name="request">请求消息的内容</param>
+        /// <returns></returns>
+        async Task<string> RequestText(IHttpRequestRecording request)
+             => (await Request(request)).Content.ToText();
+        #endregion
+        #region 返回反序列化后的对象
+        /// <summary>
+        /// 发起Http请求，并将结果反序列化，然后返回
+        /// </summary>
+        /// <typeparam name="Obj">反序列化的返回类型</typeparam>
+        /// <param name="request">请求消息的内容</param>
+        /// <param name="serialization">用于反序列化的对象，
+        /// 如果为<see langword="null"/>，则使用默认对象</param>
+        /// <returns></returns>
+        async Task<Obj?> RequestObject<Obj>(IHttpRequestRecording request, ISerialization<Obj>? serialization = null)
+            => (await Request(request)).Content.ToObject(serialization);
+        #endregion
         #endregion
     }
 }

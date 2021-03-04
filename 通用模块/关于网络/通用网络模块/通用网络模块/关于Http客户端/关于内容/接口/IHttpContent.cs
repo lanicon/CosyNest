@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Text;
+using System.Text.Json;
+using System.TreeObject;
 
 namespace System.NetFrancis.Http
 {
@@ -27,7 +29,13 @@ namespace System.NetFrancis.Http
         /// </summary>
         IHttpHeaderContent Header { get; }
         #endregion
-        #region 返回内容
+        #region 有关返回内容
+        #region 说明文档
+        /*重要说明：
+          由于时间限制，这些API暂时没有考虑到Http正文使用非UTF8编码的情况，
+          如果以后时间充足或因此出现了问题，请将其重构*/
+        #endregion
+        #region 直接以二进制格式返回内容
         /// <summary>
         /// 返回Http消息的内容，
         /// 它以二进制的格式呈现
@@ -41,6 +49,28 @@ namespace System.NetFrancis.Http
           如需要此功能，请使用以下方法：
           1.分块传输
           2.使用更加专业的FTP*/
+        #endregion
+        #region 解释为文本
+        /// <summary>
+        /// 将Http内容解释为文本，并返回
+        /// </summary>
+        /// <returns></returns>
+        string ToText()
+            => Encoding.UTF8.GetString(Content);
+        #endregion
+        #region 解释为树形文档对象
+        /// <summary>
+        /// 将Http内容解释为树形文档对象，并将其反序列化后返回
+        /// </summary>
+        /// <typeparam name="Obj">反序列化的返回类型</typeparam>
+        /// <param name="serialization">用于反序列化的对象，
+        /// 如果为<see langword="null"/>，则使用默认对象</param>
+        /// <returns></returns>
+        Obj? ToObject<Obj>(ISerialization<Obj>? serialization = null)
+            => serialization is null ?
+            JsonSerializer.Deserialize<Obj>(Content) :
+            serialization.Deserialize(Content);
+        #endregion
         #endregion
     }
 }

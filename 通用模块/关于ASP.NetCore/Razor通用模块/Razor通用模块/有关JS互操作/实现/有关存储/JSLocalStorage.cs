@@ -12,19 +12,19 @@ namespace Microsoft.JSInterop
     {
         #region 关于根据键读写值
         #region 根据键读取值
-        public async Task<string> AsyncGetValue(string key)
+        public async Task<string> GetValueAsync(string key)
             => (await JSRuntime.InvokeAsync<string?>("localStorage.getItem", key)) ??
             throw new KeyNotFoundException($"未找到键{key}");
         #endregion
         #region 根据键读取值（不会引发异常）
-        public async Task<(bool Exist, string? Value)> AsyncTryGetValue(string key)
+        public async Task<(bool Exist, string? Value)> TryGetValueAsync(string key)
         {
             var value = await JSRuntime.InvokeAsync<string?>("localStorage.getItem", key);
             return (value is { }, value);
         }
         #endregion
         #region 根据键写入值
-        public Task AsyncSetValue(string key, string value)
+        public Task SetValueAsync(string key, string value)
             => JSRuntime.InvokeVoidAsync("localStorage.setItem", key, value).AsTask();
         #endregion
         #endregion
@@ -39,7 +39,7 @@ namespace Microsoft.JSInterop
             for (int count = await AsyncCount, i = 0; i < count; i++)
             {
                 var key = await JSRuntime.InvokeAsync<string>("localStorage.key", i);
-                yield return new(key, await AsyncGetValue(key));
+                yield return new(key, await GetValueAsync(key));
             }
         }
         #endregion
@@ -49,9 +49,9 @@ namespace Microsoft.JSInterop
             => JSRuntime.InvokeVoidAsync("localStorage.clear").AsTask();
         #endregion
         #region 删除指定键
-        public async Task<bool> AsyncRemove(string key)
+        public async Task<bool> RemoveAsync(string key)
         {
-            if (await this.To<IAsyncDictionary<string, string>>().AsyncContainsKey(key))
+            if (await this.To<IAsyncDictionary<string, string>>().ContainsKeyAsync(key))
             {
                 await JSRuntime.InvokeVoidAsync("localStorage.removeItem", key);
                 return true;
@@ -61,16 +61,16 @@ namespace Microsoft.JSInterop
         #endregion
         #region 删除指定键值对
         public Task<bool> AsyncRemove(KeyValuePair<string, string> item)
-            => AsyncRemove(item.Key);
+            => RemoveAsync(item.Key);
         #endregion
         #region 添加键值对
         public Task AsyncAdd(KeyValuePair<string, string> item)
-            => AsyncSetValue(item.Key, item.Value);
+            => SetValueAsync(item.Key, item.Value);
         #endregion
         #endregion
         #region 检查键值对是否存在
         public async Task<bool> AsyncContains(KeyValuePair<string, string> item)
-            => (await AsyncTryGetValue(item.Key)) is (true, var value) && Equals(value, item.Value);
+            => (await TryGetValueAsync(item.Key)) is (true, var value) && Equals(value, item.Value);
         #endregion
         #endregion
         #region 构造函数

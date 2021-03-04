@@ -1,9 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.NetFrancis.Http;
-using System.Text;
-using System.Text.Json;
-using System.TreeObject;
 
 namespace System
 {
@@ -59,46 +56,6 @@ namespace System
                 bclHeader.Add(key, value);
             }
         }
-        #endregion
-        #endregion
-        #region 有关IHttpContent
-        #region 说明文档
-        /*重要说明：
-          由于时间限制，这些API暂时没有考虑到Http正文使用非UTF8编码的情况，
-          如果以后时间充足或因此出现了问题，请将其重构*/
-        #endregion
-        #region 解释为文本
-        /// <summary>
-        /// 将一个<see cref="IHttpContent"/>的内容解释为文本，并返回
-        /// </summary>
-        /// <param name="content">待解释的<see cref="IHttpContent"/></param>
-        /// <returns></returns>
-        public static string ToText(this IHttpContent content)
-            => Encoding.UTF8.GetString(content.Content);
-        #endregion
-        #region 解释为Json
-        /// <summary>
-        /// 将<see cref="IHttpContent"/>正文解释为Json，
-        /// 并将其反序列化返回
-        /// </summary>
-        /// <typeparam name="Obj">反序列化的返回类型</typeparam>
-        /// <param name="content">待反序列化的<see cref="IHttpContent"/>对象</param>
-        /// <param name="options">用于配置反序列化的选项</param>
-        /// <returns></returns>
-        public static Obj? ToJson<Obj>(this IHttpContent content, JsonSerializerOptions? options = null)
-            => JsonSerializer.Deserialize<Obj>(content.Content, options);
-        #endregion
-        #region 解释为树形文档对象
-        /// <summary>
-        /// 将<see cref="IHttpContent"/>正文解释为树形文档对象，
-        /// 并将其反序列化返回
-        /// </summary>
-        /// <typeparam name="Obj">反序列化的返回类型</typeparam>
-        /// <param name="content">待反序列化的<see cref="IHttpContent"/>对象</param>
-        /// <param name="serialization">用来反序列化<paramref name="content"/>的对象</param>
-        /// <returns></returns>
-        public static Obj? ToTreeObject<Obj>(this IHttpContent content, ISerialization<Obj> serialization)
-            => serialization.Deserialize(content.Content);
         #endregion
         #endregion
     }

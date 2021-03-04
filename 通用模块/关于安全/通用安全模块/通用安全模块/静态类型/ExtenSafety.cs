@@ -51,10 +51,12 @@ namespace System
         /// </summary>
         /// <param name="identity">待写入验证不通过原因的标识</param>
         /// <param name="reason">验证不通过的原因</param>
-        public static void SetBanReason(this ClaimsIdentity identity, string reason)
+        /// <returns>原路返回<paramref name="identity"/></returns>
+        public static ClaimsIdentity SetBanReason(this ClaimsIdentity identity, string reason)
         {
             if (!identity.IsAuthenticated)
                 identity.AddClaim(new("BanReason", reason));
+            return identity;
         }
         #endregion
         #endregion

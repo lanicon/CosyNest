@@ -17,7 +17,7 @@ namespace System.NetFrancis.Http
         private static HttpClient HttpClient { get; } = new();
         #endregion
         #region 发起Http请求
-        public async Task<IHttpResponse> SendAsync(IHttpRequestRecording request)
+        public async Task<IHttpResponse> Request(IHttpRequestRecording request)
         {
             using var Request = request.ToHttpRequestMessage();
             using var response = await HttpClient.SendAsync(Request);

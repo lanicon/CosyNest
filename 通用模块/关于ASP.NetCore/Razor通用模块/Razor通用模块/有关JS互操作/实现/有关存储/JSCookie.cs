@@ -42,18 +42,18 @@ namespace Microsoft.JSInterop
         #endregion
         #region 关于读取和写入Cookie
         #region 读取Cookie
-        public async Task<string> AsyncGetValue(string key)
+        public async Task<string> GetValueAsync(string key)
             => (await this.FirstAsync(x => x.Key == key)).Value;
         #endregion
         #region 读取Cookie且不引发异常
-        public async Task<(bool Exist, string? Value)> AsyncTryGetValue(string key)
+        public async Task<(bool Exist, string? Value)> TryGetValueAsync(string key)
         {
             var kv = await this.FirstOrDefaultAsync(x => x.Key == key);
             return kv.Equals(default(KeyValuePair<string, string>)) ? (false, null) : (true, kv.Value);
         }
         #endregion
         #region 写入Cookie
-        public Task AsyncSetValue(string key, string value)
+        public Task SetValueAsync(string key, string value)
             => SetCookie($"{key}={value}").AsTask();
         #endregion
         #endregion
@@ -69,7 +69,7 @@ namespace Microsoft.JSInterop
         #endregion
         #region 检查键值对是否存在
         public async Task<bool> AsyncContains(KeyValuePair<string, string> item)
-            => (await AsyncTryGetValue(item.Key)) is (true, var value) && Equals(value, item.Value);
+            => (await TryGetValueAsync(item.Key)) is (true, var value) && Equals(value, item.Value);
         #endregion
         #region 返回键值对数量
         public Task<int> AsyncCount
@@ -78,9 +78,9 @@ namespace Microsoft.JSInterop
         #endregion
         #region 关于添加和删除键值对
         #region 删除指定的键
-        public async Task<bool> AsyncRemove(string key)
+        public async Task<bool> RemoveAsync(string key)
         {
-            if (await this.To<IAsyncDictionary<string, string>>().AsyncContainsKey(key))
+            if (await this.To<IAsyncDictionary<string, string>>().ContainsKeyAsync(key))
             {
                 await SetCookie($"{key}=; expires={MinDate}");
                 return true;
@@ -90,7 +90,7 @@ namespace Microsoft.JSInterop
         #endregion
         #region 删除指定的键值对
         public Task<bool> AsyncRemove(KeyValuePair<string, string> item)
-            => AsyncRemove(item.Key);
+            => RemoveAsync(item.Key);
         #endregion
         #region 全部删除
         public async Task AsyncClear()
@@ -98,13 +98,13 @@ namespace Microsoft.JSInterop
             var keys = await this.Select(x => x.Key).ToArrayAsync();
             foreach (var key in keys)
             {
-                await AsyncRemove(key);
+                await RemoveAsync(key);
             }
         }
         #endregion
         #region 添加键值对
         public Task AsyncAdd(KeyValuePair<string, string> item)
-            => AsyncSetValue(item.Key, item.Value);
+            => SetValueAsync(item.Key, item.Value);
         #endregion
         #endregion
         #region 构造函数
