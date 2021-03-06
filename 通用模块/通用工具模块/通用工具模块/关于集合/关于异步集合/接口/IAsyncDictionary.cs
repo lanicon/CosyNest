@@ -37,7 +37,7 @@ namespace System.Collections.Generic
         /// <param name="value">待添加的值</param>
         /// <returns></returns>
         Task AddAsync(Key key, Value value)
-            => AsyncAdd(new(key, value));
+            => AddAsync(new(key, value));
         #endregion
         #region 移除指定的键
         /// <summary>

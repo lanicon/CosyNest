@@ -13,6 +13,7 @@ namespace System
     {
         #region 有关依赖注入
         #region 注入UriFrancis
+        #region 通过配置获取URI
         /// <summary>
         /// 以单例模式注入一个<see cref="UriFrancis"/>，
         /// 它通过配置文件获取本地主机的Uri，并将其作为完整Uri的基础部分
@@ -25,5 +26,6 @@ namespace System
             => services.AddSingleton(CreateASP.Uri(configuration, key));
         #endregion
         #endregion
+        #endregion 
     }
 }

@@ -30,13 +30,13 @@ namespace Microsoft.JSInterop
         #endregion
         #region 关于集合
         #region 返回键值对数量
-        public Task<int> AsyncCount
+        public Task<int> CountAsync
             => JSRuntime.GetProperty<int>("localStorage.length").AsTask();
         #endregion
         #region 枚举所有键值对
         public async IAsyncEnumerator<KeyValuePair<string, string>> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
-            for (int count = await AsyncCount, i = 0; i < count; i++)
+            for (int count = await CountAsync, i = 0; i < count; i++)
             {
                 var key = await JSRuntime.InvokeAsync<string>("localStorage.key", i);
                 yield return new(key, await GetValueAsync(key));
@@ -45,7 +45,7 @@ namespace Microsoft.JSInterop
         #endregion
         #region 关于添加和删除键值对
         #region 删除全部键值对
-        public Task AsyncClear()
+        public Task ClearAsync()
             => JSRuntime.InvokeVoidAsync("localStorage.clear").AsTask();
         #endregion
         #region 删除指定键
@@ -60,16 +60,16 @@ namespace Microsoft.JSInterop
         }
         #endregion
         #region 删除指定键值对
-        public Task<bool> AsyncRemove(KeyValuePair<string, string> item)
+        public Task<bool> RemoveAsync(KeyValuePair<string, string> item)
             => RemoveAsync(item.Key);
         #endregion
         #region 添加键值对
-        public Task AsyncAdd(KeyValuePair<string, string> item)
+        public Task AddAsync(KeyValuePair<string, string> item)
             => SetValueAsync(item.Key, item.Value);
         #endregion
         #endregion
         #region 检查键值对是否存在
-        public async Task<bool> AsyncContains(KeyValuePair<string, string> item)
+        public async Task<bool> ContainsAsync(KeyValuePair<string, string> item)
             => (await TryGetValueAsync(item.Key)) is (true, var value) && Equals(value, item.Value);
         #endregion
         #endregion

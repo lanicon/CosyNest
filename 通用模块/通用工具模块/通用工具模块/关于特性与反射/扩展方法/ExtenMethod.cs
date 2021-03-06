@@ -162,7 +162,7 @@ namespace System
         /// <param name="parameters">方法的参数列表</param>
         /// <returns>方法的返回值</returns>
         public static Ret? Invoke<Ret>(this MethodInfo method, object? target, params object?[] parameters)
-            => (Ret)method.Invoke(target, parameters);
+            => (Ret?)method.Invoke(target, parameters);
         #endregion
         #region 调用构造函数
         /// <summary>

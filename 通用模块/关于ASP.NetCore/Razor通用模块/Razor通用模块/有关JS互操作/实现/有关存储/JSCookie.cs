@@ -68,11 +68,11 @@ namespace Microsoft.JSInterop
         }
         #endregion
         #region 检查键值对是否存在
-        public async Task<bool> AsyncContains(KeyValuePair<string, string> item)
+        public async Task<bool> ContainsAsync(KeyValuePair<string, string> item)
             => (await TryGetValueAsync(item.Key)) is (true, var value) && Equals(value, item.Value);
         #endregion
         #region 返回键值对数量
-        public Task<int> AsyncCount
+        public Task<int> CountAsync
             => this.CountAsync().AsTask();
         #endregion
         #endregion
@@ -89,11 +89,11 @@ namespace Microsoft.JSInterop
         }
         #endregion
         #region 删除指定的键值对
-        public Task<bool> AsyncRemove(KeyValuePair<string, string> item)
+        public Task<bool> RemoveAsync(KeyValuePair<string, string> item)
             => RemoveAsync(item.Key);
         #endregion
         #region 全部删除
-        public async Task AsyncClear()
+        public async Task ClearAsync()
         {
             var keys = await this.Select(x => x.Key).ToArrayAsync();
             foreach (var key in keys)
@@ -103,7 +103,7 @@ namespace Microsoft.JSInterop
         }
         #endregion
         #region 添加键值对
-        public Task AsyncAdd(KeyValuePair<string, string> item)
+        public Task AddAsync(KeyValuePair<string, string> item)
             => SetValueAsync(item.Key, item.Value);
         #endregion
         #endregion

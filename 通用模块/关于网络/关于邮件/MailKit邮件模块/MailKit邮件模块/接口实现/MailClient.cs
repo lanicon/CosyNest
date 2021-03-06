@@ -78,15 +78,15 @@ namespace System.NetFrancis.Mail
         #region 关于邮件
         #region 关于邮件集合
         #region 返回元素数量
-        public Task<int> AsyncCount
+        public Task<int> CountAsync
             => Request((server, inbox) => Task.FromResult(inbox.Count));
         #endregion
         #region 添加元素
-        public Task AsyncAdd(IMailServed item)
+        public Task AddAsync(IMailServed item)
             => throw new NotImplementedException("不支持显式向邮箱中添加邮件，请使用发送邮件完成这个功能");
         #endregion
         #region 移除元素
-        public Task<bool> AsyncRemove(IMailServed item)
+        public Task<bool> RemoveAsync(IMailServed item)
             => Request(async (server, inbox) =>
             {
                 if (item is MailServed m && m.Client == this)
@@ -99,7 +99,7 @@ namespace System.NetFrancis.Mail
             });
         #endregion
         #region 移除全部元素
-        public Task AsyncClear()
+        public Task ClearAsync()
             => Request(async (server, inbox) =>
             {
                 foreach (var item in await inbox.FetchAsync(0, -1, MessageSummaryItems.UniqueId))
@@ -130,7 +130,7 @@ namespace System.NetFrancis.Mail
         }
         #endregion
         #region 检查指定信件是否在邮箱中
-        public Task<bool> AsyncContains(IMailServed item)
+        public Task<bool> ContainsAsync(IMailServed item)
             => Task.FromResult(item is MailServed m && m.Client == this);
         #endregion
         #endregion

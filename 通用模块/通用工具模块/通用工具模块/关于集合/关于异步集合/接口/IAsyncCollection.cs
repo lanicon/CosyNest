@@ -13,7 +13,7 @@ namespace System.Collections.Generic
         /// <summary>
         /// 返回迭代器中元素的数量
         /// </summary>
-        Task<int> AsyncCount { get; }
+        Task<int> CountAsync { get; }
         #endregion
         #region 添加元素
         /// <summary>
@@ -21,7 +21,7 @@ namespace System.Collections.Generic
         /// </summary>
         /// <param name="item">待添加的元素</param>
         /// <returns></returns>
-        Task AsyncAdd(Obj item);
+        Task AddAsync(Obj item);
         #endregion
         #region 移除元素
         /// <summary>
@@ -30,7 +30,7 @@ namespace System.Collections.Generic
         /// </summary>
         /// <param name="item">待移除的元素</param>
         /// <returns></returns>
-        Task<bool> AsyncRemove(Obj item);
+        Task<bool> RemoveAsync(Obj item);
         #endregion
         #region 检查是否包含指定元素
         /// <summary>
@@ -39,14 +39,14 @@ namespace System.Collections.Generic
         /// <param name="item">待检查的元素</param>
         /// <returns>如果包含指定元素，
         /// 则返回<see langword="true"/>，否则返回<see langword="false"/></returns>
-        Task<bool> AsyncContains(Obj item);
+        Task<bool> ContainsAsync(Obj item);
         #endregion
         #region 移除全部元素
         /// <summary>
         /// 移除迭代器中的全部元素
         /// </summary>
         /// <returns></returns>
-        Task AsyncClear();
+        Task ClearAsync();
         #endregion
     }
 }

@@ -46,7 +46,7 @@ namespace System.Linq
             if (Dict is IDictionary<Key, Value> or IReadOnlyDictionary<Key, Value>)
             {
                 return Dict.To<dynamic>().TryGetValue(key, out Value value) ?
-                 (true, value) : (false, (Value)NoFound);
+                 (true, value) : (false, NoFound);
             }
             throw new ExceptionTypeUnlawful(Dict, typeof(IDictionary<Key, Value>), typeof(IReadOnlyDictionary<Key, Value>));
         }
@@ -137,7 +137,7 @@ namespace System.Linq
         /// <returns></returns>
         public static KeyValuePair<Key, Value> ToKV<Key, Value>(this (Key, Value) Tupts)
             where Key : notnull
-            => new KeyValuePair<Key, Value>(Tupts.Item1, Tupts.Item2);
+            => new(Tupts.Item1, Tupts.Item2);
         #endregion
         #region 批量转换元组为键值对
         /// <summary>
