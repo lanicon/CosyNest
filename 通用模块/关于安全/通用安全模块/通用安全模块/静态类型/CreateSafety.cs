@@ -81,15 +81,15 @@ namespace System.SafetyFrancis
         #region 创建IEncryption
         #region 先计算哈希，然后加密
         /// <summary>
-        /// 创建一个<see cref="IEncryption"/>，
+        /// 创建一个<see cref="ICryptology"/>，
         /// 它先对明文计算哈希值，然后对哈希值加密，
-        /// 这种操作常用于传递密码
+        /// 解密的结果也是哈希值，这种操作常用于传递密码
         /// </summary>
         /// <param name="Hash">用于计算哈希值的对象</param>
-        /// <param name="Encryption">用于对哈希值进行加密的对象</param>
+        /// <param name="Cryptology">用于对哈希值进行加解密的对象</param>
         /// <returns></returns>
-        public static IEncryption EncryptionHash(IHash Hash, IEncryption Encryption)
-            => new CryptologyHash(Hash, Encryption);
+        public static ICryptology EncryptionHash(IHash Hash, ICryptology Cryptology)
+            => new CryptologyHash(Hash, Cryptology);
         #endregion
         #endregion
     }
