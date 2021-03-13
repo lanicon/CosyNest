@@ -4,7 +4,7 @@ using System.IOFrancis.Bit;
 namespace System.SafetyFrancis.Algorithm
 {
     /// <summary>
-    /// 这个类型是<see cref="IEncryption"/>的实现，
+    /// 这个类型是<see cref="ICryptology"/>的实现，
     /// 它会先取明文的哈希值，再对哈希值进行加密，
     /// 解密的结果也是哈希值
     /// </summary>
