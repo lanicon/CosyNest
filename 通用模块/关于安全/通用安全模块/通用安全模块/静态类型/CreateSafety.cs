@@ -52,19 +52,23 @@ namespace System.SafetyFrancis
         /// 它在内部使用<see cref="HashAlgorithm"/>来计算哈希值
         /// </summary>
         /// <typeparam name="Hash">用于计算哈希值的算法</typeparam>
+        /// <param name="Optimization">如果这个值为<see langword="true"/>，
+        /// 则启用优化模式，能够提高计算小型明文的性能，并且不会调用非托管代码，可以在Webassembly中使用</param>
         /// <returns></returns>
-        public static IHash Hash<Hash>()
+        public static IHash Hash<Hash>(bool Optimization = false)
             where Hash : HashAlgorithm, new()
-            => new HashBCL<Hash>();
+            => new HashBCL<Hash>() { Optimization = Optimization };
         #endregion
         #region 使用SHA512Managed
         /// <summary>
         /// 创建一个<see cref="IHash"/>，
         /// 它使用<see cref="SHA512Managed"/>作为算法
         /// </summary>
+        /// <param name="Optimization">如果这个值为<see langword="true"/>，
+        /// 则启用优化模式，能够提高计算小型明文的性能，并且不会调用非托管代码，可以在Webassembly中使用</param>
         /// <returns></returns>
-        public static IHash Hash()
-            => Hash<SHA512Managed>();
+        public static IHash Hash(bool Optimization = false)
+            => Hash<SHA512Managed>(Optimization);
         #endregion
         #endregion
         #region 创建ICryptology
