@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-
-namespace System.Office.Word.Realize
+﻿namespace System.Office.Word.Realize
 {
     /// <summary>
     /// 这个类型封装Word文本位置，

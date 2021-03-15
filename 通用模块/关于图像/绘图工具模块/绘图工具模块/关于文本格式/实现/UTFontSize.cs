@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Maths;
-using static System.Maths.CreateBaseMathObj;
+﻿using System.Maths;
 
 namespace System.DrawingFrancis.Text
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Maths
+﻿namespace System.Maths
 {
     /// <summary>
     /// 这个类型是<see cref="IRandom"/>的实现，

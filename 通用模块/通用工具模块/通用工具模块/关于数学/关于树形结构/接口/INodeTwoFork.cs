@@ -6,7 +6,7 @@ namespace System.Maths
     /// 凡是实现这个接口的类型，
     /// 都可以视作一个二叉树节点
     /// </summary>
-    public interface INodeTwoFork : INode
+    public interface INodeTwoFork : INode<INodeTwoFork>
     {
         #region 返回左值
         /// <summary>

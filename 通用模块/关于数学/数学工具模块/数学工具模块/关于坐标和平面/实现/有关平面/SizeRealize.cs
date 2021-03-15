@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Maths
+﻿namespace System.Maths
 {
     /// <summary>
     /// <see cref="ISize"/>的实现，

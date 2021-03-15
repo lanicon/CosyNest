@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Collections.Generic
+﻿namespace System.Collections.Generic
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

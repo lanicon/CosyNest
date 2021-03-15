@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Maths.Geometric
+﻿namespace System.Maths.Geometric
 {
     /// <summary>
     /// 这个几何模型可以用来绘制线段

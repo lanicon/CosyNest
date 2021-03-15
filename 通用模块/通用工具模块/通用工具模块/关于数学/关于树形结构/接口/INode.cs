@@ -24,13 +24,32 @@ namespace System.Maths
         INode Ancestors
             => Father?.Ancestors ?? this;
         #endregion
+        #region 枚举所有祖先节点
+        /// <summary>
+        /// 枚举本节点的所有祖先节点
+        /// </summary>
+        IEnumerable<INode> AncestorsAll
+        {
+            get
+            {
+                var node = this;
+                while (true)
+                {
+                    node = node!.Father;
+                    if (node is null)
+                        yield break;
+                    yield return node;
+                }
+            }
+        }
+        #endregion
         #region 返回节点的深度
         /// <summary>
         /// 返回节点的深度，
         /// 也就是与根节点的距离
         /// </summary>
         int Depth
-            => Father == null ? 0 : Father.Depth + 1;
+            => Father is null ? 0 : Father.Depth + 1;
         #endregion
         #endregion
         #region 有关子节点

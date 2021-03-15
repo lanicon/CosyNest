@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.DrawingFrancis
+﻿namespace System.DrawingFrancis
 {
     /// <summary>
     /// 这个类型是<see cref="IColor"/>的实现，可以用来表示颜色

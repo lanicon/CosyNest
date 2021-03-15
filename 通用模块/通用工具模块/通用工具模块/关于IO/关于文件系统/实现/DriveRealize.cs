@@ -43,12 +43,7 @@ namespace System.IOFrancis.FileSystem
         #endregion
         #region 获取子节点
         public IEnumerable<INode> Son
-        {
-            get
-            {
-                yield return CreateIO.Directory(PackDrive.RootDirectory.FullName);
-            }
-        }
+            => new[] { CreateIO.Directory(PackDrive.RootDirectory.FullName) };
         #endregion
         #endregion
         #region 重写的ToString方法

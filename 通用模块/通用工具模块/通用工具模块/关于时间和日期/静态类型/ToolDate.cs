@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 有关时间和日期的工具类

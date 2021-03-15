@@ -105,8 +105,10 @@ namespace System.IOFrancis.FileSystem
             get => IO.Path.GetFileName(Path);
             set
             {
+#pragma warning disable CA2208
                 var Father = IO.Path.GetDirectoryName(Path)!;
                 Path = IO.Path.Combine(Father, value ?? throw new ArgumentNullException($"{nameof(NameFull)}禁止写入null值"));
+#pragma warning restore
             }
         }
         #endregion

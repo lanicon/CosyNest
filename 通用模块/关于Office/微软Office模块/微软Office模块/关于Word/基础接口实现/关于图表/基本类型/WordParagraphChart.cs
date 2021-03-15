@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.DataFrancis;
-using System.Design;
-using System.Maths;
-using System.Office.Chart;
+﻿using System.Office.Chart;
 using System.Office.Excel;
-using System.Office.Excel.Chart;
 using System.Office.Word.Realize;
-using System.Text;
 
 using Microsoft.Office.Interop.Word;
-
-using ChartType = Microsoft.Office.Core.XlChartType;
 
 namespace System.Office.Word.Chart
 {

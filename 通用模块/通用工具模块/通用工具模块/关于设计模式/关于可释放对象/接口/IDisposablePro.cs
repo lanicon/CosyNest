@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Design
+﻿namespace System.Design
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

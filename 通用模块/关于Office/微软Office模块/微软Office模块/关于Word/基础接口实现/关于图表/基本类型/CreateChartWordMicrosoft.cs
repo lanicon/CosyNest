@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Office.Chart;
+﻿using System.Office.Chart;
 using System.Office.Word.Realize;
-using System.Text;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;

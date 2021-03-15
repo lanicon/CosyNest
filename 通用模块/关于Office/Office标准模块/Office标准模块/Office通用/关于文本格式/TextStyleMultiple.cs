@@ -15,7 +15,7 @@ namespace System.Office
         /// 或调用任何方法时都会引发该异常
         /// </summary>
         private static NotImplementedException Exception
-            => new NotImplementedException("由于选定文本或范围的各个部分具有不同的文本格式，" +
+            => new("由于选定文本或范围的各个部分具有不同的文本格式，" +
                 $"不支持读写该{nameof(ITextStyleVar)}的任何属性，或调用任何方法");
         #endregion
         #region 接口实现

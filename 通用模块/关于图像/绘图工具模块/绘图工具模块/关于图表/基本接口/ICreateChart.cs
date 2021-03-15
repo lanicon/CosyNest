@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.DrawingFrancis.Chart
+﻿namespace System.DrawingFrancis.Chart
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

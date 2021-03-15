@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.DrawingFrancis;
 using System.DrawingFrancis.Text;
-using System.Text;
 using System.Linq;
 using Microsoft.Office.Interop.Excel;
 using EXRange = Microsoft.Office.Interop.Excel.Range;

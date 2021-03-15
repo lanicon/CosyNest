@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Time.Plan
+﻿namespace System.Time.Plan
 {
     /// <summary>
     /// 表示一个按照指定<see cref="TimeSpan"/>重复的计划任务触发器

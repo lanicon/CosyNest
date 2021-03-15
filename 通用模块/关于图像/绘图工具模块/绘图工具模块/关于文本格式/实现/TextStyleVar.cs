@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Performance;
-using System.Maths;
+﻿using System.Maths;
 
 namespace System.DrawingFrancis.Text
 {

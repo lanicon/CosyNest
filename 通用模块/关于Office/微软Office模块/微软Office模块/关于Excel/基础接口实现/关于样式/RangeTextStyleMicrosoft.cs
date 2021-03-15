@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing.Text;
-using Microsoft.Office.Interop.Excel;
-using System.Maths;
+﻿using System.Maths;
 using System.DrawingFrancis;
 using System.DrawingFrancis.Text;
 using static System.Maths.CreateBaseMathObj;

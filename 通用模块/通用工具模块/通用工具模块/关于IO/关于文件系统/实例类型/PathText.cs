@@ -23,7 +23,7 @@ namespace System.IOFrancis.FileSystem
         public static implicit operator string(PathText a)
             => a.Path;
         public static implicit operator PathText(string a)
-            => new PathText(a);
+            => new(a);
         #endregion
         #region 运算符重载
         #region 重载+号

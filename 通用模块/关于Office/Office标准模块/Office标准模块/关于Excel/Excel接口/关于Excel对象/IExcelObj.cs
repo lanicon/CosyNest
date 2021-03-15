@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Maths;
+﻿using System.Maths;
 
 namespace System.Office.Excel
 {

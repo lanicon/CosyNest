@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Office.Excel.Realize;
+﻿using System.Office.Excel.Realize;
 using Microsoft.Office.Interop.Excel;
-using System.DrawingFrancis.Chart;
-using System.Office.Excel.Chart;
-using System.Office.Realize;
 using System.Office.Chart;
 
 namespace System.Office.Excel

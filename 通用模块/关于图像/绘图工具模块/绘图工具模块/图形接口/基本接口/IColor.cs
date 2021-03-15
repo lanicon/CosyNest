@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.DrawingFrancis
+﻿namespace System.DrawingFrancis
 {
     /// <summary>
     /// 凡是实现这个接口的类型，都可以视为一个32位颜色

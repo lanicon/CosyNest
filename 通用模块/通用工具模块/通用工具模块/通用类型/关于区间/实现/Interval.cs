@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示一个区间，它具有一个上限和下限

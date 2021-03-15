@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Time.Plan
+﻿namespace System.Time.Plan
 {
     /// <summary>
     /// 表示一个按照日期重复的触发器

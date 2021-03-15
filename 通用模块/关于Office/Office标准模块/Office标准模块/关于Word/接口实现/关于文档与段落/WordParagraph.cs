@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-
-namespace System.Office.Word.Realize
+﻿namespace System.Office.Word.Realize
 {
     /// <summary>
     /// 这个类型是对<see cref=" IWordParagraph"/>的实现，

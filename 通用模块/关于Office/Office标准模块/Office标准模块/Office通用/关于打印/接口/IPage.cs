@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Underlying;
-
-namespace System.Office
+﻿namespace System.Office
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.DrawingFrancis.Chart;
+﻿using System.DrawingFrancis.Chart;
 using System.Office.Chart;
-using System.Text;
 
 namespace System.Office.Word
 {

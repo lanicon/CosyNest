@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Office.Word.Realize;
+
 using Microsoft.Office.Interop.Word;
-using WordRange = Microsoft.Office.Interop.Word.Range;
 
 namespace System.Office.Word
 {

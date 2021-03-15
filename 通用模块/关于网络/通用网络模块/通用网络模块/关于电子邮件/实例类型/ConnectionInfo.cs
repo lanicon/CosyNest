@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.NetFrancis.Mail
+﻿namespace System.NetFrancis.Mail
 {
     /// <summary>
     /// 这个类型可以提供连接邮件服务器所需要的信息

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WordRange = Microsoft.Office.Interop.Word.Range;
+﻿using WordRange = Microsoft.Office.Interop.Word.Range;
 
 namespace System.Office.Word
 {

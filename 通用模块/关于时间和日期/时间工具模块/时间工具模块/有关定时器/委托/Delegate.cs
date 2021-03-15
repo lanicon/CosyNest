@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Time
+﻿namespace System.Time
 {
     #region 说明文档
     /*问：该委托与IPlanTrigger有何区别？

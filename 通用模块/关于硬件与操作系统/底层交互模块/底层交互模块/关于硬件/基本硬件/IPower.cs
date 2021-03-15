@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Underlying
+﻿namespace System.Underlying
 {
     /// <summary>
     /// 这个接口封装了一些关于电源的API

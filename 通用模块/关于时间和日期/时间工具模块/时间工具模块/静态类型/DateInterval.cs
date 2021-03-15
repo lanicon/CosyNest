@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DI = System.IInterval<System.DateTimeOffset>;
+﻿using DI = System.IInterval<System.DateTimeOffset>;
 
 namespace System.Time
 {

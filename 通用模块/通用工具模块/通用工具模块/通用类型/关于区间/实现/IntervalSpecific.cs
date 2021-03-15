@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 这个类型是<see cref="IIntervalSpecific{Obj}"/>的实现，

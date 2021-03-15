@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Design.Direct
+﻿namespace System.Design.Direct
 {
     /// <summary>
     /// 表示由于<see cref="ISchema"/>架构不兼容所导致的异常

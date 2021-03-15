@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Office.Chart;
 using System.Office.Word;
-using System.Text;
 
 using Microsoft.Office.Interop.Excel;
 

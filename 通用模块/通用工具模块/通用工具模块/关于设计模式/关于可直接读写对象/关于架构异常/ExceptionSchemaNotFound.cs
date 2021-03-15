@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Design.Direct
+﻿namespace System.Design.Direct
 {
     /// <summary>
     /// 表示由于架构中的属性未找到所引发的异常

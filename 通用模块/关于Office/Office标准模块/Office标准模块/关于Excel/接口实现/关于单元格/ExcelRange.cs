@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Office.Excel.Realize
+﻿namespace System.Office.Excel.Realize
 {
     /// <summary>
     /// 在实现<see cref="IExcelRange"/>时，

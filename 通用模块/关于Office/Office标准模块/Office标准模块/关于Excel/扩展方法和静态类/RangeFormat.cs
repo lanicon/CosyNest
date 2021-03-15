@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Office.Excel
+﻿namespace System.Office.Excel
 {
     /// <summary>
     /// 这个静态类储存一些常用的Excel单元格数字格式

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.NetFrancis
+﻿namespace System.NetFrancis
 {
     /// <summary>
     /// 这个静态类枚举HTTP协议的媒体类型的名称

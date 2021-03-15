@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Design
+﻿namespace System.Design
 {
     /// <summary>
     /// 表示一个延迟加载的事件，

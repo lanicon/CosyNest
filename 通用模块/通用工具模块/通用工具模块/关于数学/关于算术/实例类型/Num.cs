@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 代表有理数类型，
@@ -11,7 +9,7 @@ namespace System
         #region 说明文档
         /*说明文档：
           问：为什么需要设计本类型？
-          答：.net的数字系统十分复杂，不同长度的数字，以及整数和浮点数的类型都不一样，
+          答：.Net的数字系统十分复杂，不同长度的数字，以及整数和浮点数的类型都不一样，
           虽然这种设计在计算机上是合理的，但是毕竟给数学运算带来了不便，
           因此设计者编写了一个统一的数字类型，它可以兼容一切现有的数字类型，
           这会产生一定的性能损失，不过可以避免反复声明作用相同但数字类型不同的API*/
@@ -34,17 +32,17 @@ namespace System
         #endregion
         #region 反向转换
         public static implicit operator Num(short num)
-            => new Num(num);
+            => new(num);
         public static implicit operator Num(int num)
-            => new Num(num);
+            => new(num);
         public static implicit operator Num(long num)
-            => new Num(num);
+            => new(num);
         public static implicit operator Num(float num)
-            => new Num((decimal)num);
+            => new((decimal)num);
         public static implicit operator Num(double num)
-            => new Num((decimal)num);
+            => new((decimal)num);
         public static implicit operator Num(decimal num)
-            => new Num(num);
+            => new(num);
         #endregion
         #endregion
         #region 重载一元运算符
@@ -127,7 +125,7 @@ namespace System
             => obj switch
             {
                 Num num => Value == num.Value,
-                IConvertible _ => Value == Convert.ToDecimal(obj),
+                IConvertible => Value == Convert.ToDecimal(obj),
                 _ => false
             };
         #endregion

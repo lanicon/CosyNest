@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace System.Time
+﻿namespace System.Time
 {
     /// <summary>
     /// 这个静态类可以用来创建定时器

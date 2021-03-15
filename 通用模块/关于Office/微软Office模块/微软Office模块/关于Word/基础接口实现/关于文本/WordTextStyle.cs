@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Design;
 using System.Linq;
 using System.Reflection;
 using WordRange = Microsoft.Office.Interop.Word.Range;

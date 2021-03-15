@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 关于时间和日期的扩展方法全部放在这里
@@ -42,7 +40,7 @@ namespace System
         /// <param name="date">待返回时间部分的日期</param>
         /// <returns>该日期的时间部分</returns>
         public static TimeOfDay TimeOfDay(this DateTime date)
-            => new TimeOfDay(date.Hour, date.Minute, date.Second, date.Millisecond);
+            => new(date.Hour, date.Minute, date.Second, date.Millisecond);
         #endregion
         #region 替换时间
         /// <summary>
@@ -88,7 +86,7 @@ namespace System
         /// <returns>时间被替换后的新<see cref="DateTimeOffset"/>，
         /// 除了一天内的时间部分不同以外，其他部分与原始对象相同</returns>
         public static DateTimeOffset ReplaceTime(this DateTimeOffset Date, TimeOfDay NewTime)
-            => new DateTimeOffset(Date.Date.ReplaceTime(NewTime), Date.Offset);
+            => new(Date.Date.ReplaceTime(NewTime), Date.Offset);
         #endregion
         #endregion
         #region 关于DayOfWeek

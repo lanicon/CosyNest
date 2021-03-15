@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.DataFrancis
+﻿namespace System.DataFrancis
 {
     /// <summary>
     /// 代表一个数据占位符，它不是真正的数据，
@@ -23,7 +19,7 @@ namespace System.DataFrancis
         /// <param name="ColumnName">数据占位符的列名</param>
         /// <returns></returns>
         public PlaceholderValue this[string ColumnName]
-             => new PlaceholderValue(Data[ColumnName]);
+             => new(Data[ColumnName]);
         #endregion
         #region 返回数据的索引
         /// <summary>

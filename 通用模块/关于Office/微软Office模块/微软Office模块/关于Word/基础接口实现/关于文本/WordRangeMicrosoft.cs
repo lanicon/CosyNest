@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Office;
-using System.Office.Word.Realize;
+﻿using System.Office.Word.Realize;
 using System.DrawingFrancis.Text;
 using System.Linq;
 using WordRange = Microsoft.Office.Interop.Word.Range;

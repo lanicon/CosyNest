@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Threading.Tasks
+﻿namespace System.Threading.Tasks
 {
     /// <summary>
     /// 这个静态类可以用来创建和多线程有关的对象

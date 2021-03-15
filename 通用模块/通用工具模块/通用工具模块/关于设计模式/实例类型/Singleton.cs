@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Design
+﻿namespace System.Design
 {
     /// <summary>
     /// 这个类型可以帮助实现单例模式

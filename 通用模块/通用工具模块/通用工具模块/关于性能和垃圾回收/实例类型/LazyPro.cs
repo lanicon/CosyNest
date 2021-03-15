@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 强化的延迟计算对象，能够自动进行一些转换，
@@ -16,10 +14,10 @@ namespace System
         #endregion
         #region 隐式转换
         public static implicit operator LazyPro<Values>(Func<Values> Del)
-            => new LazyPro<Values>(Del);
+            => new(Del);
 
         public static implicit operator LazyPro<Values>(Values Value)
-            => new LazyPro<Values>(Value);
+            => new(Value);
 
         public static implicit operator Values?(LazyPro<Values>? Lazy)
             => Lazy is null ? default : Lazy.Value;

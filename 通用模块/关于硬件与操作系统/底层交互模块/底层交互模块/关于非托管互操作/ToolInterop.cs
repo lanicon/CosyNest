@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Runtime.InteropServices
+﻿namespace System.Runtime.InteropServices
 {
     /// <summary>
     /// 有关互操作的工具类

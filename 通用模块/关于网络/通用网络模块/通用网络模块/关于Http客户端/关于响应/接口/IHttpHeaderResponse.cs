@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.NetFrancis.Http
+﻿namespace System.NetFrancis.Http
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

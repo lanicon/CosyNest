@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Underlying.PC
+﻿namespace System.Underlying.PC
 {
     /// <summary>
     /// 这个静态类可以创建特定于PC平台的硬件接口对象

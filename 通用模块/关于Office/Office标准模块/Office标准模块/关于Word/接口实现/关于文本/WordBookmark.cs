@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Maths;
-
-namespace System.Office.Word.Realize
+﻿namespace System.Office.Word.Realize
 {
     /// <summary>
     /// 这个类型是<see cref="IWordBookmark"/>的实现，

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Collections.Generic.Realize
+﻿namespace System.Collections.Generic.Realize
 {
     /// <summary>
     /// 表示一个<see cref="IList{T}"/>的默认实现

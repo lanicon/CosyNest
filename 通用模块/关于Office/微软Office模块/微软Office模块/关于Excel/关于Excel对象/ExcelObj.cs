@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Maths;
+﻿using System.Maths;
 using IPoint = System.Maths.IPoint;
 using Microsoft.Office.Interop.Excel;
 using System.Office.Word;

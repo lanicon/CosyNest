@@ -81,7 +81,7 @@ namespace System.IOFrancis.FileSystem
             IO Get(string? Name)
                 => Create(System.IO.Path.Combine(Path, Name ?? Guid.NewGuid().ToString() + Extension));
             #endregion
-            return Name == null ?
+            return Name is null ?
                 Get(Name) :
                 Get(Son.OfType<IIO>().Select(x => x.NameFull).Distinct(Name));        //保证文件或目录名不重复
         }

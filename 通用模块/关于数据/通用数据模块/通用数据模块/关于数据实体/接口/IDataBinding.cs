@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.DataFrancis
+﻿namespace System.DataFrancis
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

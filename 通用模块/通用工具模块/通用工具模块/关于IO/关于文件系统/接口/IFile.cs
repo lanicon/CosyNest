@@ -20,7 +20,7 @@ namespace System.IOFrancis.FileSystem
         {
             get => IO.Path.GetFileNameWithoutExtension(Path);
             set => Path = ToolPath.RefactoringPath(Path,
-                value ?? throw new ArgumentNullException($"文件名称禁止写入null值"), null);
+                value ?? throw new ArgumentNullException($"{NameSimple}禁止写入null值"), null);
         }
         #endregion
         #region 读写扩展名
@@ -33,7 +33,7 @@ namespace System.IOFrancis.FileSystem
         {
             get => ToolPath.Split(Path, false).Extended;
             set => Path = ToolPath.RefactoringPath(Path, null,
-                value ?? throw new ArgumentNullException($"扩展名禁止写入null值"));
+                value ?? throw new ArgumentNullException($"{NameExtension}禁止写入null值"));
         }
         #endregion
         #region 关于文件类型

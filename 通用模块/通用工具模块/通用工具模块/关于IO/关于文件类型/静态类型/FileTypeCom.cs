@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.IOFrancis.FileSystem
+﻿namespace System.IOFrancis.FileSystem
 {
     /// <summary>
     /// 在这里储存了一些常用的文件类型对象

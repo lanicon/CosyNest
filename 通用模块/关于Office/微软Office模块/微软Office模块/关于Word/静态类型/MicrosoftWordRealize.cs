@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Drawing;
 using Microsoft.Office.Interop.Word;
 using WordRange = Microsoft.Office.Interop.Word.Range;
 using System.Maths;
@@ -115,7 +112,7 @@ namespace System.Office.Word
         /// <param name="Shape">待判断的形状对象</param>
         /// <returns></returns>
         public static bool IsChart(this InlineShape Shape)
-            => Shape.HasChart is Microsoft.Office.Core.MsoTriState.msoTrue;
+            => Shape.HasChart is MsoTriState.msoTrue;
         #endregion
         #endregion
         #region 关于图表

@@ -11,6 +11,8 @@ namespace System.IOFrancis.FileSystem
     /// </summary>
     class FileRealize : IORealize, IFile
     {
+#pragma warning disable CA2208
+
         #region 封装的对象
         #region 封装的文件对象
         /// <summary>

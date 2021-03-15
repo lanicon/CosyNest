@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Office
+﻿namespace System.Office
 {
     /// <summary>
     /// 这个枚举描述Office对象的对齐方式

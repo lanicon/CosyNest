@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.DrawingFrancis;
+﻿using System.Collections.Generic;
 using System.DrawingFrancis.Text;
 using System.Reflection;
 using System.Linq;

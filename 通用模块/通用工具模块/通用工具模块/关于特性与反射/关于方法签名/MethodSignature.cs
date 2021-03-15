@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Reflection
+﻿namespace System.Reflection
 {
     /// <summary>
     /// 这个类型表示一个方法的签名

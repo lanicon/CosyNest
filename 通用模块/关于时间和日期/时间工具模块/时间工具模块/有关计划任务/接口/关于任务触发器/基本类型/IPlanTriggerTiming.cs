@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Time.Plan
+﻿namespace System.Time.Plan
 {
     /// <summary>
     /// 凡是实现这个接口的类型，都可以视为一个定时计划任务触发器，

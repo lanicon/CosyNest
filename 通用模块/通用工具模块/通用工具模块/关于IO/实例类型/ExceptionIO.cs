@@ -17,7 +17,7 @@ namespace System.IOFrancis
         /// <param name="Path">发生异常的路径</param>
         /// <returns></returns>
         public static ExceptionIO BecauseExist(string Path)
-            => new ExceptionIO(Path, "源文件或目录不存在，或者路径不合法");
+            => new(Path, "源文件或目录不存在，或者路径不合法");
         #endregion
         #region 抛出异常
         /// <summary>
@@ -39,7 +39,7 @@ namespace System.IOFrancis
         /// <param name="Path">发生错误的路径</param>
         /// <returns></returns>
         public static ExceptionIO BecauseNotLegal(string Path)
-            => new ExceptionIO(Path, "该路径不是合法路径");
+            => new(Path, "该路径不是合法路径");
         #endregion
         #region 抛出异常
         /// <summary>
@@ -62,7 +62,7 @@ namespace System.IOFrancis
         /// <param name="fileType">受支持的文件类型</param>
         /// <returns></returns>
         public static ExceptionIO BecauseFileType(string path, IFileType fileType)
-            => new ExceptionIO(path, "文件不是受支持的类型",
+            => new(path, "文件不是受支持的类型",
                 $"该文件扩展名：{(IO.Path.GetExtension(path) ?? "该IO对象不是文件，或没有扩展名").TrimStart('.')}",
                 $"受支持的文件扩展名：{fileType.ExtensionName.Join("、")}");
         #endregion
@@ -88,7 +88,7 @@ namespace System.IOFrancis
         /// <param name="Another">指示路径被谁占用了，如果不填，在错误描述中不会出现</param>
         /// <returns></returns>
         public static ExceptionIO BecauseOccupied(string Path, string? Another = null)
-            => new ExceptionIO(Path, $"该路径已被{Another}占用");
+            => new(Path, $"该路径已被{Another}占用");
         #endregion
         #endregion
         #region 发生异常的路径

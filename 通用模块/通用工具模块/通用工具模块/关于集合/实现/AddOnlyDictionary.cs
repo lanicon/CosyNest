@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Collections.Generic
+﻿namespace System.Collections.Generic
 {
     /// <summary>
     /// 这个类型代表一个只能添加元素，不能删除元素的字典

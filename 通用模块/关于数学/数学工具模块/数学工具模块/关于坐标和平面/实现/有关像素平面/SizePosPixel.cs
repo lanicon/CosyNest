@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Maths
+﻿namespace System.Maths
 {
     /// <summary>
     /// 这个类型是<see cref="ISizePosPixel"/>的实现，

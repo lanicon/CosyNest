@@ -79,7 +79,7 @@ namespace System
         /// 它代表该时间距离当日午夜的时间间隔
         /// </summary>
         public TimeSpan DistanceMidnight
-            => new TimeSpan(0, Hours, Minutes, Seconds, Milliseconds);
+            => new(0, Hours, Minutes, Seconds, Milliseconds);
         #endregion
         #region 解构时间
         /// <summary>

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// 表示由于对象不在指定区间中所引发的异常
@@ -49,7 +47,7 @@ namespace System
         /// <param name="Interval">对象的合法区间</param>
         /// <returns>新创建的异常对象</returns>
         public static ExceptionIntervalOut<Obj> Create<Obj>(Obj ExceptionObj, IInterval<Obj> Interval)
-            => new ExceptionIntervalOut<Obj>(ExceptionObj, Interval);
+            => new(ExceptionObj, Interval);
         #endregion
         #region 检查对象是否位于区间中
         #region 传入区间

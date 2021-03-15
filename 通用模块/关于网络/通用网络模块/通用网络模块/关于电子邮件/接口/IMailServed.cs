@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System.NetFrancis.Mail
+﻿namespace System.NetFrancis.Mail
 {
     /// <summary>
     /// 凡是实现这个接口的类型，

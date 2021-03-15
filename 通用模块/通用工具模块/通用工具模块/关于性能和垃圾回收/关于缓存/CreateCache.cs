@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Performance
+﻿namespace System.Performance
 {
     /// <summary>
     /// 这个静态类可以用来帮助创建缓存

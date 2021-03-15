@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.DataFrancis
+﻿namespace System.DataFrancis
 {
     /// <summary>
     /// 代表一个值占位符，
@@ -13,17 +9,17 @@ namespace System.DataFrancis
     {
         #region 运算符重载
         public static PlaceholderValue operator +(PlaceholderValue a, dynamic b)
-            => new PlaceholderValue((dynamic?)a.Value + b);
+            => new((dynamic?)a.Value + b);
         public static PlaceholderValue operator -(PlaceholderValue a, dynamic b)
-            => new PlaceholderValue((dynamic?)a.Value - b);
+            => new((dynamic?)a.Value - b);
         public static PlaceholderValue operator *(PlaceholderValue a, dynamic b)
-            => new PlaceholderValue((dynamic?)a.Value * b);
+            => new((dynamic?)a.Value * b);
         public static PlaceholderValue operator /(PlaceholderValue a, dynamic b)
-            => new PlaceholderValue((dynamic?)a.Value / b);
+            => new((dynamic?)a.Value / b);
         public static PlaceholderValue operator %(PlaceholderValue a, dynamic b)
-            => new PlaceholderValue((dynamic?)a.Value % b);
+            => new((dynamic?)a.Value % b);
         public static PlaceholderValue operator -(PlaceholderValue a)
-            => new PlaceholderValue(-(dynamic?)a.Value);
+            => new(-(dynamic?)a.Value);
         public static bool operator ==(PlaceholderValue a, dynamic b)
             => Equals(a.Value, b);
         public static bool operator !=(PlaceholderValue a, dynamic b)

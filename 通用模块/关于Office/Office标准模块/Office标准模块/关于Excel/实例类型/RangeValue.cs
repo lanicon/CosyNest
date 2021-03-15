@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Office.Excel
+﻿namespace System.Office.Excel
 {
     /// <summary>
     /// 这个类型表示Excel单元格的值
@@ -41,23 +36,23 @@ namespace System.Office.Excel
         #region 隐式转换
         #region 从String转换
         public static implicit operator RangeValue(string value)
-            => new RangeValue(value);
+            => new(value);
         #endregion
         #region 从Int转换
         public static implicit operator RangeValue(int value)
-            => new RangeValue(value);
+            => new(value);
         #endregion
         #region 从Double转换
         public static implicit operator RangeValue(double value)
-            => new RangeValue(value);
+            => new(value);
         #endregion
         #region 从DateTime转换
         public static implicit operator RangeValue(DateTime value)
-            => new RangeValue(value);
+            => new(value);
         #endregion
         #region 从数组转换
         public static implicit operator RangeValue(Array value)
-            => new RangeValue(value);
+            => new(value);
         #endregion
         #endregion
         #region 值的内容

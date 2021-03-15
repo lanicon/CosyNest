@@ -9,6 +9,8 @@ namespace System.IOFrancis.FileSystem
     /// </summary>
     abstract class IORealize : IIO
     {
+#pragma warning disable CA2208
+
         #region 封装的对象
         /// <summary>
         /// 获取封装的文件目录对象，
@@ -36,7 +38,7 @@ namespace System.IOFrancis.FileSystem
             }
             set
             {
-                if (value == null)
+                if (value is null)
                     throw new ArgumentNullException($"{nameof(Father)}不能写入null值");
                 Path = IO.Path.Combine(value.Path, this.To<IIO>().NameFull);
             }

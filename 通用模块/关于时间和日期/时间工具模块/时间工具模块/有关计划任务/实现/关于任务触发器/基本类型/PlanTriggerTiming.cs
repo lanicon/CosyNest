@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Maths;
-
-namespace System.Time.Plan
+﻿namespace System.Time.Plan
 {
     /// <summary>
     /// 表示一个具备确定开始时间的触发器

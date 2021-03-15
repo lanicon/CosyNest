@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace System.Design
+﻿namespace System.Design
 {
     /// <summary>
     /// 代表一个不需要释放的<see cref="IDisposablePro"/>，

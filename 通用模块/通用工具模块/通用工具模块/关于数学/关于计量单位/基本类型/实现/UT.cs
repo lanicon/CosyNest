@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace System.Maths
+﻿namespace System.Maths
 {
     /// <summary>
     /// 表示一个计量单位的模板，

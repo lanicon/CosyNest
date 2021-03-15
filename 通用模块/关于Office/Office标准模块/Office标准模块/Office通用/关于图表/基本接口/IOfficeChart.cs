@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.DrawingFrancis.Chart;
+﻿using System.DrawingFrancis.Chart;
 using System.Office.Excel;
 
 namespace System.Office.Chart
