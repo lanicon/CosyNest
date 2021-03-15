@@ -12,4 +12,9 @@
     <ProjectReference Include="..\..\..\通用工具模块\通用工具模块\通用工具模块.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="关于沉降观测\实现\" />
+    <Folder Include="关于沉降观测\接口\" />
+  </ItemGroup>
+
 </Project>
