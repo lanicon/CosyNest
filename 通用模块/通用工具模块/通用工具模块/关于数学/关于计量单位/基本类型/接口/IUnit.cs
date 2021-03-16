@@ -8,7 +8,7 @@ namespace System.Maths
     /// 都可以视为一个不可变的复合计量单位
     /// </summary>
     /// <typeparam name="Template">计量单位的类型</typeparam>
-    public interface IUnit<Template>
+    public interface IUnit<Template> : IComparable<IUnit<Template>>, IEquatable<IUnit<Template>>
         where Template : IUT
     {
         #region 说明文档

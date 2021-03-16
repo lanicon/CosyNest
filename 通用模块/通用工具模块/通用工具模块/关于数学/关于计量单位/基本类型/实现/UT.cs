@@ -6,6 +6,8 @@
     /// </summary>
     public abstract class UT : IUT
     {
+#pragma warning disable CA2208
+
         #region 有关单位换算和比较
         #region 从本单位换算为公制单位
         /// <summary>
@@ -25,13 +27,20 @@
         public Num FromMetric(Num metricUnit)
               => FromMetricDelegate(metricUnit);
         #endregion
-        #region 比较本单位与另一个单位
+        #region 比较本单位与另一个单位的大小
         public int CompareTo(IUT? other)
         {
             if (UTType.IsAssignableFrom(other ?? throw new ArgumentNullException($"{nameof(other)}不能为null")))
                 return this.To<IUT>().Size.CompareTo(other.Size);
             throw new NotSupportedException($"{GetType()}和{other.GetType()}类型不同，无法进行比较");
         }
+        #endregion
+        #region 比较本单位与另一个单位的相等性
+        public bool Equals(IUT? other)
+            => other is { } &&
+            Name == other.Name &&
+            this.To<IUT>().Size == other.Size &&
+            UTType.IsAssignableFrom(other);
         #endregion
         #endregion
         #region 关于本单位的信息
@@ -58,10 +67,7 @@
         #endregion
         #region 重写的Equals
         public override bool Equals(object? obj)
-            => obj is IUT u &&
-            Name == u.Name &&
-            this.To<IUT>().Size == u.Size &&
-            UTType.IsAssignableFrom(u);
+            => obj is IUT u && Equals(u);
         #endregion
         #region 重写ToString
         public sealed override string ToString()

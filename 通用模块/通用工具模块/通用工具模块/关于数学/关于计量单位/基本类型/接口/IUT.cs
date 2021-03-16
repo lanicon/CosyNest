@@ -8,7 +8,7 @@ namespace System.Maths
     /// 都可以视为一个计量单位的模板，
     /// 它规定了该单位的大小和类型
     /// </summary>
-    public interface IUT : IComparable<IUT>
+    public interface IUT : IComparable<IUT>, IEquatable<IUT>
     {
         #region 说明文档
         /*问：如何确定每种计量单位的公制单位？

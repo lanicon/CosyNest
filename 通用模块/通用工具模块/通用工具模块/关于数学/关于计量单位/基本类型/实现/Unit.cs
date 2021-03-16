@@ -38,6 +38,14 @@ namespace System.Maths
         public IUnit<Template> Convert(params Template[] templates)
             => new Unit<Template>(ValueMetric, templates);
         #endregion
+        #region 比较单位的大小
+        public int CompareTo(IUnit<Template>? other)
+            => ValueMetric.CompareTo(other?.ValueMetric ?? 0);
+        #endregion
+        #region 比较单位的相等性
+        public bool Equals(IUnit<Template>? other)
+            => other is { } && ValueMetric == other.ValueMetric;
+        #endregion 
         #endregion
         #region 重写的方法
         #region 重写GetHashCode
@@ -46,8 +54,7 @@ namespace System.Maths
         #endregion
         #region 重写Equals
         public override bool Equals(object? obj)
-            => obj is IUnit<Template> u &&
-            u.ValueMetric == ValueMetric;
+            => obj is IUnit<Template> u && Equals(u);
         #endregion
         #region 重写ToString
         public override string ToString()
