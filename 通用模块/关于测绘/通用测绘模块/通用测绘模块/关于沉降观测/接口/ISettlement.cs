@@ -3,7 +3,7 @@
 namespace System.Mapping.Settlement
 {
     /// <summary>
-    /// 这个接口是所有沉降观测的基接口
+    /// 这个接口是沉降观测站和观测点的基接口
     /// </summary>
     public interface ISettlement : INode<ISettlement>
     {
@@ -13,18 +13,25 @@ namespace System.Mapping.Settlement
         /// </summary>
         private protected INode Base => this;
         #endregion
-        #region 返回基准点
+        #region 基准点
         /// <summary>
-        /// 返回沉降观测的基准点
+        /// 获取沉降观测的基准点
         /// </summary>
         new ISettlementPoint Ancestors
-            => (ISettlementPoint)Base.Ancestors;
+            => (ISettlementPoint)Base;
         #endregion
         #region 高程
         /// <summary>
         /// 获取沉降观测的高程
         /// </summary>
         IUnit<IUTLength> High { get; }
+        #endregion
+        #region 记录
+        /// <summary>
+        /// 获取沉降观测的记录，
+        /// 如果是基准点，则为<see langword="null"/>
+        /// </summary>
+        IUnit<IUTLength>? Recording { get; }
         #endregion
     }
 }
