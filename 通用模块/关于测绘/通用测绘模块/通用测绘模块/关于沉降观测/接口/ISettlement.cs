@@ -33,5 +33,11 @@ namespace System.Mapping.Settlement
         /// </summary>
         IUnit<IUTLength>? Recording { get; }
         #endregion
+        #region 移除所有后代
+        /// <summary>
+        /// 移除该观测站或观测点的所有后代节点
+        /// </summary>
+        void RemoveOffspring();
+        #endregion
     }
 }

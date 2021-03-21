@@ -7,16 +7,23 @@ namespace System.Mapping.Settlement
     /// </summary>
     class SettlementPoint : SettlementPointBase
     {
+        #region 原始高程
+        public override IUnit<IUTLength> HighOriginal
+            => Father.To<SettlementBase>()!.HighOriginal - Recording!;
+        #endregion
         #region 高程
-        public override IUnit<IUTLength> High => throw new NotImplementedException();
+        public override IUnit<IUTLength> High => HighOriginal + ClosedDifference;
         #endregion
         #region 构造函数
-        /// <inheritdoc cref="SettlementPointBase(string, IUnit{IUTLength})"/>
-        /// <param name="Father">上一站观测点的名称</param>
-        public SettlementPoint(string Name, IUnit<IUTLength> HighOriginal, INode? Father)
-            : base(Name, HighOriginal)
+        /// <inheritdoc cref="SettlementPointBase(string)"/>
+        /// <param name="Recording">原始记录</param>
+        /// <param name="Father">上一站观测站</param>
+        public SettlementPoint(string Name, IUnit<IUTLength> Recording, INode Father)
+            : base(Name)
         {
+            this.Recording = Recording;
             this.Father = Father;
+            RefreshClosed();
         }
         #endregion
     }

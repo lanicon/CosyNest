@@ -1,4 +1,6 @@
-﻿using System.Maths;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Maths;
 
 namespace System.Mapping.Settlement
 {
@@ -12,10 +14,41 @@ namespace System.Mapping.Settlement
         #endregion
         #region 关于闭合与附合
         #region 闭合/附合点
-        public ISettlementPoint? Closed { get; }
+        protected ISettlementPoint? Closed { get; set; }
         #endregion
         #region 闭合/附合差
         public IUnit<IUTLength> ClosedDifference { get; protected set; } = IUnit<IUTLength>.Zero;
+        #endregion
+        #region 刷新闭合
+        /// <summary>
+        /// 调用这个方法以刷新闭合站和闭合差
+        /// </summary>
+        protected void RefreshClosed()
+        {
+            #region 用于枚举闭合环的本地函数
+            SettlementPointBase[] Closed()
+            {
+                var list = new LinkedList<SettlementPointBase>();
+                var known = this.To<INode>().Ancestors.To<SettlementPointRoot>().Known;
+                var inKnown = known.ContainsKey(Name);
+                foreach (var item in this.To<INode>().AncestorsAll.OfType<SettlementPointBase>())
+                {
+                    list.AddLast(item);
+                    if (item.Name == Name || (inKnown && known.ContainsKey(item.Name)))
+                        return list.ToArray();
+                }
+                return Array.Empty<SettlementPointBase>();
+            }
+            #endregion
+            var closed = Closed();
+            if (closed.Any())
+            {
+                var closedPoint = closed[^1];
+                this.Closed = closedPoint;
+                var difference = (HighOriginal - closedPoint.HighOriginal) / closed.Length;
+                closed.Append(this).ForEach(x => x.ClosedDifference = difference);
+            }
+        }
         #endregion
         #endregion
         #region 关于添加和移除后代
@@ -26,7 +59,7 @@ namespace System.Mapping.Settlement
         }
         #endregion
         #region 移除所有后代
-        public void RemoveOffspring()
+        public override void RemoveOffspring()
         {
 
         }
@@ -37,9 +70,7 @@ namespace System.Mapping.Settlement
         /// 使用指定的参数初始化对象
         /// </summary>
         /// <param name="Name">沉降观测点的名称</param>
-        /// <param name="HighOriginal">未经平差的原始高程</param>
-        public SettlementPointBase(string Name, IUnit<IUTLength> HighOriginal)
-            : base(HighOriginal)
+        public SettlementPointBase(string Name)
         {
             this.Name = Name;
         }

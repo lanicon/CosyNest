@@ -12,13 +12,13 @@ namespace System.Mapping.Settlement
         /// <summary>
         /// 获取未经平差的原始高程
         /// </summary>
-        protected IUnit<IUTLength> HighOriginal { get; }
+        public abstract IUnit<IUTLength> HighOriginal { get; }
         #endregion
         #region 高程
         public abstract IUnit<IUTLength> High { get; }
         #endregion
         #region 记录
-        public IUnit<IUTLength>? Recording { get; init; }
+        public IUnit<IUTLength>? Recording { get; protected init; }
         #endregion
         #region 父节点
         public INode? Father { get; protected set; }
@@ -31,15 +31,8 @@ namespace System.Mapping.Settlement
 
         public IEnumerable<INode> Son => SonField;
         #endregion
-        #region 构造函数
-        /// <summary>
-        /// 使用指定的参数初始化对象
-        /// </summary>
-        /// <param name="HighOriginal">未经平差的原始高程</param>
-        public SettlementBase(IUnit<IUTLength> HighOriginal)
-        {
-            this.HighOriginal = HighOriginal;
-        }
+        #region 移除所有后代
+        public abstract void RemoveOffspring();
         #endregion
     }
 }

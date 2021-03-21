@@ -8,20 +8,25 @@ namespace System.Mapping.Settlement
     /// </summary>
     class SettlementPointFixed : SettlementPointBase
     {
+        #region 原始高程
+        public override IUnit<IUTLength> HighOriginal => High;
+        #endregion
         #region 高程
-        public override IUnit<IUTLength> High
-            => HighOriginal;
+        public override IUnit<IUTLength> High { get; }
         #endregion
         #region 构造函数
-        /// <summary>
-        /// 使用指定的参数初始化对象
-        /// </summary>
-        /// <param name="Name">基准点的名称</param>
+        /// <inheritdoc cref="SettlementPointBase(string)"/>
+        /// <param name="Recording">原始记录</param>
         /// <param name="High">基准点的高程</param>
-        public SettlementPointFixed(string Name, IUnit<IUTLength> High)
-            : base(Name, High)
+        /// <param name="Father">指定上一站</param>
+        public SettlementPointFixed(string Name, IUnit<IUTLength>? Recording, IUnit<IUTLength> High, INode? Father)
+            : base(Name)
         {
-
+            this.High = High;
+            this.Recording = Recording;
+            this.Father = Father;
+            if (Father is { })
+                RefreshClosed();
         }
         #endregion
     }

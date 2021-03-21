@@ -31,14 +31,6 @@ namespace System.Mapping.Settlement
         new IEnumerable<ISettlementObservatory> Son
             => Base.Son.Cast<ISettlementObservatory>();
         #endregion
-        #region 关于闭合与附合
-        #region 闭合/附合点
-        /// <summary>
-        /// 获取与此观测点闭合/附合的观测点，
-        /// 如果不存在，则为<see langword="null"/>
-        /// </summary>
-        ISettlementPoint? Closed { get; }
-        #endregion
         #region 闭合/附合差
         /// <summary>
         /// 获取此观测点的闭合/附合差，
@@ -46,8 +38,6 @@ namespace System.Mapping.Settlement
         /// </summary>
         IUnit<IUTLength> ClosedDifference { get; }
         #endregion
-        #endregion
-        #region 关于添加和移除后代
         #region 添加后代观测站
         /// <summary>
         /// 添加一个前视此观测点的观测站
@@ -55,13 +45,6 @@ namespace System.Mapping.Settlement
         /// <param name="Recording">观测站的前视记录</param>
         /// <returns>新添加的观测站</returns>
         ISettlementObservatory Add(IUnit<IUTLength> Recording);
-        #endregion
-        #region 移除所有后代
-        /// <summary>
-        /// 移除该观测点的所有后代节点
-        /// </summary>
-        void RemoveOffspring();
-        #endregion
         #endregion
     }
 }
