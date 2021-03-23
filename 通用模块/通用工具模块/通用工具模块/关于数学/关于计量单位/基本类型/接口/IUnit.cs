@@ -24,7 +24,7 @@ namespace System.Maths
         /// 返回数量为0的计量单位
         /// </summary>
         public static IUnit<Template> Zero { get; }
-            = CreateBaseMathObj.Unit<Template>(0);
+            = CreateBaseMathObj.UnitMetric<Template>(0);
         #endregion
         #region 运算符重载
         #region 重载一元运算符

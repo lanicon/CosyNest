@@ -1,4 +1,6 @@
-﻿using System.Maths;
+﻿using System.Collections.Generic;
+using System.Mapping.Settlement;
+using System.Maths;
 
 namespace System.Mapping
 {
@@ -7,6 +9,30 @@ namespace System.Mapping
     /// </summary>
     public static class CreateMapping
     {
+        #region 创建沉降观测根节点
+        #region 可指定任意长度单位
+        /// <summary>
+        /// 创建一个沉降观测基准点，
+        /// 它是整个沉降观测记录的第一站
+        /// </summary>
+        /// <param name="Name">基准点的名称</param>
+        /// <param name="High">基准点的高程</param>
+        /// <param name="Known">索引本次沉降观测中，高程已知的点的名称和高程，
+        /// 注意：它会将这个基准点自身的高程也添加进去，如果为<see langword="null"/>，则仅有基准点一个已知点</param>
+        /// <returns></returns>
+        public static ISettlementPoint SettlementPointRoot
+            (string Name, IUnit<IUTLength> High, IEnumerable<KeyValuePair<string, IUnit<IUTLength>>>? Known = null)
+            => new SettlementPointRoot(Name, High, Known);
+        #endregion
+        #region 只能使用米
+        /// <inheritdoc cref="SettlementPointRoot(string, IUnit{IUTLength}, IEnumerable{KeyValuePair{string, IUnit{IUTLength}}}?)"/>
+        /// <param name="HighFromMetre">使用米作为单位的基准点高程</param>
+        /// <returns></returns>
+        public static ISettlementPoint SettlementPointRoot
+            (string Name, Num HighFromMetre, IEnumerable<KeyValuePair<string, IUnit<IUTLength>>>? Known = null)
+            => new SettlementPointRoot(Name, CreateBaseMathObj.UnitMetric<IUTLength>(HighFromMetre), Known);
+        #endregion
+        #endregion
         #region 返回沉降观测专用长度单位
         /// <summary>
         /// 返回沉降观测专用长度单位，

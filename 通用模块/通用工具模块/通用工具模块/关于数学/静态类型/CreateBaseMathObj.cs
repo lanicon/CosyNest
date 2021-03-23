@@ -9,6 +9,7 @@ namespace System.Maths
     public static class CreateBaseMathObj
     {
         #region 创建Unit
+        #region 指定公制单位的数量
         #region 复制另一个单位的模板
         /// <summary>
         /// 使用指定的公制单位数量，
@@ -17,21 +18,9 @@ namespace System.Maths
         /// <typeparam name="Template">计量单位的模板类型</typeparam>
         /// <param name="MetricCount">公制单位的数量</param>
         /// <param name="Unit">另一个复合单位，本对象将复制它的模板</param>
-        public static IUnit<Template> Unit<Template>(Num MetricCount, IUnit<Template> Unit)
+        public static IUnit<Template> UnitMetric<Template>(Num MetricCount, IUnit<Template> Unit)
             where Template : IUT
-            => CreateBaseMathObj.Unit(MetricCount, Unit.Templates.ToArray());
-        #endregion
-        #region 创建指定数量的单位
-        /// <summary>
-        /// 创建指定数量的单位，并返回该计量单位
-        /// </summary>
-        /// <typeparam name="Template">计量单位的模板类型</typeparam>
-        /// <param name="Count">指定单位的数量，不是公制单位的数量</param>
-        /// <param name="UT">指定单位的模板</param>
-        /// <returns></returns>
-        public static IUnit<Template> Unit<Template>(Num Count, Template UT)
-            where Template : IUT
-            => Unit(UT.ToMetric(Count), new[] { UT });
+            => UnitMetric(MetricCount, Unit.Templates.ToArray());
         #endregion
         #region 创建指定公制单位数量的单位
         /// <summary>
@@ -40,7 +29,7 @@ namespace System.Maths
         /// <typeparam name="Template">计量单位的模板类型</typeparam>
         /// <param name="MetricCount">公制单位的数量</param>
         /// <returns></returns>
-        public static IUnit<Template> Unit<Template>(Num MetricCount)
+        public static IUnit<Template> UnitMetric<Template>(Num MetricCount)
             where Template : IUT
             => Unit(MetricCount, IUT.GetMetric<Template>());
         #endregion
@@ -52,9 +41,22 @@ namespace System.Maths
         /// <param name="MetricCount">公制单位的数量</param>
         /// <param name="Templates">指定单位的模板</param>
         /// <returns></returns>
-        public static IUnit<Template> Unit<Template>(Num MetricCount, IEnumerable<Template> Templates)
+        public static IUnit<Template> UnitMetric<Template>(Num MetricCount, IEnumerable<Template> Templates)
             where Template : IUT
             => new Unit<Template>(MetricCount, Templates.ToArray());
+        #endregion
+        #endregion
+        #region 创建指定数量的单位
+        /// <summary>
+        /// 创建指定数量的单位，并返回该计量单位
+        /// </summary>
+        /// <typeparam name="Template">计量单位的模板类型</typeparam>
+        /// <param name="Count">指定单位的数量，不是公制单位的数量</param>
+        /// <param name="UT">指定单位的模板</param>
+        /// <returns></returns>
+        public static IUnit<Template> Unit<Template>(Num Count, Template UT)
+            where Template : IUT
+            => UnitMetric(UT.ToMetric(Count), new[] { UT });
         #endregion
         #endregion
         #region 创建IRandom

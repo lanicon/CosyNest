@@ -86,7 +86,7 @@ namespace System.Office.Excel
         /// 获取垂直对齐的双向映射表
         /// </summary>
         private static ITwoWayMap<XlVAlign, OfficeAlignment> MapVertical { get; }
-        = CreateEnumerable.TwoWayMap(
+        = CreateCollection.TwoWayMap(
             (XlVAlign.xlVAlignCenter, OfficeAlignment.Center),
             (XlVAlign.xlVAlignTop, OfficeAlignment.LeftOrTop),
             (XlVAlign.xlVAlignBottom, OfficeAlignment.RightOrBottom),
@@ -107,7 +107,7 @@ namespace System.Office.Excel
         /// 获取水平对齐的双向映射表
         /// </summary>
         private static ITwoWayMap<XlHAlign, OfficeAlignment> MapHorizontal { get; }
-        = CreateEnumerable.TwoWayMap(
+        = CreateCollection.TwoWayMap(
             (XlHAlign.xlHAlignCenter, OfficeAlignment.Center),
             (XlHAlign.xlHAlignLeft, OfficeAlignment.LeftOrTop),
             (XlHAlign.xlHAlignRight, OfficeAlignment.RightOrBottom),

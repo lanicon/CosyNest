@@ -37,7 +37,7 @@ namespace System.Mapping.Settlement
                     if (item.Name == Name || (inKnown && known.ContainsKey(item.Name)))
                         return list.ToArray();
                 }
-                return Array.Empty<SettlementPointBase>();
+                return CreateCollection.Empty(list);
             }
             #endregion
             var closed = Closed();
@@ -55,7 +55,9 @@ namespace System.Mapping.Settlement
         #region 添加后代观测站
         public ISettlementObservatory Add(IUnit<IUTLength> Recording)
         {
-            throw new Exception();
+            var son = new SettlementObservatory(Recording, this);
+            SonField.AddLast(son);
+            return son;
         }
         #endregion
         #region 移除所有后代

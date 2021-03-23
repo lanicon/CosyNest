@@ -73,7 +73,7 @@ namespace System.Office.Word
         /// 获取一个用于双向映射对齐方式的字典
         /// </summary>
         public static ITwoWayMap<OfficeAlignment, WdParagraphAlignment> MapAlignment { get; }
-        = CreateEnumerable.TwoWayMap(
+        = CreateCollection.TwoWayMap(
             (OfficeAlignment.Center, WdParagraphAlignment.wdAlignParagraphCenter),
             (OfficeAlignment.LeftOrTop, WdParagraphAlignment.wdAlignParagraphLeft),
             (OfficeAlignment.RightOrBottom, WdParagraphAlignment.wdAlignParagraphRight),

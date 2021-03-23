@@ -16,7 +16,7 @@ namespace System
         /// 字典的键是转换的原类型和目标类型，值是将原类型的对象转换为目标类型的委托
         /// </summary>
         public static IAddOnlyDictionary<(Type From, Type To), Func<object, object>> SpecialConversion { get; }
-        = CreateEnumerable.AddOnlyDictionary
+        = CreateCollection.AddOnlyDictionary
             (false, new ConcurrentDictionary<(Type From, Type To), Func<object, object>>());
         #endregion
         #region 拷贝对象

@@ -32,7 +32,7 @@ namespace System.Maths
         #endregion
         #region 创建计量单位
         IUnit<Template> IUnit<Template>.Create(Num Num)
-            => Unit(Num, this);
+            => UnitMetric(Num, this);
         #endregion
         #region 转换为复合单位
         public IUnit<Template> Convert(params Template[] templates)

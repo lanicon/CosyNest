@@ -12,7 +12,7 @@ namespace System.Mapping.Settlement
             => Father.To<SettlementBase>()!.HighOriginal - Recording!;
         #endregion
         #region 高程
-        public override IUnit<IUTLength> High => HighOriginal + ClosedDifference;
+        public override IUnit<IUTLength> High => HighOriginal - ClosedDifference;
         #endregion
         #region 构造函数
         /// <inheritdoc cref="SettlementPointBase(string)"/>

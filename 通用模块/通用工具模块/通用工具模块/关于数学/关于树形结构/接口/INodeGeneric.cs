@@ -43,10 +43,6 @@ namespace System.Maths
         new IEnumerable<Node> AncestorsAll
              => Base.AncestorsAll.Cast<Node>();
         #endregion
-        #region 返回节点的深度
-        /// <inheritdoc cref="INode.Depth"/>
-        new int Depth => Base.Depth;
-        #endregion
         #endregion
         #region 有关子节点
         #region 获取子节点
@@ -56,7 +52,7 @@ namespace System.Maths
         #region 递归获取所有子节点
         /// <inheritdoc cref="INode.SonAll"/>
         new IEnumerable<Node> SonAll
-             => Base.Son.Cast<Node>();
+             => Base.SonAll.Cast<Node>();
         #endregion
         #endregion
     }

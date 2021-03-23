@@ -9,7 +9,9 @@ namespace System.Mapping.Settlement
     class SettlementPointFixed : SettlementPointBase
     {
         #region 原始高程
-        public override IUnit<IUTLength> HighOriginal => High;
+        public override IUnit<IUTLength> HighOriginal
+            => Father is SettlementObservatory s ?
+            s.HighOriginal - Recording! : High;
         #endregion
         #region 高程
         public override IUnit<IUTLength> High { get; }

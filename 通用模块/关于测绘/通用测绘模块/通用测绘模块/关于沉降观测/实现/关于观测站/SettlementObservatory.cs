@@ -9,7 +9,7 @@ namespace System.Mapping.Settlement
     {
         #region 原始高程
         public override IUnit<IUTLength> HighOriginal
-            => Father.To<SettlementBase>()!.HighOriginal + Recording!;
+            => Father.To<SettlementBase>()!.High + Recording!;
         #endregion
         #region 高程
         public override IUnit<IUTLength> High => HighOriginal;
@@ -17,7 +17,12 @@ namespace System.Mapping.Settlement
         #region 添加后代
         public ISettlementPoint Add(string Name, IUnit<IUTLength> Recording)
         {
-            throw new NotImplementedException();
+            var known = this.To<INode>().Ancestors.To<SettlementPointRoot>().Known;
+            SettlementPointBase son = known.TryGetValue(Name, out var high) ?
+                new SettlementPointFixed(Name, Recording, high, this) :
+                new SettlementPoint(Name, Recording, this);
+            SonField.AddLast(son);
+            return son;
         }
         #endregion 
         #region 移除所有后代
