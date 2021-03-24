@@ -7,12 +7,9 @@ namespace System.Mapping.Settlement
     /// </summary>
     class SettlementObservatory : SettlementBase, ISettlementObservatory
     {
-        #region 原始高程
-        public override IUnit<IUTLength> HighOriginal
-            => Father.To<SettlementBase>()!.High + Recording!;
-        #endregion
         #region 高程
-        public override IUnit<IUTLength> High => HighOriginal;
+        public override IUnit<IUTLength> High
+            => Father.To<SettlementBase>()!.High + Recording!;
         #endregion
         #region 添加后代
         public ISettlementPoint Add(string Name, IUnit<IUTLength> Recording)
@@ -25,12 +22,6 @@ namespace System.Mapping.Settlement
             return son;
         }
         #endregion 
-        #region 移除所有后代
-        public override void RemoveOffspring()
-        {
-
-        }
-        #endregion
         #region 构造函数
         /// <summary>
         /// 使用指定的参数初始化对象

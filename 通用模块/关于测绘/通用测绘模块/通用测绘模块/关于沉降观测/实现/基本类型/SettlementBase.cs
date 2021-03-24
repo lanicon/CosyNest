@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Maths;
 
 namespace System.Mapping.Settlement
@@ -8,12 +9,6 @@ namespace System.Mapping.Settlement
     /// </summary>
     abstract class SettlementBase : ISettlement
     {
-        #region 原始高程
-        /// <summary>
-        /// 获取未经平差的原始高程
-        /// </summary>
-        public abstract IUnit<IUTLength> HighOriginal { get; }
-        #endregion
         #region 高程
         public abstract IUnit<IUTLength> High { get; }
         #endregion
@@ -32,7 +27,29 @@ namespace System.Mapping.Settlement
         public IEnumerable<INode> Son => SonField;
         #endregion
         #region 移除所有后代
-        public abstract void RemoveOffspring();
+        public void RemoveOffspring()
+        {
+            SonField.ForEach(x => x.Father = null);
+            SonField.Clear();
+            #region 用于清除闭合差的本地函数
+            static void Fun(INode? node)
+            {
+                switch (node)
+                {
+                    case SettlementPointBase p:
+                        if (p.ClosedDifference.Equals(IUnit<IUTLength>.Zero) || p.Closed is { })
+                            return;
+                        p.ClosedDifference = IUnit<IUTLength>.Zero;
+                        Fun(p.Father);
+                        break;
+                    case SettlementObservatory o:
+                        Fun(o.Father);
+                        break;
+                }
+            }
+            #endregion
+            Fun(this);
+        }
         #endregion
     }
 }

@@ -39,12 +39,21 @@ namespace System.Mapping.Settlement
         IUnit<IUTLength> ClosedDifference { get; }
         #endregion
         #region 添加后代观测站
+        #region 可指定任何长度单位
         /// <summary>
         /// 添加一个前视此观测点的观测站
         /// </summary>
         /// <param name="Recording">观测站的前视记录</param>
         /// <returns>新添加的观测站</returns>
         ISettlementObservatory Add(IUnit<IUTLength> Recording);
+        #endregion
+        #region 只能使用沉降观测专用单位
+        /// <inheritdoc cref="Add(IUnit{IUTLength})"/>
+        /// <param name="RecordingSettlement">前视记录，
+        /// 单位是沉降观测专用单位，它等于百分之一毫米</param>
+        ISettlementObservatory Add(Num RecordingSettlement)
+            => Add(CreateBaseMathObj.Unit(RecordingSettlement, CreateMapping.UTSettlement));
+        #endregion
         #endregion
     }
 }

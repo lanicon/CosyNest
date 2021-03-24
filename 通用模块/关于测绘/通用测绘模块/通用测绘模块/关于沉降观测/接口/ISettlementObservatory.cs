@@ -25,17 +25,27 @@ namespace System.Mapping.Settlement
             => Base.Son.Cast<ISettlementPoint>();
         #endregion
         #region 添加观测点
+        #region 说明文档
+        /*实现本API请遵循以下规范：
+         #在添加观测点时，应根据名称自动进行判断，
+         如果添加的是高程已知的附合点，应进行特殊处理*/
+        #endregion
+        #region 可指定任何长度单位
         /// <summary>
         /// 添加一个此观测站后视的观测点
         /// </summary>
         /// <param name="Name">观测点的名称</param>
         /// <param name="Recording">后视记录</param>
-        /// <returns></returns>
+        /// <returns>新添加的观测点</returns>
         ISettlementPoint Add(string Name, IUnit<IUTLength> Recording);
-
-        /*实现本API请遵循以下规范：
-          #在添加观测点时，应根据名称自动进行判断，
-          如果添加的是基准点或者附合点等高程已知的点，应进行特殊处理*/
+        #endregion
+        #region 只能使用沉降观测专用单位
+        /// <inheritdoc cref="Add(string, IUnit{IUTLength})"/>
+        /// <param name="RecordingSettlement">后视记录，
+        /// 单位是沉降观测专用单位，它等于百分之一毫米</param>
+        ISettlementPoint Add(string Name, Num RecordingSettlement)
+            => Add(Name, CreateBaseMathObj.Unit(RecordingSettlement, CreateMapping.UTSettlement));
+        #endregion
         #endregion
     }
 }

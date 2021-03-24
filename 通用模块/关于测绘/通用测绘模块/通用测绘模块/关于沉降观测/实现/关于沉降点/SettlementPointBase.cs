@@ -14,10 +14,14 @@ namespace System.Mapping.Settlement
         #endregion
         #region 关于闭合与附合
         #region 闭合/附合点
-        protected ISettlementPoint? Closed { get; set; }
+        /// <summary>
+        /// 返回与这个点闭合或附合的点，
+        /// 如果没有闭合或附合，则为<see langword="null"/>
+        /// </summary>
+        public ISettlementPoint? Closed { get; protected set; }
         #endregion
         #region 闭合/附合差
-        public IUnit<IUTLength> ClosedDifference { get; protected set; } = IUnit<IUTLength>.Zero;
+        public IUnit<IUTLength> ClosedDifference { get; set; } = IUnit<IUTLength>.Zero;
         #endregion
         #region 刷新闭合
         /// <summary>
@@ -29,12 +33,11 @@ namespace System.Mapping.Settlement
             SettlementPointBase[] Closed()
             {
                 var list = new LinkedList<SettlementPointBase>();
-                var known = this.To<INode>().Ancestors.To<SettlementPointRoot>().Known;
-                var inKnown = known.ContainsKey(Name);
+                var isFixed = this is SettlementPointFixed;
                 foreach (var item in this.To<INode>().AncestorsAll.OfType<SettlementPointBase>())
                 {
                     list.AddLast(item);
-                    if (item.Name == Name || (inKnown && known.ContainsKey(item.Name)))
+                    if (item.Name == Name || (isFixed && item is SettlementPointFixed))        //检查是否为闭合或附合
                         return list.ToArray();
                 }
                 return CreateCollection.Empty(list);
@@ -45,13 +48,12 @@ namespace System.Mapping.Settlement
             {
                 var closedPoint = closed[^1];
                 this.Closed = closedPoint;
-                var difference = (HighOriginal - closedPoint.HighOriginal) / closed.Length;
+                var difference = ((this is SettlementPointFixed f ? f.HighCalculation : High) - closedPoint.High) / closed.Length;
                 closed.Append(this).ForEach(x => x.ClosedDifference = difference);
             }
         }
         #endregion
         #endregion
-        #region 关于添加和移除后代
         #region 添加后代观测站
         public ISettlementObservatory Add(IUnit<IUTLength> Recording)
         {
@@ -59,13 +61,6 @@ namespace System.Mapping.Settlement
             SonField.AddLast(son);
             return son;
         }
-        #endregion
-        #region 移除所有后代
-        public override void RemoveOffspring()
-        {
-
-        }
-        #endregion
         #endregion
         #region 构造函数
         /// <summary>

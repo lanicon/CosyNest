@@ -7,12 +7,9 @@ namespace System.Mapping.Settlement
     /// </summary>
     class SettlementPoint : SettlementPointBase
     {
-        #region 原始高程
-        public override IUnit<IUTLength> HighOriginal
-            => Father.To<SettlementBase>()!.HighOriginal - Recording!;
-        #endregion
         #region 高程
-        public override IUnit<IUTLength> High => HighOriginal - ClosedDifference;
+        public override IUnit<IUTLength> High
+            => Father.To<SettlementBase>()!.High - Recording! - ClosedDifference;
         #endregion
         #region 构造函数
         /// <inheritdoc cref="SettlementPointBase(string)"/>

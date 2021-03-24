@@ -91,7 +91,7 @@
         /// 否则代表该数字是小数
         /// </summary>
         public bool IsInteger
-            => decimal.Truncate(Value) == Value;
+            => Value % 1 == 0;
         #endregion
         #region 对数字进行取整
         /// <summary>

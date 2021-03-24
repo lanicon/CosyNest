@@ -146,9 +146,8 @@ namespace System.Maths
         /// <returns></returns>
         public static (Num Integer, Num Decimal, bool IsInt) Split(Num Num)
         {
-            var Integer = decimal.Truncate(Num);
-            var Decimal = Num - Integer;
-            return (Integer, Decimal, Decimal == 0);
+            var remainder = Num % 1;
+            return (Num - remainder, remainder, remainder == 0);
         }
         #endregion
         #endregion
