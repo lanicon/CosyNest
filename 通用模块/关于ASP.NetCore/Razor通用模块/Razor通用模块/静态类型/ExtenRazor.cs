@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Components.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
@@ -78,7 +77,7 @@ namespace System
         public static IServiceCollection AddFront(this IServiceCollection services)
         {
             services.AddJSWindow();
-            return services.AddSingleton<IProvidedDefaultTemplate>(ProvidedTemplate.Only);
+            return services;
         }
         #endregion
         #region 注入IJSWindow

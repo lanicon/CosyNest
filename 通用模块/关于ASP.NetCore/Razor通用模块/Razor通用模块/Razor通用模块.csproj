@@ -21,4 +21,9 @@
     <ProjectReference Include="..\..\ASP.Net中台模块\ASP.Net中台模块\ASP.Net中台模块.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
 </Project>
