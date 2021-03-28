@@ -326,7 +326,7 @@ namespace System.Linq
             var Enumerator = List.GetEnumerator();
             var HasElements = Enumerator.MoveNext();
             var First = HasElements ? Enumerator.Current :
-                Check ? throw new Exception("该集合没有任何元素") : default(Obj)!;
+                Check ? throw new Exception("该集合没有任何元素") : default!;
             #region 本地函数
             IEnumerable<Obj> Get()
             {

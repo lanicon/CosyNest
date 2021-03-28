@@ -137,25 +137,25 @@ namespace System.Linq
         /// <param name="NumIsCount">如果这个值为<see langword="true"/>，则<paramref name="Num"/>参数指的是每个子集合应该有多少个元素，
         /// 如果这个值为<see langword="false"/>，则<paramref name="Num"/>参数指的是应该将父集合拆分成多少个子集合</param>
         /// <returns></returns>
-        public static IEnumerable<IEnumerable<Obj>> Split<Obj>(this IEnumerable<Obj> List, int Num, bool NumIsCount)
+        public static IEnumerable<List<Obj>> Split<Obj>(this IEnumerable<Obj> List, int Num, bool NumIsCount)
         {
             #region 用于拆分集合的本地函数
-            static IEnumerable<IEnumerable<Obj>> Get(IEnumerable<Obj> objs, int Count)
+            static IEnumerable<List<Obj>> Get(IEnumerable<Obj> objs, int Count)
             {
                 using var Enumerator = objs.GetEnumerator();
-                var list = new LinkedList<Obj>();
+                var list = new List<Obj>();
                 for (int i = 1; true; i++)
                 {
                     var NotObj = !Enumerator.MoveNext();
                     if (!NotObj)
-                        list.AddLast(Enumerator.Current);
+                        list.Add(Enumerator.Current);
                     if (NotObj || i % Count == 0)
                     {
                         if (list.Any())
                             yield return list;
                         if (NotObj)
                             yield break;
-                        list = new LinkedList<Obj>();
+                        list = new();
                     }
                 }
             }
