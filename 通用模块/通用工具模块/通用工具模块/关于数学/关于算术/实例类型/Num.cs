@@ -91,23 +91,15 @@
         /// 否则代表该数字是小数
         /// </summary>
         public bool IsInteger
-            => Value % 1 == 0;
-        #endregion
-        #region 对数字进行取整
-        /// <summary>
-        /// 取这个数字的整数
-        /// </summary>
-        /// <returns></returns>
-        public Num Rounding()
-            => decimal.Truncate(Value);
+            => Value % 1 is 0;
         #endregion
         #region 取近似值
         /// <summary>
         /// 将这个数字舍入到指定的小数位数，并返回近似值
         /// </summary>
-        /// <param name="Precision">舍入的精度</param>
+        /// <param name="Precision">舍入的精度，默认为0，也就是取整数</param>
         /// <returns></returns>
-        public Num Approximate(int Precision = 6)
+        public Num Rounding(int Precision = 0)
             => Math.Round(Value, Precision);
         #endregion
         #endregion
