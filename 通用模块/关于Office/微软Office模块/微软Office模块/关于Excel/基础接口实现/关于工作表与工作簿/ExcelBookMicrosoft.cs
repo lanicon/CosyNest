@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.IOFrancis.FileSystem;
+using System.Linq;
 using System.Office.Excel.Realize;
 using System.Runtime.InteropServices;
 
@@ -64,12 +65,14 @@ namespace System.Office.Excel
         #region 保存工作簿
         protected override void SaveRealize(string Path)
         {
-            if (!PackBook.Saved)
+            if (!Sheets.Any())
+                return;
+            if (Path == this.Path && File.Exists(Path))
             {
-                if (File.Exists(Path) && Path == this.Path)
+                if (!PackBook.Saved)
                     PackBook.Save();
-                else PackBook.SaveAs(Path);
             }
+            else PackBook.SaveAs(Path);
         }
         #endregion
         #region 开启或关闭自动计算

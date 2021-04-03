@@ -69,7 +69,7 @@ namespace System.IOFrancis.FileSystem
         /// </summary>
         /// <typeparam name="IO">返回值类型</typeparam>
         /// <param name="Name">新文件或目录的名称，如果为<see langword="null"/>，
-        /// 则自动赋予一个不重复的随即名称</param>
+        /// 则自动赋予一个不重复的随机名称</param>
         /// <param name="Extension">新文件的扩展名，如果为<see langword="null"/>，
         /// 代表没有扩展名</param>
         /// <param name="Create">用于创建新文件或目录的委托</param>
@@ -83,7 +83,7 @@ namespace System.IOFrancis.FileSystem
             #endregion
             return Name is null ?
                 Get(Name) :
-                Get(Son.OfType<IIO>().Select(x => x.NameFull).Distinct(Name));        //保证文件或目录名不重复
+                Get(Son.OfType<IIO>().Select(x => x.NameFull).Distinct(Name));        //当指定了名称但是重名时，自动将其重命名
         }
         #endregion
         #region 在目录下创建目录

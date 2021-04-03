@@ -60,7 +60,7 @@ namespace System.IOFrancis.FileSystem
         /// <param name="fileType">要判断的文件类型</param>
         /// <returns>如果兼容，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         bool IsCompatible(IFileType fileType)
-           => fileType.IsCompatiblePath(Path);
+           => fileType.IsCompatible(Path);
         #endregion
         #endregion
         #endregion

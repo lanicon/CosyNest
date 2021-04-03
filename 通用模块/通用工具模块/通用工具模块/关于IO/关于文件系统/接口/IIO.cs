@@ -181,6 +181,12 @@ namespace System.IOFrancis.FileSystem
             });
         #endregion
         #endregion
+        #region 刷新文件或目录
+        /// <summary>
+        /// 手动刷新文件或目录的状态
+        /// </summary>
+        void Refresh();
+        #endregion
         #endregion
     }
 }

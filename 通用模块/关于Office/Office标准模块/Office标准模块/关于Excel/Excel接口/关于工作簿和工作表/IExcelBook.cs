@@ -1,6 +1,4 @@
-﻿using System.Design;
-using System.IO;
-using System.IOFrancis.FileSystem;
+﻿using System.IO;
 
 namespace System.Office.Excel
 {
@@ -8,7 +6,7 @@ namespace System.Office.Excel
     /// 凡是实现这个接口的类型，
     /// 都可以被视作一个Excel工作簿
     /// </summary>
-    public interface IExcelBook : IDisposablePro
+    public interface IExcelBook : IOfficeFile
     {
         #region 说明文档
         /*实现本接口请遵循以下规范：
@@ -33,33 +31,6 @@ namespace System.Office.Excel
             if (Path != null)
                 File.Delete(Path);
         }
-        #endregion
-        #region 关于保存工作簿
-        #region 是否自动保存
-        /// <summary>
-        /// 如果这个值为<see langword="true"/>，
-        /// 则在执行<see cref="IDisposable.Dispose"/>方法时，还会自动保存工作簿，
-        /// 前提是工作簿的路径不为<see langword="null"/>
-        /// </summary>
-        bool AutoSave { get; set; }
-        #endregion
-        #region 保存工作簿
-        /// <summary>
-        /// 保存工作表
-        /// </summary>
-        /// <param name="Path">保存路径，如果为<see langword="null"/>，代表原地保存</param>
-        void Save(PathText? Path = null);
-
-        /*在实现本API时，请遵循以下规范：
-          #如果工作簿中没有任何工作表，就不执行保存操作*/
-        #endregion
-        #endregion 
-        #region 返回工作簿文件路径
-        /// <summary>
-        /// 返回工作簿文件的绝对路径文本，
-        /// 如果为<see langword="null"/>，代表工作簿尚未保存
-        /// </summary>
-        string? Path { get; }
         #endregion
         #region 返回打印对象
         /// <summary>

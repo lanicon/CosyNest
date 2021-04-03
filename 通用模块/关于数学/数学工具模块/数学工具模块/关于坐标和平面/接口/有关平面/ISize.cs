@@ -43,8 +43,8 @@
             var (W, H) = this;
             var (PW, PH) = PixelSize;
             return CreateMathObj.SizePixel(
-                ToolArithmetic.Sim(W / PW, IsProgressive: !Rounding),
-                ToolArithmetic.Sim(H / PH, IsProgressive: !Rounding));
+                ToolArithmetic.Sim(W / PW, isProgressive: !Rounding),
+                ToolArithmetic.Sim(H / PH, isProgressive: !Rounding));
         }
         #endregion
         #region 解构ISize

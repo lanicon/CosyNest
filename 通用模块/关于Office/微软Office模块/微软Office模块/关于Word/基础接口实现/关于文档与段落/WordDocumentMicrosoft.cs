@@ -50,12 +50,12 @@ namespace System.Office.Word
         #region 保存文档
         protected override void SaveRealize(string Path)
         {
-            if (!PackDocument.Saved)
+            if (Path == this.Path && File.Exists(Path))
             {
-                if (File.Exists(Path) && Path == this.Path)
+                if (!PackDocument.Saved)
                     PackDocument.Save();
-                else PackDocument.SaveAs(Path);
             }
+            else PackDocument.SaveAs(Path);
         }
         #endregion
         #region 返回页面对象

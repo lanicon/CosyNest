@@ -13,7 +13,7 @@ using Microsoft.Office.Interop.Word;
 namespace System.Office
 {
     /// <summary>
-    /// 这个类型为创建微软COM对象提供帮助
+    /// 这个静态类为创建通过COM组件实现的Office对象提供帮助
     /// </summary>
     public static class CreateMSOffice
     {
@@ -117,7 +117,7 @@ namespace System.Office
         /// 这个方法主要的目的在于方便调试，请勿用于生产用途
         /// </summary>
         /// <returns></returns>
-        public static IExcelBook[] ExcelBookActive() 
+        public static IExcelBook[] ExcelBookActive()
             => GetActiveObject("Excel.Application") is Microsoft.Office.Interop.Excel.Application Excel ?
                 Excel.Workbooks.OfType<Workbook>().Select(x => (IExcelBook)new ExcelBookMicrosoft(x)).ToArray() :
                 Array.Empty<IExcelBook>();

@@ -75,7 +75,7 @@ namespace System.IOFrancis
         /// <param name="Supported">受支持的文件类型</param>
         public static void CheckFileType(string Path, IFileType Supported)
         {
-            if (!Supported.IsCompatiblePath(Path))
+            if (!Supported.IsCompatible(Path))
                 throw BecauseFileType(Path, Supported);
         }
         #endregion

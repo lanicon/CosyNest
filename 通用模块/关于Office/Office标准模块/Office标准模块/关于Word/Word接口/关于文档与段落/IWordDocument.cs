@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Design;
 using System.DrawingFrancis;
-using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Office.Chart;
 using System.Office.Word.Realize;
@@ -12,7 +10,7 @@ namespace System.Office.Word
     /// 所有实现本接口的类型，
     /// 都可以视作一个Word文档
     /// </summary>
-    public interface IWordDocument : IDisposablePro
+    public interface IWordDocument : IOfficeFile
     {
         #region 说明文档
         /*实现本接口请遵循以下规范：
@@ -51,31 +49,6 @@ namespace System.Office.Word
           而实际位置可以更方便的定位图片等Office对象*/
         #endregion
         #region 关于文件与文档
-        #region 返回文件路径
-        /// <summary>
-        /// 返回该Word文档的绝对文件路径，
-        /// 如果为<see langword="null"/>，代表尚未保存到文件中
-        /// </summary>
-        string? Path { get; }
-        #endregion
-        #region 关于保存
-        #region 保存文档
-        /// <summary>
-        /// 在指定的路径保存这个文档
-        /// </summary>
-        /// <param name="Path">指定的保存路径，
-        /// 如果为<see langword="null"/>，代表原地保存</param>
-        void Save(PathText? Path = null);
-        #endregion
-        #region 是否自动保存
-        /// <summary>
-        /// 如果这个值为真，
-        /// 则在执行<see cref="IDisposable.Dispose"/>方法时，还会自动保存文档，
-        /// 前提是文档的路径不为<see langword="null"/>
-        /// </summary>
-        bool AutoSave { get; set; }
-        #endregion
-        #endregion 
         #region 返回页面对象
         /// <summary>
         /// 返回页面对象，

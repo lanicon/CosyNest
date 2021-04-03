@@ -25,7 +25,7 @@ namespace System.Performance
         /// <param name="Extension">临时文件的扩展名</param>
         /// <returns>新创建的临时文件，该文件会在程序退出时自动删除</returns>
         public static IFile CreateTemporaryFile(string Extension = "")
-            => CacheDirectory.CreateFile(Extension: Extension);
+            => CacheDirectory.CreateFile(null, Extension);
         #endregion
         #endregion
         #region 关于垃圾回收

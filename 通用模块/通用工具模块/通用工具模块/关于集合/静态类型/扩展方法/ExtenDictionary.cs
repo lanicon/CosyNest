@@ -15,18 +15,18 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">字典的键类型</typeparam>
         /// <typeparam name="Value">字典的值类型</typeparam>
-        /// <param name="Dict">需要进行判断的字典</param>
+        /// <param name="dictionary">需要进行判断的字典</param>
         /// <param name="key">指定的键</param>
-        /// <param name="NewValue">如果键不存在，则通过这个委托获取值，并将其添加到字典中，委托的参数就是刚才的键</param>
+        /// <param name="newValue">如果键不存在，则通过这个委托获取值，并将其添加到字典中，委托的参数就是刚才的键</param>
         /// <returns>返回值是一个元组，第一个项是键是否存在，第二个项是值</returns>
-        public static (bool Exist, Value Value) TrySetValue<Key, Value>(this IDictionary<Key, Value> Dict, Key key, Func<Key, Value> NewValue)
+        public static (bool Exist, Value Value) TrySetValue<Key, Value>(this IDictionary<Key, Value> dictionary, Key key, Func<Key, Value> newValue)
             where Key : notnull
         {
-            if (Dict.TryGetValue(key, out var values))
+            if (dictionary.TryGetValue(key, out var values))
                 return (true, values);
-            var New = NewValue(key);
-            Dict.Add(key, New);
-            return (false, New);
+            var @new = newValue(key);
+            dictionary.Add(key, @new);
+            return (false, @new);
         }
         #endregion
         #region 如果不存在键，返回指定值
@@ -37,18 +37,18 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">字典的键类型</typeparam>
         /// <typeparam name="Value">字典的值类型</typeparam>
-        /// <param name="Dict">这个参数必须是一个只读字典或可变字典</param>
+        /// <param name="dictionary">这个参数必须是一个只读字典或可变字典</param>
         /// <param name="key">用来提取值的键，如果它为<see langword="null"/>，则默认该键不存在</param>
-        /// <param name="NoFound">如果键不存在，则通过这个延迟对象返回默认值</param>
+        /// <param name="noFound">如果键不存在，则通过这个延迟对象返回默认值</param>
         /// <returns></returns>
-        public static (bool Exist, Value? Value) TryGetValue<Key, Value>(this IEnumerable<KeyValuePair<Key, Value>> Dict, Key key, LazyPro<Value>? NoFound = default)
+        public static (bool Exist, Value? Value) TryGetValue<Key, Value>(this IEnumerable<KeyValuePair<Key, Value>> dictionary, Key key, LazyPro<Value>? noFound = default)
         {
-            if (Dict is IDictionary<Key, Value> or IReadOnlyDictionary<Key, Value>)
+            if (dictionary is IDictionary<Key, Value> or IReadOnlyDictionary<Key, Value>)
             {
-                return Dict.To<dynamic>().TryGetValue(key, out Value value) ?
-                 (true, value) : (false, NoFound);
+                return dictionary.To<dynamic>().TryGetValue(key, out Value value) ?
+                 (true, value) : (false, noFound);
             }
-            throw new ExceptionTypeUnlawful(Dict, typeof(IDictionary<Key, Value>), typeof(IReadOnlyDictionary<Key, Value>));
+            throw new ExceptionTypeUnlawful(dictionary, typeof(IDictionary<Key, Value>), typeof(IReadOnlyDictionary<Key, Value>));
         }
         #endregion
         #endregion
@@ -61,15 +61,15 @@ namespace System.Linq
         /// <typeparam name="Ret">转换的目标类型</typeparam>
         /// <typeparam name="Key">字典的键类型</typeparam>
         /// <typeparam name="Value">字典的值类型</typeparam>
-        /// <param name="Dict">要转换的字典</param>
+        /// <param name="dictionary">要转换的字典</param>
         /// <returns></returns>
-        public static Ret ToDictionary<Ret, Key, Value>(this IDictionary<Key, Value> Dict)
+        public static Ret ToDictionary<Ret, Key, Value>(this IDictionary<Key, Value> dictionary)
             where Key : notnull
             where Ret : IDictionary<Key, Value>, new()
         {
-            var New = new Ret();
-            Dict.ForEach(New.Add);
-            return New;
+            var @new = new Ret();
+            dictionary.ForEach(@new.Add);
+            return @new;
         }
         #endregion
         #region 将集合转换为字典
@@ -80,20 +80,20 @@ namespace System.Linq
         /// <typeparam name="Key">字典的键类型</typeparam>
         /// <typeparam name="Value">字典的值类型</typeparam>
         /// <typeparam name="Obj">集合的元素类型</typeparam>
-        /// <param name="List">待转换的集合</param>
-        /// <param name="Del">这个委托传入集合的元素，并返回一个元组，它的项分别是字典的键和值</param>
-        /// <param name="CheckRepetition">如果这个值为<see langword="true"/>，在向字典添加重复键的时候会报错，否则会覆盖旧有键的值</param>
+        /// <param name="collection">待转换的集合</param>
+        /// <param name="delegate">这个委托传入集合的元素，并返回一个元组，它的项分别是字典的键和值</param>
+        /// <param name="checkRepetition">如果这个值为<see langword="true"/>，在向字典添加重复键的时候会报错，否则会覆盖旧有键的值</param>
         /// <returns></returns>
-        public static Dictionary<Key, Value> ToDictionary<Key, Value, Obj>(this IEnumerable<Obj> List, Func<Obj, (Key, Value)> Del, bool CheckRepetition)
+        public static Dictionary<Key, Value> ToDictionary<Key, Value, Obj>(this IEnumerable<Obj> collection, Func<Obj, (Key, Value)> @delegate, bool checkRepetition)
             where Key : notnull
         {
             var dict = new Dictionary<Key, Value>();
-            foreach (var item in List)
+            foreach (var item in collection)
             {
-                var (K, V) = Del(item);
-                if (CheckRepetition)
-                    dict.Add(K, V);
-                else dict[K] = V;
+                var (k, v) = @delegate(item);
+                if (checkRepetition)
+                    dict.Add(k, v);
+                else dict[k] = v;
             }
             return dict;
         }
@@ -104,12 +104,12 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">键的类型</typeparam>
         /// <typeparam name="Value">值的类型</typeparam>
-        /// <param name="List">要转换为字典的键值对集合</param>
-        /// <param name="CheckRepetition">如果这个值为<see langword="true"/>，在向字典添加重复键的时候会报错，否则会覆盖旧有键的值</param>
+        /// <param name="collection">要转换为字典的键值对集合</param>
+        /// <param name="checkRepetition">如果这个值为<see langword="true"/>，在向字典添加重复键的时候会报错，否则会覆盖旧有键的值</param>
         /// <returns></returns>
-        public static Dictionary<Key, Value> ToDictionary<Key, Value>(this IEnumerable<KeyValuePair<Key, Value>> List, bool CheckRepetition)
+        public static Dictionary<Key, Value> ToDictionary<Key, Value>(this IEnumerable<KeyValuePair<Key, Value>> collection, bool checkRepetition)
             where Key : notnull
-            => List.ToDictionary(x => (x.Key, x.Value), CheckRepetition);
+            => collection.ToDictionary(x => (x.Key, x.Value), checkRepetition);
         #endregion
         #region 将元组集合直接转换为字典
         /// <summary>
@@ -117,12 +117,12 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">字典的键类型</typeparam>
         /// <typeparam name="Value">字典的值类型</typeparam>
-        /// <param name="List">待转换的元组集合</param>
-        /// <param name="CheckRepetition">如果这个值为<see langword="true"/>，在向字典添加重复键的时候会报错，否则会覆盖旧有键的值</param>
+        /// <param name="collection">待转换的元组集合</param>
+        /// <param name="checkRepetition">如果这个值为<see langword="true"/>，在向字典添加重复键的时候会报错，否则会覆盖旧有键的值</param>
         /// <returns></returns>
-        public static Dictionary<Key, Value> ToDictionary<Key, Value>(this IEnumerable<(Key, Value)> List, bool CheckRepetition)
+        public static Dictionary<Key, Value> ToDictionary<Key, Value>(this IEnumerable<(Key, Value)> collection, bool checkRepetition)
             where Key : notnull
-            => List.ToDictionary(x => (x.Item1, x.Item2), CheckRepetition);
+            => collection.ToDictionary(x => (x.Item1, x.Item2), checkRepetition);
         #endregion
         #endregion
         #endregion
@@ -133,11 +133,11 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">键值对的键类型</typeparam>
         /// <typeparam name="Value">键值对的值类型</typeparam>
-        /// <param name="Tupts">待转换的元组</param>
+        /// <param name="tupts">待转换的元组</param>
         /// <returns></returns>
-        public static KeyValuePair<Key, Value> ToKV<Key, Value>(this (Key, Value) Tupts)
+        public static KeyValuePair<Key, Value> ToKV<Key, Value>(this (Key, Value) tupts)
             where Key : notnull
-            => new(Tupts.Item1, Tupts.Item2);
+            => new(tupts.Item1, tupts.Item2);
         #endregion
         #region 批量转换元组为键值对
         /// <summary>
@@ -145,11 +145,11 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">键值对的键类型</typeparam>
         /// <typeparam name="Value">键值对的值类型</typeparam>
-        /// <param name="List">待转换的二元组集合</param>
+        /// <param name="collection">待转换的二元组集合</param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<Key, Value>> ToKV<Key, Value>(this IEnumerable<(Key, Value)> List)
+        public static IEnumerable<KeyValuePair<Key, Value>> ToKV<Key, Value>(this IEnumerable<(Key, Value)> collection)
             where Key : notnull
-            => List.Select(ToKV);
+            => collection.Select(ToKV);
         #endregion
         #region 批量解构键值对
         /// <summary>
@@ -157,10 +157,10 @@ namespace System.Linq
         /// </summary>
         /// <typeparam name="Key">键值对的键类型</typeparam>
         /// <typeparam name="Value">键值对的值类型</typeparam>
-        /// <param name="List">要解构的键值对集合</param>
+        /// <param name="collection">要解构的键值对集合</param>
         /// <returns></returns>
-        public static IEnumerable<(Key key, Value value)> ToTupts<Key, Value>(this IEnumerable<KeyValuePair<Key, Value>> List)
-            => List.Select(x => (x.Key, x.Value));
+        public static IEnumerable<(Key Key, Value Value)> ToTupts<Key, Value>(this IEnumerable<KeyValuePair<Key, Value>> collection)
+            => collection.Select(x => (x.Key, x.Value));
         #endregion
         #endregion
     }

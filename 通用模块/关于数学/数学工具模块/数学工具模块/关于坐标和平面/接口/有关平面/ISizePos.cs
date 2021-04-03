@@ -77,8 +77,8 @@ namespace System.Maths
             var (R, T) = Position;
             var (PW, PH) = PixelSize;
             var Point = CreateMathObj.Point(
-                ToolArithmetic.Sim(R * PW, IsProgressive: !Rounding),
-                ToolArithmetic.Sim(T * PH, IsProgressive: !Rounding));
+                ToolArithmetic.Sim(R * PW, isProgressive: !Rounding),
+                ToolArithmetic.Sim(T * PH, isProgressive: !Rounding));
             return CreateMathObj.SizePosPixel(Point, Size);
         }
         #endregion

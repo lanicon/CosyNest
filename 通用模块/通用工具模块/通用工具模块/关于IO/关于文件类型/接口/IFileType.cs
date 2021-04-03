@@ -10,6 +10,30 @@ namespace System.IOFrancis.FileSystem
     /// </summary>
     public interface IFileType
     {
+        #region 重载+运算符
+        #region 传入扩展名集合
+        /// <summary>
+        /// 合并文件类型
+        /// </summary>
+        /// <param name="fileType">待合并的文件类型</param>
+        /// <param name="extend">新增支持的扩展名</param>
+        /// <returns>一个新的<see cref="IFileType"/>，
+        /// 它同时支持<paramref name="fileType"/>和<paramref name="extend"/>所声明的文件类型</returns>
+        public static IFileType operator +(IFileType fileType, IEnumerable<string> extend)
+            => fileType.Merge(extend);
+        #endregion
+        #region 传入另一个文件类型
+        /// <summary>
+        /// 合并文件类型
+        /// </summary>
+        /// <param name="fileType">待合并的文件类型</param>
+        /// <param name="fileTypeB">新增支持的文件类型</param>
+        /// <returns>一个新的<see cref="IFileType"/>，
+        /// 它同时支持<paramref name="fileType"/>和<paramref name="fileTypeB"/>所声明的文件类型</returns>
+        public static IFileType operator +(IFileType fileType, IFileType fileTypeB)
+            => fileType.Merge(fileTypeB);
+        #endregion
+        #endregion 
         #region 已注册的文件类型
         #region 公开属性
         /// <summary>
@@ -24,8 +48,8 @@ namespace System.IOFrancis.FileSystem
         /// 返回已注册的文件类型，键是扩展名，值是文件类型，
         /// 在注册之后，文件类型可以被<see cref="IFile"/>识别
         /// </summary>
-        protected static Dictionary<string, List<IFileType>> RegisteredFileTypePR { get; }
-        = new Dictionary<string, List<IFileType>>();
+        protected static IAddOnlyDictionary<string, HashSet<IFileType>> RegisteredFileTypePR { get; }
+        = CreateCollection.AddOnlyDictionaryConcurrent<string, HashSet<IFileType>>();
 
         /*注释：文件类型使用集合的原因在于：
            同一个扩展名可能对应多个文件类型，例如：
@@ -38,27 +62,33 @@ namespace System.IOFrancis.FileSystem
         /// </summary>
         string Description { get; }
         #endregion
-        #region 关于扩展名集合
         #region 受支持的扩展名
         /// <summary>
         /// 表示属于这个文件类型的扩展名，不带点号
         /// </summary>
         IEnumerable<string> ExtensionName { get; }
         #endregion
-        #region 注册扩展名
+        #region 合并文件类型
+        #region 传入扩展名集合
         /// <summary>
-        /// 将一个新扩展名注册到文件类型
+        /// 合并文件类型
         /// </summary>
-        /// <param name="NewExtensionName">要注册的新扩展名</param>
-        void Registered(string NewExtensionName);
-
-
-        /*注意事项：
-          1.本方法的目的是：
-          让文件类型初始化以后能够扩展，
-          请勿用于其他用途
-          2.为了减少副作用，
-          本类型不提供注销扩展名的方法*/
+        /// <param name="fileType">新增支持的文件类型的扩展名</param>
+        /// <param name="description">对新文件类型的描述</param>
+        /// <returns>一个新的<see cref="IFileType"/>对象，
+        /// 它同时支持本对象和<paramref name="fileType"/>中所声明的文件类型</returns>
+        IFileType Merge(IEnumerable<string> fileType, string description = "");
+        #endregion
+        #region 传入另一个文件类型
+        /// <summary>
+        /// 合并文件类型
+        /// </summary>
+        /// <param name="fileType">新增支持的文件类型</param>
+        /// <param name="description">对新文件类型的描述</param>
+        /// <returns>一个新的<see cref="IFileType"/>对象，
+        /// 它同时支持本对象和<paramref name="fileType"/>中所声明的文件类型</returns>
+        IFileType Merge(IFileType fileType, string description = "")
+            => Merge(fileType.ExtensionName, description);
         #endregion
         #endregion
         #region 关于文件类型兼容性
@@ -66,19 +96,10 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 检查扩展名与文件类型是否兼容
         /// </summary>
-        /// <param name="ExtensionName">指定的扩展名</param>
+        /// <param name="extensionName">指定的扩展名</param>
         /// <returns>如果兼容，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
-        bool IsCompatibleName(string ExtensionName)
-            => this.ExtensionName.Contains(ExtensionName);
-        #endregion
-        #region 传入路径
-        /// <summary>
-        /// 检查路径的扩展名与文件类型是否兼容
-        /// </summary>
-        /// <param name="Path">指定的路径</param>
-        /// <returns>如果兼容，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
-        bool IsCompatiblePath(PathText Path)
-           => IsCompatibleName(ToolPath.Split(Path).Extended);
+        bool IsCompatible(string extensionName)
+            => this.ExtensionName.Contains(extensionName);
         #endregion
         #region 返回两个文件类型是否兼容
         /// <summary>
@@ -87,7 +108,7 @@ namespace System.IOFrancis.FileSystem
         /// <param name="fileTypeB">要判断的文件类型B</param>
         /// <returns>如果兼容，返回<see langword="true"/>，否则返回<see langword="false"/>，
         /// 判断标准为：<paramref name="fileTypeB"/>扩展名是本对象扩展名的子集（不可是父集）</returns>
-        bool IsCompatibleFileType(IFileType fileTypeB)
+        bool IsCompatible(IFileType fileTypeB)
            => fileTypeB.ExtensionName.IsSupersetOf(ExtensionName, true).IsSubset();
         #endregion
         #endregion

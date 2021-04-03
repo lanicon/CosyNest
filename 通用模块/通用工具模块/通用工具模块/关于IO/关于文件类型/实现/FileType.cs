@@ -11,46 +11,32 @@ namespace System.IOFrancis.FileSystem
         #region 对文件类型的说明
         public string Description { get; }
         #endregion
-        #region 关于扩展名集合
         #region 受支持的扩展名
-        #region 公开属性
-        public IEnumerable<string> ExtensionName
-            => ExtensionPR;
+        public IEnumerable<string> ExtensionName { get; }
         #endregion
-        #region 私有属性
-        /// <summary>
-        /// 私有的扩展名集合，可注册新扩展名
-        /// </summary>
-        private HashSet<string> ExtensionPR { get; }
-        #endregion
-        #endregion
-        #region 注册扩展名
-        public void Registered(string NewExtensionName)
-        {
-            if (ExtensionPR.Add(NewExtensionName))             //如果扩展名没有重复
-                IFileType.RegisteredFileTypePR.TrySetValue(NewExtensionName, x => new List<IFileType>()).Value.Add(this);        //则将其注册
-        }
-        #endregion
+        #region 合并文件类型
+        public IFileType Merge(IEnumerable<string> fileType, string description = "")
+            => CreateIO.FileType(description, ExtensionName.Union(fileType).ToArray());
         #endregion
         #region 构造函数
         /// <summary>
         /// 用指定的扩展名集合封装文件类型，
         /// 注意：初始化本类型会将文件类型注册
         /// </summary>
-        /// <param name="Description">对文件类型的说明</param>
-        /// <param name="Extension">指定的扩展名集合，不带点号</param>
-        public FileType(string Description, params string[] Extension)
+        /// <param name="description">对文件类型的说明</param>
+        /// <param name="extension">指定的扩展名集合，不带点号</param>
+        public FileType(string description, params string[] extension)
         {
-            var Registered = IFileType.RegisteredFileTypePR;
-            ExtensionPR = new HashSet<string>(Extension);
-            this.Description = Description;
-            Extension.ForEach(x =>                                      //注册所有扩展名
+            var registered = IFileType.RegisteredFileTypePR;
+            ExtensionName = new HashSet<string>(extension);
+            this.Description = description;
+            foreach (var item in ExtensionName)                     //注册所有扩展名
             {
-                if (Registered.TryGetValue(x, out var value))
+                if (registered.TryGetValue(item, out var value))
                     value.Add(this);
                 else
-                    Registered.Add(x, new List<IFileType>() { this });
-            });
+                    registered.Add(item, new() { this });
+            }
         }
         #endregion
     }

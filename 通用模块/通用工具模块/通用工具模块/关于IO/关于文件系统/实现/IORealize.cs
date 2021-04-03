@@ -114,6 +114,10 @@ namespace System.IOFrancis.FileSystem
             return R;
         }
         #endregion
+        #region 手动刷新文件或目录的状态
+        public void Refresh()
+            => PackFS.Refresh();
+        #endregion
         #endregion
         #region 重写的方法
         #region 重写的GetHashCode

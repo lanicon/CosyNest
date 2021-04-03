@@ -10,7 +10,7 @@ namespace System.Office.Realize
     /// 这个类型代表一个Office文件，
     /// Office对象就是通过它加载的
     /// </summary>
-    public abstract class OfficeFile : AutoRelease
+    public abstract class OfficeFile : AutoRelease, IOfficeFile
     {
         #region 关于文件路径
         #region 说明文档
@@ -114,7 +114,7 @@ namespace System.Office.Realize
         /// <summary>
         /// 保存文件的实际逻辑在这个方法中执行
         /// </summary>
-        /// <param name="Path">保存文件的目录</param>
+        /// <param name="Path">保存文件的目录路径</param>
         protected abstract void SaveRealize(string Path);
         #endregion
         #endregion
