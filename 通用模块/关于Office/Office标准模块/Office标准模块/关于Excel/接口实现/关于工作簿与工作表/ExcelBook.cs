@@ -33,11 +33,11 @@ namespace System.Office.Excel.Realize
         /// 通过路径获取工作簿，不会引发路径被占用的异常
         /// </summary>
         /// <param name="path">工作簿的路径</param>
-        /// <param name="Del">如果缓存中没有使用该路径的工作簿，
+        /// <param name="delegate">如果缓存中没有使用该路径的工作簿，
         /// 则通过这个委托创建新工作簿，参数就是路径</param>
         /// <returns></returns>
-        public static IExcelBook GetExcelsBook(PathText path, Func<PathText, ExcelBook> Del)
-            => GetOfficeFile(path, Del);
+        public static IExcelBook GetExcelsBook(PathText path, Func<PathText, ExcelBook> @delegate)
+            => GetOfficeFile(path, @delegate);
         #endregion
         #region 构造函数：指定路径和受支持文件类型
         /// <summary>
@@ -45,9 +45,9 @@ namespace System.Office.Excel.Realize
         /// </summary>
         /// <param name="path">工作簿所在的文件路径，
         /// 如果不是通过文件创建的，则为<see langword="null"/></param>
-        /// <param name="Supported">该Excel对象所支持的文件类型</param>
-        public ExcelBook(PathText? path, IFileType Supported)
-            : base(path, Supported)
+        /// <param name="supported">该Excel对象所支持的文件类型</param>
+        public ExcelBook(PathText? path, IFileType supported)
+            : base(path, supported)
         {
 
         }

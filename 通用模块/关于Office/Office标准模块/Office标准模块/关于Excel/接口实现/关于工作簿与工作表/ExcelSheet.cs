@@ -23,7 +23,7 @@ namespace System.Office.Excel.Realize
         public abstract IExcelCells RangUser { get; }
         #endregion
         #region 返回行或者列
-        public abstract IExcelRC GetRC(int Begin, int? End, bool IsRow);
+        public abstract IExcelRC GetRC(int begin, int? end, bool isRow);
         #endregion
         #endregion
         #region 关于工作簿与工作表
@@ -74,10 +74,10 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 将指定的工作簿封装进工作表中
         /// </summary>
-        /// <param name="Book">指定的工作簿</param>
-        public ExcelSheet(IExcelBook Book)
+        /// <param name="book">指定的工作簿</param>
+        public ExcelSheet(IExcelBook book)
         {
-            this.Book = Book;
+            this.Book = book;
         }
         #endregion
     }

@@ -12,7 +12,7 @@
         /// <param name="Function">对不受支持的功能的说明</param>
         /// <returns></returns>
         public static NotSupportedException NotSupported(string? Function = null)
-            => new("不支持" + Function ?? "此功能");
+            => new("不支持" + (Function ?? "此功能"));
         #endregion
     }
 }

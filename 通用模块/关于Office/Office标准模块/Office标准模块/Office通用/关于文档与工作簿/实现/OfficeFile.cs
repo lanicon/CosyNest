@@ -39,10 +39,10 @@ namespace System.Office.Realize
         /// </summary>
         /// <typeparam name="Obj">返回值类型</typeparam>
         /// <param name="path">Office文件的路径</param>
-        /// <param name="Del">如果该Office文件未被创建，
+        /// <param name="delegate">如果该Office文件未被创建，
         /// 则通过这个委托创建文件并返回，它的参数就是文件路径</param>
         /// <returns>提取到的Office文件</returns>
-        private protected static Obj GetOfficeFile<Obj>(PathText path, Func<PathText, Obj> Del)
+        private protected static Obj GetOfficeFile<Obj>(PathText path, Func<PathText, Obj> @delegate)
             where Obj : OfficeFile
         {
             if (PathCache.TryGetValue(path, out var file))
@@ -51,15 +51,12 @@ namespace System.Office.Realize
                     return file.Target.To<Obj>();
                 PathCache.Remove(path);
             }
-            return Del(path);
+            return @delegate(path);
         }
         #endregion
         #region 文件路径
         private string? PathField;
-        /// <summary>
-        /// 获取该Office文件的绝对路径文本，
-        /// 如果为<see langword="null"/>，代表尚未保存
-        /// </summary>
+
         public string? Path
         {
             get => PathField;
@@ -80,22 +77,12 @@ namespace System.Office.Realize
         #endregion
         #region 关于保存文件
         #region 是否自动保存
-        /// <summary>
-        /// 如果这个值为<see langword="true"/>，
-        /// 则在执行<see cref="IDisposable.Dispose"/>方法时，还会自动保存文件，
-        /// 前提是文件的路径不为<see langword="null"/>
-        /// </summary>
         public bool AutoSave { get; set; } = true;
         #endregion
         #region 保存文件
-        /// <summary>
-        /// 在指定的路径保存这个Office文件
-        /// </summary>
-        /// <param name="Path">指定的保存路径，
-        /// 如果为<see langword="null"/>，代表原地保存</param>
-        public void Save(PathText? Path = null)
+        public void Save(PathText? path = null)
         {
-            switch ((this.Path, Path?.Path))
+            switch ((this.Path, path?.Path))
             {
                 case (null, null):
                     throw new Exception("该文件没有指定保存目录");
@@ -114,8 +101,8 @@ namespace System.Office.Realize
         /// <summary>
         /// 保存文件的实际逻辑在这个方法中执行
         /// </summary>
-        /// <param name="Path">保存文件的目录路径</param>
-        protected abstract void SaveRealize(string Path);
+        /// <param name="path">保存文件的目录路径</param>
+        protected abstract void SaveRealize(string path);
         #endregion
         #endregion
         #region 关于释放资源
@@ -152,14 +139,14 @@ namespace System.Office.Realize
         /// <summary>
         /// 用指定的文件路径初始化Office文件
         /// </summary>
-        /// <param name="Path">文件路径， 如果该Office对象不是通过文件创建的，则为<see langword="null"/></param>
-        /// <param name="Supported">这个Office对象所支持的文件类型</param>
-        public OfficeFile(PathText? Path, IFileType Supported)
+        /// <param name="path">文件路径， 如果该Office对象不是通过文件创建的，则为<see langword="null"/></param>
+        /// <param name="supported">这个Office对象所支持的文件类型</param>
+        public OfficeFile(PathText? path, IFileType supported)
         {
-            if (Path is { })                                       //如果文件路径不为null，则检查扩展名是否受支持
+            if (path is { })                                       //如果文件路径不为null，则检查扩展名是否受支持
             {
-                ExceptionIO.CheckFileType(Path, Supported);
-                this.Path = Path;                                   //还会检查路径是否被占用
+                ExceptionIO.CheckFileType(path, supported);
+                this.Path = path;                                   //还会检查路径是否被占用
             }
         }
         #endregion

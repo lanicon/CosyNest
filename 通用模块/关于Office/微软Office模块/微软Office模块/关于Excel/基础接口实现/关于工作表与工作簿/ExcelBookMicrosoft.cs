@@ -63,16 +63,16 @@ namespace System.Office.Excel
         #endregion
         #endregion
         #region 保存工作簿
-        protected override void SaveRealize(string Path)
+        protected override void SaveRealize(string path)
         {
             if (!Sheets.Any())
                 return;
-            if (Path == this.Path && File.Exists(Path))
+            if (path == this.Path && File.Exists(path))
             {
                 if (!PackBook.Saved)
                     PackBook.Save();
             }
-            else PackBook.SaveAs(Path);
+            else PackBook.SaveAs(path);
         }
         #endregion
         #region 开启或关闭自动计算
@@ -107,11 +107,11 @@ namespace System.Office.Excel
         /// <summary>
         /// 使用指定的工作簿初始化对象
         /// </summary>
-        /// <param name="WorkBook">指定的工作簿</param>
-        public ExcelBookMicrosoft(Workbook WorkBook)
-            : base(WorkBook.FullName, CreateMSOffice.SupportExcel)
+        /// <param name="workBook">指定的工作簿</param>
+        public ExcelBookMicrosoft(Workbook workBook)
+            : base(workBook.FullName, CreateMSOffice.SupportExcel)
         {
-            PackBook = WorkBook;
+            PackBook = workBook;
             PackExcel.DisplayAlerts = false;
             FromActive = true;
             Sheets = new ExcelSheetCollectionMS(this);
@@ -123,10 +123,10 @@ namespace System.Office.Excel
         /// <summary>
         /// 通过指定的路径初始化Excel工作簿
         /// </summary>
-        /// <param name="Path">工作簿所在的路径，
+        /// <param name="path">工作簿所在的路径，
         /// 如果该工作簿尚未保存到文件中，则为<see langword="null"/></param>
-        public ExcelBookMicrosoft(PathText? Path = null)
-            : base(Path, CreateMSOffice.SupportExcel)
+        public ExcelBookMicrosoft(PathText? path = null)
+            : base(path, CreateMSOffice.SupportExcel)
         {
             var PackExcel = new Application()
             {
@@ -135,8 +135,8 @@ namespace System.Office.Excel
                 FileValidation = Microsoft.Office.Core.MsoFileValidationMode.msoFileValidationSkip
             };
             var books = PackExcel.Workbooks;
-            PackBook = Path is null || !File.Exists(Path) ?
-                books.Add() : books.Open(Path.Path);
+            PackBook = path is null || !File.Exists(path) ?
+                books.Add() : books.Open(path.Path);
             Sheets = new ExcelSheetCollectionMS(this);
         }
         #endregion

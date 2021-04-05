@@ -23,10 +23,10 @@
         /// <summary>
         /// 用指定的工作表初始化对象
         /// </summary>
-        /// <param name="Sheet">这个范围所在的工作表</param>
-        public ExcelRange(IExcelSheet Sheet)
+        /// <param name="sheet">这个范围所在的工作表</param>
+        public ExcelRange(IExcelSheet sheet)
         {
-            this.Sheet = Sheet;
+            this.Sheet = sheet;
         }
         #endregion
     }

@@ -67,12 +67,12 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 用指定的工作表和地址初始化单元格
         /// </summary>
-        /// <param name="Sheet">指定的工作表</param>
-        /// <param name="Address">单元格的地址，包含起始和结束的行列数</param>
-        public ExcelCells(IExcelSheet Sheet, (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address)
-            : base(Sheet)
+        /// <param name="sheet">指定的工作表</param>
+        /// <param name="address">单元格的地址，包含起始和结束的行列数</param>
+        public ExcelCells(IExcelSheet sheet, (int BeginRow, int BeginCol, int EndRwo, int EndCol) address)
+            : base(sheet)
         {
-            this.Address = Address;
+            this.Address = address;
         }
         #endregion
     }

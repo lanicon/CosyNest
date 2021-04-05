@@ -123,7 +123,7 @@ namespace System.DataFrancis.Excel.Block
                 yield return Current;
                 while (true)
                 {
-                    yield return Current = Current.Offset(Right: Horizontal ? (int)w : 0, Down: Horizontal ? 0 : (int)h);
+                    yield return Current = Current.Offset(right: Horizontal ? (int)w : 0, down: Horizontal ? 0 : (int)h);
                 }
             }
             #endregion

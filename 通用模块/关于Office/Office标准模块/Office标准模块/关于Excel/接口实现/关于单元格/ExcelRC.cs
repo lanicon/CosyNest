@@ -54,16 +54,16 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 使用指定的参数初始化对象
         /// </summary>
-        /// <param name="Sheet">这个单元格行列所在的工作表</param>
-        /// <param name="IsRow">如果这个值为<see langword="true"/>，
+        /// <param name="sheet">这个单元格行列所在的工作表</param>
+        /// <param name="isRow">如果这个值为<see langword="true"/>，
         /// 代表这个对象是行，否则代表这个对象是列</param>
-        /// <param name="Begin">开始行号或列号</param>
-        /// <param name="End">结束行号或列号</param>
-        public ExcelRC(IExcelSheet Sheet, bool IsRow, int Begin, int End)
-            : base(Sheet)
+        /// <param name="begin">开始行号或列号</param>
+        /// <param name="end">结束行号或列号</param>
+        public ExcelRC(IExcelSheet sheet, bool isRow, int begin, int end)
+            : base(sheet)
         {
-            this.IsRow = IsRow;
-            this.Range = (Begin, End);
+            this.IsRow = isRow;
+            this.Range = (begin, end);
         }
         #endregion
     }

@@ -26,22 +26,22 @@ namespace System.Office.Excel
         /// <summary>
         /// 根据工作表名，获取工作表
         /// </summary>
-        /// <param name="Name">工作表名称</param>
-        /// <param name="CreateTable">当工作簿内不存在指定名称的工作表的时候，
+        /// <param name="name">工作表名称</param>
+        /// <param name="createTable">当工作簿内不存在指定名称的工作表的时候，
         /// 如果这个值为<see langword="true"/>，则创建新表，否则抛出异常</param>
         /// <returns>具有指定名称的工作表，它不可能为<see langword="null"/></returns>
-        IExcelSheet this[string Name, bool CreateTable]
-            => this.FirstOrDefault(x => x.Name == Name) ??
-            (CreateTable ? Add(Name) : throw new KeyNotFoundException($"工作簿中不存在名为{Name}的工作表"));
+        IExcelSheet this[string name, bool createTable]
+            => this.FirstOrDefault(x => x.Name == name) ??
+            (createTable ? Add(name) : throw new KeyNotFoundException($"工作簿中不存在名为{name}的工作表"));
         #endregion
         #region 可能返回null
         /// <summary>
         /// 根据名称，获取工作表
         /// </summary>
-        /// <param name="Name">工作表名称</param>
+        /// <param name="name">工作表名称</param>
         /// <returns>具有指定名称的工作表，当不存在具有该名称的工作表时，返回<see langword="null"/></returns>
-        IExcelSheet? this[string Name]
-            => this.FirstOrDefault(x => x.Name == Name);
+        IExcelSheet? this[string name]
+            => this.FirstOrDefault(x => x.Name == name);
         #endregion
         #endregion
         #region 添加工作表
@@ -49,9 +49,9 @@ namespace System.Office.Excel
         /// <summary>
         /// 添加一个具有指定名称的空白工作表
         /// </summary>
-        /// <param name="Name">工作表名，如果为<see langword="null"/>，则自动为其命名一个默认名称</param>
+        /// <param name="name">工作表名，如果它已经重复，则自动将其重命名</param>
         /// <returns>新添加的空白工作表</returns>
-        IExcelSheet Add(string? Name = null);
+        IExcelSheet Add(string name = "Sheet");
         #endregion
         #endregion
         #region 删除工作表
@@ -59,12 +59,12 @@ namespace System.Office.Excel
         /// <summary>
         /// 删除具有指定名称的工作表
         /// </summary>
-        /// <param name="Name">指定的名称</param>
+        /// <param name="name">指定的名称</param>
         /// <returns>如果删除成功，则为<see langword="true"/>，否则为<see langword="false"/></returns>
-        bool Remove(string Name)
+        bool Remove(string name)
         {
-            var sheet = this.FirstOrDefault(x => x.Name == Name);
-            if (sheet == null)
+            var sheet = this.FirstOrDefault(x => x.Name == name);
+            if (sheet is null)
                 return false;
             sheet.Delete();
             return true;

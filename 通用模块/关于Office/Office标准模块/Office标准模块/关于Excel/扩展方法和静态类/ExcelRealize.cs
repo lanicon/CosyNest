@@ -20,20 +20,18 @@ namespace System.Office.Excel.Realize
         /// 则不断的修改它，直到没有重复的名称为止，
         /// 这个方法可以避免由于工作表重名导致的异常
         /// </summary>
-        /// <param name="Sheets">要检查的工作薄的工作表容器</param>
-        /// <param name="SheetName">要检查的工作表名称，
-        /// 如果为<see langword="null"/>，则检查默认名称</param>
+        /// <param name="sheets">要检查的工作薄的工作表容器</param>
+        /// <param name="sheetName">要检查的工作表名称</param>
         /// <returns>新的工作表名称，保证不重复</returns>
-        public static string SheetRepeat(IExcelSheetCollection Sheets, string? SheetName = null)
-            => Sheets.Select(x => x.Name)
-            .Distinct(SheetName ?? "工作表");
+        public static string SheetRepeat(IExcelSheetCollection sheets, string sheetName)
+            => sheets.Select(x => x.Name).Distinct(sheetName);
         #endregion
         #endregion
         #region 关于Range
         #region 复制格式
         #region 缓存属性
         /// <summary>
-        /// 这个属性缓存IRangStyle中所有公开，
+        /// 这个属性缓存<see cref="IRangeStyle"/>中所有公开，
         /// 而且既能读取又能写入的属性，为复制格式提供方便
         /// </summary>
         private static IEnumerable<PropertyInfo> CacheStyleProperty { get; }
@@ -44,11 +42,11 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 复制单元格格式
         /// </summary>
-        /// <param name="Source">待复制的格式</param>
-        /// <param name="Target">复制的目标格式</param>
-        public static void CopyStyle(IRangeStyle Source, IRangeStyle Target)
+        /// <param name="source">待复制的格式</param>
+        /// <param name="target">复制的目标格式</param>
+        public static void CopyStyle(IRangeStyle source, IRangeStyle target)
         {
-            CacheStyleProperty.ForEach(x => x.Copy(Source, Target));
+            CacheStyleProperty.ForEach(x => x.Copy(source, target));
         }
         #endregion
         #endregion
@@ -59,30 +57,30 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 将列号转换为文本形式
         /// </summary>
-        /// <param name="Col">待转换的列号，从0开始</param>
+        /// <param name="column">待转换的列号，从0开始</param>
         /// <returns>列号对应的A1格式地址</returns>
-        public static string ColToText(int Col)
+        public static string ColToText(int column)
         {
-            ExceptionIntervalOut.Check(0, null, Col);
-            var Beg = (int)'A';
-            return ToolBit.FromDecimal(Col, 26).Integer.PackIndex(true).
-                Select(x => (char)(Beg + (x.Index == 0 && x.Count > 1 ? x.Elements - 1 : x.Elements))).Join();
+            ExceptionIntervalOut.Check(0, null, column);
+            const int begin = 'A';
+            return ToolBit.FromDecimal(column, 26).Integer.PackIndex(true).
+                Select(x => (char)(begin + (x.Index == 0 && x.Count > 1 ? x.Elements - 1 : x.Elements))).Join();
         }
         #endregion
         #region 根据行列号
         /// <summary>
         /// 根据起止行列号，返回A1地址
         /// </summary>
-        /// <param name="Begin">开始行列号，从0开始</param>
-        /// <param name="End">结束行列号，从0开始</param>
-        /// <param name="IsRow">如果这个值为<see langword="true"/>，
+        /// <param name="begin">开始行列号，从0开始</param>
+        /// <param name="end">结束行列号，从0开始</param>
+        /// <param name="isRow">如果这个值为<see langword="true"/>，
         /// 代表要返回地址的对象是行，否则是列</param>
         /// <returns>行列号对应的A1格式地址</returns>
-        public static string GetAddress(int Begin, int End, bool IsRow)
+        public static string GetAddress(int begin, int end, bool isRow)
         {
-            ExceptionIntervalOut.Check(0, null, Begin, End);
-            return IsRow ? $"{Begin + 1}:{End + 1}" :
-                ColToText(Begin) + ":" + ColToText(End);
+            ExceptionIntervalOut.Check(0, null, begin, end);
+            return isRow ? $"{begin + 1}:{end + 1}" :
+                ColToText(begin) + ":" + ColToText(end);
         }
         #endregion
         #region 根据坐标
@@ -111,13 +109,13 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 根据一个平面，返回它的A1地址
         /// </summary>
-        /// <param name="Rectangular">待返回A1地址的平面</param>
+        /// <param name="rectangular">待返回A1地址的平面</param>
         /// <returns>平面所对应的A1格式地址</returns>
-        public static string GetAddress(ISizePosPixel Rectangular)
+        public static string GetAddress(ISizePosPixel rectangular)
         {
-            var (TopLeft, BottomRight) = Rectangular.Boundaries;
-            var (BC, BR) = TopLeft.Abs();
-            var (EC, ER) = BottomRight.Abs();
+            var (topLeft, bottomRight) = rectangular.Boundaries;
+            var (BC, BR) = topLeft.Abs();
+            var (EC, ER) = bottomRight.Abs();
             return GetAddress(BR, BC, ER, EC);
         }
         #endregion
@@ -130,12 +128,12 @@ namespace System.Office.Excel.Realize
         /// </summary>
         /// <param name="Address">待解析的A1地址</param>
         /// <returns></returns>
-        public static (int BeginRow, int BeginCol, int EndRow, int EndCol) AddressToTupts(string AddressA1)
+        public static (int BeginRow, int BeginCol, int EndRow, int EndCol) AddressToTupts(string addressA1)
         {
             var mathce = /*language=regex*/@"^\$?(?<bc>[A-Z]+)\$?(?<br>\d+)(?<end>:\$?(?<ec>[A-Z]+)\$?(?<er>\d+))?$".
-                ToRegex().MatcheFirst(AddressA1)?.GroupsNamed;
+                ToRegex().MatcheFirst(addressA1)?.GroupsNamed;
             if (mathce is null)
-                throw new Exception($"{AddressA1}不是合法的A1地址格式");
+                throw new Exception($"{addressA1}不是合法的A1地址格式");
             #region 用来获取列号的本地函数
             static int Get(IMatch add)
                 => ToolBit.ToDecimal(26, add.Match.Select(x => x - 64).ToArray(), null) - 1;
@@ -155,11 +153,11 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 解析一个A1格式的地址，并将它转换为等效的平面
         /// </summary>
-        /// <param name="AddressA1">待解析的A1格式地址</param>
+        /// <param name="addressA1">待解析的A1格式地址</param>
         /// <returns></returns>
-        public static ISizePosPixel AddressToTISizePos(string AddressA1)
+        public static ISizePosPixel AddressToTISizePos(string addressA1)
         {
-            var (BR, BC, ER, EC) = AddressToTupts(AddressA1);
+            var (BR, BC, ER, EC) = AddressToTupts(addressA1);
             return CreateMathObj.SizePosPixel(
                 CreateMathObj.Point(BC, -BR),
                 EC - BC + 1, ER - BR + 1);
@@ -172,12 +170,12 @@ namespace System.Office.Excel.Realize
         /// 获取一个单元格的完整地址，
         /// 它由文件名，工作表名和单元格地址组成
         /// </summary>
-        /// <param name="File">工作簿所在的文件</param>
-        /// <param name="SheetName">工作表的名称</param>
-        /// <param name="Address">单元格地址</param>
+        /// <param name="file">工作簿所在的文件</param>
+        /// <param name="sheetName">工作表的名称</param>
+        /// <param name="address">单元格地址</param>
         /// <returns></returns>
-        public static string GetAddressFull(IFile File, string SheetName, string Address)
-            => $"'{File.Father?.Path}\\[{File.NameFull}]{SheetName}'!{Address}";
+        public static string GetAddressFull(IFile file, string sheetName, string address)
+            => $"'{file.Father?.Path}\\[{file.NameFull}]{sheetName}'!{address}";
         #endregion
         #endregion
         #endregion

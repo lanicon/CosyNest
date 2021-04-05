@@ -19,34 +19,34 @@ namespace System.Office.Excel
         /// 根据起始行列号和结束行列号，
         /// 返回一个或多个单元格
         /// </summary>
-        /// <param name="BeginRow">开始单元格的行号</param>
-        /// <param name="BeginCol">开始单元格的列号</param>
-        /// <param name="EndRow">结束单元格的行号，如果小于0，代表和起始单元格相同</param>
-        /// <param name="EndCol">结束单元格的列号，如果小于0，代表和起始单元格相同</param>
+        /// <param name="beginRow">开始单元格的行号</param>
+        /// <param name="beginColumn">开始单元格的列号</param>
+        /// <param name="endRow">结束单元格的行号，如果小于0，代表和起始单元格相同</param>
+        /// <param name="endColumn">结束单元格的列号，如果小于0，代表和起始单元格相同</param>
         /// <returns></returns>
-        IExcelCells this[int BeginRow, int BeginCol, int EndRow = -1, int EndCol = -1]
-            => RangUser[BeginRow, BeginCol, EndRow, EndCol];
+        IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1]
+            => RangUser[beginRow, beginColumn, endRow, endColumn];
         #endregion
         #region 根据相对位置
         /// <summary>
         /// 根据起始行列号和单元格大小，返回一个或多个单元格
         /// </summary>
-        /// <param name="BeginRow">起始单元格的行号</param>
-        /// <param name="BeginCol">起始单元格的列号</param>
+        /// <param name="beginRow">起始单元格的行号</param>
+        /// <param name="beginColumn">起始单元格的列号</param>
         /// <param name="Size">这个元组指示单元格的行数和列数</param>
         /// <returns></returns>
-        IExcelCells this[int BeginRow, int BeginCol, (int RowCount, int ColumnCount) Size]
-            => RangUser[BeginRow, BeginCol, Size];
+        IExcelCells this[int beginRow, int beginColumn, (int RowCount, int ColumnCount) Size]
+            => RangUser[beginRow, beginColumn, Size];
         #endregion
         #region 根据平面
         /// <summary>
         /// 根据一个平面，返回一个单元格
         /// </summary>
-        /// <param name="Rect">这个平面被用来描述单元格的大小和位置，
+        /// <param name="rectangle">这个平面被用来描述单元格的大小和位置，
         /// 如果它的坐标有负数，那么会取其绝对值</param>
         /// <returns></returns>
-        IExcelCells this[ISizePosPixel Rect]
-            => RangUser[Rect];
+        IExcelCells this[ISizePosPixel rectangle]
+            => RangUser[rectangle];
         #endregion
         #endregion
         #region 返回用户范围
@@ -66,13 +66,13 @@ namespace System.Office.Excel
         /// <summary>
         /// 从这个工作表返回行或者列
         /// </summary>
-        /// <param name="Begin">开始行列号</param>
-        /// <param name="End">结束行列号，如果这个值为<see langword="null"/>，
+        /// <param name="begin">开始行列号</param>
+        /// <param name="end">结束行列号，如果这个值为<see langword="null"/>，
         /// 则默认为与开始行列数相等</param>
-        /// <param name="IsRow">如果这个值为<see langword="true"/>，
+        /// <param name="isRow">如果这个值为<see langword="true"/>，
         /// 代表返回行，否则返回列</param>
         /// <returns></returns>
-        IExcelRC GetRC(int Begin, int? End, bool IsRow);
+        IExcelRC GetRC(int begin, int? end, bool isRow);
         #endregion
         #endregion
         #region 关于工作簿与工作表
@@ -91,7 +91,8 @@ namespace System.Office.Excel
         #region 对工作表的操作
         #region 复制工作表
         /// <summary>
-        /// 将这个工作表复制到新工作簿
+        /// 将这个工作表复制到新工作簿，
+        /// 并放置在工作表集合的末尾
         /// </summary>
         /// <param name="collection">目标工作簿的工作表容器</param>
         /// <returns>复制后的新工作表</returns>

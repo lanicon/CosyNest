@@ -55,7 +55,7 @@ namespace System.Office.Excel.Realize
         public abstract void Insert(int index, IExcelSheet item);
         #endregion 
         #region 添加空白表
-        public abstract IExcelSheet Add(string? Name = null);
+        public abstract IExcelSheet Add(string name = "Sheet");
         #endregion
         #region 添加新工作表
         public virtual void Add(IExcelSheet item)
@@ -64,8 +64,8 @@ namespace System.Office.Excel.Realize
         #endregion
         #region 关于移除工作表
         #region 移除指定索引处的工作表
-        public virtual void RemoveAt(int index) =>
-            this[index].Delete();
+        public virtual void RemoveAt(int index)
+            => this[index].Delete();
         #endregion
         #region 移除全部工作表
         public abstract void Clear();
@@ -92,10 +92,10 @@ namespace System.Office.Excel.Realize
         /// <summary>
         /// 将指定的工作簿封装进对象
         /// </summary>
-        /// <param name="ExcelBook">指定的工作簿</param>
-        public ExcelSheetCollection(IExcelBook ExcelBook)
+        /// <param name="excelBook">指定的工作簿</param>
+        public ExcelSheetCollection(IExcelBook excelBook)
         {
-            this.ExcelBook = ExcelBook;
+            this.ExcelBook = excelBook;
         }
         #endregion
     }

@@ -101,13 +101,13 @@ namespace System.Office
         /// <summary>
         /// 通过指定的文件路径，创建一个Excel工作簿
         /// </summary>
-        /// <param name="Path">工作簿的文件路径，
+        /// <param name="path">工作簿的文件路径，
         /// 如果为<see langword="null"/>，代表新建一个空白工作簿</param>
         /// <returns></returns>
-        public static IExcelBook ExcelBook(PathText? Path = null)
-            => Path == null ?
+        public static IExcelBook ExcelBook(PathText? path = null)
+            => path is null ?
             new ExcelBookMicrosoft() :
-            Excel.Realize.ExcelBook.GetExcelsBook(Path, x => new ExcelBookMicrosoft(x));
+            Excel.Realize.ExcelBook.GetExcelsBook(path, x => new ExcelBookMicrosoft(x));
         #endregion
         #region 获取正在运行的工作簿
 #if DEBUG
@@ -151,13 +151,13 @@ namespace System.Office
         /// <summary>
         /// 通过指定的文件路径，创建一个Word文档
         /// </summary>
-        /// <param name="Path">文档的文件路径，
+        /// <param name="path">文档的文件路径，
         /// 如果为<see langword="null"/>，代表新建一个空白文档</param>
         /// <returns></returns>
-        public static IWordDocument WordDocument(PathText? Path = null)
-            => Path == null ?
+        public static IWordDocument WordDocument(PathText? path = null)
+            => path is null ?
             new WordDocumentMicrosoft() :
-            Word.Realize.WordDocument.GetDocument(Path, x => new WordDocumentMicrosoft(x));
+            Word.Realize.WordDocument.GetDocument(path, x => new WordDocumentMicrosoft(x));
         #endregion
         #region 获取正在运行的文档
 #if DEBUG

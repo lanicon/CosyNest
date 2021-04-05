@@ -169,12 +169,12 @@ namespace System.Office.Excel
         /// 根据起始行列号和结束行列号，
         /// 返回一个或多个单元格
         /// </summary>
-        /// <param name="BeginRow">开始单元格的行号</param>
-        /// <param name="BeginCol">开始单元格的列号</param>
-        /// <param name="EndRow">结束单元格的行号，如果小于0，代表和起始单元格相同</param>
-        /// <param name="EndCol">结束单元格的列号，如果为小于0，代表和起始单元格相同</param>
+        /// <param name="beginRow">开始单元格的行号</param>
+        /// <param name="beginColumn">开始单元格的列号</param>
+        /// <param name="endRow">结束单元格的行号，如果小于0，代表和起始单元格相同</param>
+        /// <param name="endColumn">结束单元格的列号，如果为小于0，代表和起始单元格相同</param>
         /// <returns></returns>
-        IExcelCells this[int BeginRow, int BeginCol, int EndRow = -1, int EndCol = -1] { get; }
+        IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1] { get; }
 
         /*实现本API请遵循以下规范：
            1.所有行列号从0开始，而不是从1开始，这是为了与C#的习惯相统一
@@ -184,16 +184,16 @@ namespace System.Office.Excel
         /// <summary>
         /// 根据起始行列号和单元格大小，返回一个或多个单元格
         /// </summary>
-        /// <param name="BeginRow">起始单元格的行号</param>
-        /// <param name="BeginCol">起始单元格的列号</param>
+        /// <param name="beginRow">起始单元格的行号</param>
+        /// <param name="beginColumn">起始单元格的列号</param>
         /// <param name="Size">这个元组指示单元格的行数和列数</param>
         /// <returns></returns>
-        IExcelCells this[int BeginRow, int BeginCol, (int RowCount, int ColumnCount) Size]
+        IExcelCells this[int beginRow, int beginColumn, (int RowCount, int ColumnCount) Size]
         {
             get
             {
                 var (RC, CC) = Size;
-                return this[BeginRow, BeginCol, BeginRow + RC - 1, BeginCol + CC - 1];
+                return this[beginRow, beginColumn, beginRow + RC - 1, beginColumn + CC - 1];
             }
         }
         #endregion
@@ -201,15 +201,15 @@ namespace System.Office.Excel
         /// <summary>
         /// 根据一个平面，返回一个单元格
         /// </summary>
-        /// <param name="Rect">这个平面被用来描述单元格的大小和位置，
+        /// <param name="rectangle">这个平面被用来描述单元格的大小和位置，
         /// 如果它的坐标有负数，那么会取绝对值</param>
         /// <returns></returns>
-        IExcelCells this[ISizePosPixel Rect]
+        IExcelCells this[ISizePosPixel rectangle]
         {
             get
             {
-                var (H, V) = Rect;
-                var (R, T) = Rect.FirstPixel.Abs();
+                var (H, V) = rectangle;
+                var (R, T) = rectangle.FirstPixel.Abs();
                 return this[T, R, (V, H)];
             }
         }
@@ -235,12 +235,12 @@ namespace System.Office.Excel
         /// <summary>
         /// 返回这个单元格中所有的行或列
         /// </summary>
-        /// <param name="IsRow">如果这个值为<see langword="true"/>，则返回行，否则返回列</param>
+        /// <param name="isRow">如果这个值为<see langword="true"/>，则返回行，否则返回列</param>
         /// <returns></returns>
-        IExcelRC GetRC(bool IsRow)
+        IExcelRC GetRC(bool isRow)
         {
             var (BR, BC, ER, EC) = Address;
-            return Sheet.GetRC(IsRow ? BR : BC, IsRow ? ER : EC, IsRow);
+            return Sheet.GetRC(isRow ? BR : BC, isRow ? ER : EC, isRow);
         }
         #endregion
         #endregion
@@ -255,13 +255,13 @@ namespace System.Office.Excel
         /// <summary>
         /// 偏移这个单元格，并返回一个新的单元格
         /// </summary>
-        /// <param name="ExtendToRight">单元格的大小会向右扩展指定的列数</param>
-        /// <param name="ExtenToDown">单元格的大小会向下扩展指定的列数</param>
-        /// <param name="Right">向右移动的单元格数</param>
-        /// <param name="Down">向下移动的单元格数</param>
+        /// <param name="extendToRight">单元格的大小会向右扩展指定的列数</param>
+        /// <param name="extenToDown">单元格的大小会向下扩展指定的列数</param>
+        /// <param name="right">向右移动的单元格数</param>
+        /// <param name="down">向下移动的单元格数</param>
         /// <returns></returns>
-        IExcelCells Offset(int ExtendToRight = 0, int ExtenToDown = 0, int Right = 0, int Down = 0)
-            => Sheet[AddressMath.Transform(ExtendToRight, ExtenToDown, Right, -Down)];
+        IExcelCells Offset(int extendToRight = 0, int extenToDown = 0, int right = 0, int down = 0)
+            => Sheet[AddressMath.Transform(extendToRight, extenToDown, right, -down)];
         #endregion
         #endregion
     }

@@ -33,12 +33,12 @@
         /// <summary>
         /// 以文本形式，返回单元格地址
         /// </summary>
-        /// <param name="IsR1C1">如果这个值为<see langword="true"/>，
+        /// <param name="isR1C1">如果这个值为<see langword="true"/>，
         /// 代表以R1C1形式返回，否则代表以A1形式返回</param>
-        /// <param name="IsComplete">如果这个值为<see langword="true"/>，
+        /// <param name="isComplete">如果这个值为<see langword="true"/>，
         /// 代表返回完整地址，它包含了关于所在文件等信息，否则返回标准形式的地址</param>
         /// <returns></returns>
-        string AddressText(bool IsR1C1 = true, bool IsComplete = false);
+        string AddressText(bool isR1C1 = true, bool isComplete = false);
         #endregion
         #endregion
     }

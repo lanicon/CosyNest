@@ -40,7 +40,7 @@ namespace System.DataFrancis.Excel.Block
             if (Title.Any())
             {
                 var IsH = Map.IsHorizontal;
-                var TitleCell = Next.Current.Offset(Right: IsH ? -1 : 0, Down: IsH ? 0 : -1);
+                var TitleCell = Next.Current.Offset(right: IsH ? -1 : 0, down: IsH ? 0 : -1);
                 Title.ForEach(x => x!(TitleCell));
             }
         }

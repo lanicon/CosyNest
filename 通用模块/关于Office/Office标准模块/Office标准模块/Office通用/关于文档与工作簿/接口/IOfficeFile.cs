@@ -25,9 +25,9 @@ namespace System.Office
         /// <summary>
         /// 在指定的路径保存Office文件
         /// </summary>
-        /// <param name="Path">指定的保存路径，
+        /// <param name="path">指定的保存路径，
         /// 如果为<see langword="null"/>，代表原地保存</param>
-        void Save(PathText? Path = null);
+        void Save(PathText? path = null);
 
         /*在实现本API时，请遵循以下规范：
           #如果不需要保存或不能保存，就不执行保存操作

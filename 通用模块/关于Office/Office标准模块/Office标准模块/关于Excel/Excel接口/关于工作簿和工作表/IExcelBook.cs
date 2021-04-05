@@ -55,21 +55,21 @@ namespace System.Office.Excel
         /// <summary>
         /// 根据工作表名，获取工作表
         /// </summary>
-        /// <param name="Name">工作表名称</param>
-        /// <param name="CreateTable">当工作簿内不存在指定名称的工作表的时候，
+        /// <param name="name">工作表名称</param>
+        /// <param name="createTable">当工作簿内不存在指定名称的工作表的时候，
         /// 如果这个值为<see langword="true"/>，则创建新表，否则抛出异常</param>
         /// <returns>具有指定名称的工作表，它不可能为<see langword="null"/></returns>
-        IExcelSheet this[string Name, bool CreateTable]
-            => Sheets[Name, CreateTable];
+        IExcelSheet this[string name, bool createTable]
+            => Sheets[name, createTable];
         #endregion
         #region 可能返回null
         /// <summary>
         /// 根据名称，获取工作表
         /// </summary>
-        /// <param name="Name">工作表名称</param>
+        /// <param name="name">工作表名称</param>
         /// <returns>具有指定名称的工作表，当不存在具有该名称的工作表时，返回<see langword="null"/></returns>
-        IExcelSheet? this[string Name]
-            => Sheets[Name];
+        IExcelSheet? this[string name]
+            => Sheets[name];
         #endregion
         #endregion
         #region 返回工作表的容器
