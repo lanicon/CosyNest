@@ -13,31 +13,31 @@ namespace System
         /// <summary>
         /// 在进行相等比较时，实际执行这个委托
         /// </summary>
-        private Func<Obj?, Obj?, bool> EqualsDel { get; }
+        private Func<Obj?, Obj?, bool> EqualsDelegate { get; }
         #endregion
         #region 计算哈希值的委托
         /// <summary>
         /// 在计算哈希值的时候，实际执行这个委托
         /// </summary>
-        private Func<Obj, int> GetHashCodeDel { get; }
+        private Func<Obj, int> GetHashCodeDelegate { get; }
         #endregion
         #endregion
         #region 接口实现
         public bool Equals(Obj? x, Obj? y)
-            => EqualsDel(x, y);
+            => EqualsDelegate(x, y);
         public int GetHashCode(Obj obj)
-            => GetHashCodeDel(obj);
+            => GetHashCodeDelegate(obj);
         #endregion
         #region 构造函数
         /// <summary>
         /// 使用指定的参数初始化对象
         /// </summary>
-        /// <param name="EqualsDel">这个委托用于执行相等比较</param>
-        /// <param name="GetHashCodeDel">这个委托用于计算哈希值</param>
-        public EqualityComparer(Func<Obj, Obj, bool> EqualsDel, Func<Obj, int> GetHashCodeDel)
+        /// <param name="equals">这个委托用于执行相等比较</param>
+        /// <param name="getHashCode">这个委托用于计算哈希值</param>
+        public EqualityComparer(Func<Obj, Obj, bool> equals, Func<Obj, int> getHashCode)
         {
-            this.EqualsDel = (x, y) => ToolEqual.JudgeNull(x, y) ?? EqualsDel(x!, y!);
-            this.GetHashCodeDel = x => x is null ? 0 : GetHashCodeDel(x);
+            this.EqualsDelegate = (x, y) => ToolEqual.JudgeNull(x, y) ?? equals(x!, y!);
+            this.GetHashCodeDelegate = x => x is null ? 0 : getHashCode(x);
         }
         #endregion
     }

@@ -12,26 +12,26 @@ namespace System
         /// <summary>
         /// 在锁被释放的时候，执行这个委托
         /// </summary>
-        private Action? DisposeDel { get; set; }
+        private Action? DisposeDelegate { get; set; }
         #endregion
         #region 释放锁
         protected override void DisposeRealize()
         {
-            DisposeDel?.Invoke();
-            DisposeDel = null;
+            DisposeDelegate?.Invoke();
+            DisposeDelegate = null;
         }
         #endregion
         #region 构造函数
         /// <summary>
         /// 使用指定的初始化委托和释放委托初始化对象
         /// </summary>
-        /// <param name="Initialization">在构造函数中，这个委托会被立即执行，
+        /// <param name="initialization">在构造函数中，这个委托会被立即执行，
         /// 如果为<see langword="null"/>，则会被忽略</param>
-        /// <param name="Dispose">在对象被释放的时候，这个委托会被执行</param>
-        public Lock(Action? Initialization, Action Dispose)
+        /// <param name="dispose">在对象被释放的时候，这个委托会被执行</param>
+        public Lock(Action? initialization, Action dispose)
         {
-            Initialization?.Invoke();
-            DisposeDel = Dispose;
+            initialization?.Invoke();
+            DisposeDelegate = dispose;
         }
         #endregion
     }

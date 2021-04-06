@@ -92,14 +92,18 @@ namespace System.IOFrancis.FileSystem
         #endregion
         #endregion
         #region 关于文件类型兼容性
-        #region 传入扩展名
+        #region 传入扩展名或路径
         /// <summary>
-        /// 检查扩展名与文件类型是否兼容
+        /// 检查扩展名或路径与文件类型是否兼容
         /// </summary>
-        /// <param name="extensionName">指定的扩展名</param>
+        /// <param name="extensionNameOrPath">指定的扩展名或路径，
+        /// 如果它是扩展名，则不带点号</param>
         /// <returns>如果兼容，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
-        bool IsCompatible(string extensionName)
-            => this.ExtensionName.Contains(extensionName);
+        bool IsCompatible(string extensionNameOrPath)
+        {
+            var extensionName = ToolPath.Split(extensionNameOrPath).Extended;
+            return this.ExtensionName.Contains(extensionName is "" ? extensionNameOrPath : extensionName);
+        }
         #endregion
         #region 返回两个文件类型是否兼容
         /// <summary>

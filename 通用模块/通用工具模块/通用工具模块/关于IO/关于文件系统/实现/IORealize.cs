@@ -105,7 +105,7 @@ namespace System.IOFrancis.FileSystem
                 {
                     Backup.Path = Path;
                     PackFS = this is IFile ?
-                        (FileSystemInfo)new FileInfo(Backup.Path) : new DirectoryInfo(Backup.Path);
+                        new FileInfo(Backup.Path) : new DirectoryInfo(Backup.Path);
                 }
                 throw;
             }

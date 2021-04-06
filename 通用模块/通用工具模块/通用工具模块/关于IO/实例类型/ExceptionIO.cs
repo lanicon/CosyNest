@@ -14,20 +14,23 @@ namespace System.IOFrancis
         /// <summary>
         /// 获取一个异常预设值，错误原因是源文件不存在，或路径不合法
         /// </summary>
-        /// <param name="Path">发生异常的路径</param>
+        /// <param name="path">发生异常的路径</param>
         /// <returns></returns>
-        public static ExceptionIO BecauseExist(string Path)
-            => new(Path, "源文件或目录不存在，或者路径不合法");
+        public static ExceptionIO BecauseExist(string path)
+            => new(path, "源文件或目录不存在，或者路径不合法");
         #endregion
         #region 抛出异常
         /// <summary>
         /// 检查一个路径，如果它不存在，则抛出异常
         /// </summary>
-        /// <param name="Path">要检查的路径</param>
-        public static void CheckExist(string Path)
+        /// <param name="path">要检查的路径</param>
+        /// <param name="checkMod">如果这个值为<see langword="true"/>，代表检查文件是否存在，
+        /// 如果这个值为<see langword="false"/>，代表检查目录是否存在，
+        /// 如果这个值为<see langword="null"/>，代表上述两者皆可</param>
+        public static void CheckExist(string path, bool? checkMod = null)
         {
-            if (!ToolPath.CheckPathAvailable(Path))
-                throw BecauseExist(Path);
+            if (!ToolPath.CheckPathExist(path, checkMod))
+                throw BecauseExist(path);
         }
         #endregion
         #endregion
@@ -36,20 +39,20 @@ namespace System.IOFrancis
         /// <summary>
         /// 获取一个异常预设值，错误原因是路径不合法
         /// </summary>
-        /// <param name="Path">发生错误的路径</param>
+        /// <param name="path">发生错误的路径</param>
         /// <returns></returns>
-        public static ExceptionIO BecauseNotLegal(string Path)
-            => new(Path, "该路径不是合法路径");
+        public static ExceptionIO BecauseNotLegal(string path)
+            => new(path, "该路径不是合法路径");
         #endregion
         #region 抛出异常
         /// <summary>
         /// 检查一个路径文本，如果它不合法，则抛出一个异常
         /// </summary>
-        /// <param name="Path">发生错误的路径</param>
-        public static void CheckNotLegal(string Path)
+        /// <param name="path">发生错误的路径</param>
+        public static void CheckNotLegal(string path)
         {
-            if (ToolPath.GetPathState(Path) == PathState.NotLegal)
-                throw BecauseNotLegal(Path);
+            if (ToolPath.GetPathState(path) is PathState.NotLegal)
+                throw BecauseNotLegal(path);
         }
         #endregion
         #endregion
@@ -62,21 +65,20 @@ namespace System.IOFrancis
         /// <param name="fileType">受支持的文件类型</param>
         /// <returns></returns>
         public static ExceptionIO BecauseFileType(string path, IFileType fileType)
-            => new(path, "文件不是受支持的类型",
-                $"该文件扩展名：{(IO.Path.GetExtension(path) ?? "该IO对象不是文件，或没有扩展名").TrimStart('.')}",
-                $"受支持的文件扩展名：{fileType.ExtensionName.Join("、")}");
+            => new(path, $"{IO.Path.GetExtension(path).TrimStart('.')}文件不是受支持的类型，" +
+                $"受支持的类型包括：{fileType.ExtensionName.Join("，")}");
         #endregion
         #region 抛出异常
         /// <summary>
         /// 检查一个路径，如果是目录，
         /// 或者它不与指定的文件类型兼容，则抛出一个异常
         /// </summary>
-        /// <param name="Path">要检查的路径</param>
-        /// <param name="Supported">受支持的文件类型</param>
-        public static void CheckFileType(string Path, IFileType Supported)
+        /// <param name="path">要检查的路径</param>
+        /// <param name="supported">受支持的文件类型</param>
+        public static void CheckFileType(string path, IFileType supported)
         {
-            if (!Supported.IsCompatible(Path))
-                throw BecauseFileType(Path, Supported);
+            if (!supported.IsCompatible(path))
+                throw BecauseFileType(path, supported);
         }
         #endregion
         #endregion
@@ -84,11 +86,11 @@ namespace System.IOFrancis
         /// <summary>
         /// 获取一个异常预设值，错误原因是路径已被占用
         /// </summary>
-        /// <param name="Path">被占用的路径</param>
-        /// <param name="Another">指示路径被谁占用了，如果不填，在错误描述中不会出现</param>
+        /// <param name="path">被占用的路径</param>
+        /// <param name="another">指示路径被谁占用了，如果不填，在错误描述中不会出现</param>
         /// <returns></returns>
-        public static ExceptionIO BecauseOccupied(string Path, string? Another = null)
-            => new(Path, $"该路径已被{Another}占用");
+        public static ExceptionIO BecauseOccupied(string path, string? another = null)
+            => new(path, $"该路径已被{another}占用");
         #endregion
         #endregion
         #region 发生异常的路径
@@ -101,16 +103,12 @@ namespace System.IOFrancis
         /// <summary>
         /// 用指定的路径和异常原因初始化IO异常
         /// </summary>
-        /// <param name="Path">发生异常的路径</param>
-        /// <param name="Reason">发生异常的原因</param>
-        /// <param name="Other">关于异常的其他信息，在显示的时候，会用换行符连接起来</param>
-        public ExceptionIO(string Path, string Reason, params string[] Other)
-            : base(new[] { $"发生异常的路径：{Path}" ,
-            $"异常原因：{Reason}",
-            $"{Other.Join(Environment.NewLine)}"}.
-                  Join(Environment.NewLine))
+        /// <param name="path">发生异常的路径</param>
+        /// <param name="message">发生异常的原因</param>
+        public ExceptionIO(string path, string message)
+            : base(message)
         {
-            this.Path = Path;
+            this.Path = path;
         }
         #endregion
     }

@@ -13,14 +13,14 @@ namespace System.Maths
         /// 返回左边的子节点
         /// </summary>
         INodeTwoFork? Left
-           => (INodeTwoFork?)Son.ElementAt(0);
+           => Son.ElementAt(0);
         #endregion
         #region 返回右值
         /// <summary>
         /// 返回右边的子节点
         /// </summary>
         INodeTwoFork? Right
-            => (INodeTwoFork?)Son.ElementAt(1);
+            => Son.ElementAt(1);
         #endregion
     }
 }

@@ -24,17 +24,17 @@ namespace System.IOFrancis.FileSystem
         /// 重构文件或目录的名字，
         /// 并返回重构后的新完整路径
         /// </summary>
-        /// <param name="Paths">待重构的路径</param>
-        /// <param name="NewSimple">文件或目录重构后的新名称，
+        /// <param name="path">待重构的路径</param>
+        /// <param name="newSimple">文件或目录重构后的新名称，
         /// 不带扩展名，如果为<see langword="null"/>，代表不更改</param>
-        /// <param name="NewExtension">文件重构后的新扩展名，不带点号，
+        /// <param name="newExtension">文件重构后的新扩展名，不带点号，
         /// 如果为<see langword="null"/>，代表该路径不是文件，或不更改扩展名</param>
         /// <returns></returns>
-        public static string RefactoringPath(PathText Paths, string? NewSimple, string? NewExtension)
+        public static string RefactoringPath(PathText path, string? newSimple, string? newExtension)
         {
-            var (Simple, Extended) = Split(Paths);
-            var Father = Path.GetDirectoryName(Paths)!;
-            return Path.Combine(Father, GetFullName(NewSimple ?? Simple, NewExtension ?? Extended));
+            var (simple, extended) = Split(path);
+            var father = Path.GetDirectoryName(path)!;
+            return Path.Combine(father, GetFullName(newSimple ?? simple, newExtension ?? extended));
         }
         #endregion
         #region 修改名称，直到不重复
@@ -43,25 +43,25 @@ namespace System.IOFrancis.FileSystem
         /// 直到指定的目录下不存在与之重名的文件或目录，
         /// 然后返回修改后的名称（非完整路径）
         /// </summary>
-        /// <param name="Father">指定的父目录</param>
-        /// <param name="FullName">待检查的文件或目录的名称，
+        /// <param name="father">指定的父目录</param>
+        /// <param name="fullName">待检查的文件或目录的名称，
         /// 如果是文件，带扩展名</param>
-        /// <param name="Change">当<paramref name="Father"/>下存在与<paramref name="FullName"/>重名的文件或目录时，
+        /// <param name="change">当<paramref name="father"/>下存在与<paramref name="fullName"/>重名的文件或目录时，
         /// 执行这个委托获取不重复的名称，委托的第一个参数是带扩展名的原始名称，第二个参数是尝试次数，从2开始</param>
         /// <returns></returns>
-        public static string Distinct(IDirectory Father, string FullName, Func<string, int, string> Change)
-            => Father.Son.Select(x => x.NameFull).Distinct(FullName, Change);
+        public static string Distinct(IDirectory father, string fullName, Func<string, int, string> change)
+            => father.Son.Select(x => x.NameFull).Distinct(fullName, change);
         #endregion
         #region 组合文件的名称和扩展名
         /// <summary>
         /// 将文件的名称和不带点号的扩展名组合为全名
         /// </summary>
-        /// <param name="NameSimple">文件的名称</param>
-        /// <param name="NameExtension">文件的扩展名，不带点号，
+        /// <param name="nameSimple">文件的名称</param>
+        /// <param name="nameExtension">文件的扩展名，不带点号，
         /// 如果为<see langword="null"/>，代表没有扩展名</param>
         /// <returns></returns>
-        public static string GetFullName(string NameSimple, string? NameExtension)
-            => NameSimple + (NameExtension.IsVoid() ? null : $".{NameExtension}");
+        public static string GetFullName(string nameSimple, string? nameExtension)
+            => nameSimple + (nameExtension.IsVoid() ? null : $".{nameExtension}");
         #endregion
         #endregion
         #region 检查路径
@@ -94,13 +94,20 @@ namespace System.IOFrancis.FileSystem
         #endregion
         #region 检查路径是否可用
         /// <summary>
-        /// 检查一个路径是否可用，
-        /// 也就是它为合法路径，而且存在一个文件或目录
+        /// 检查一个路径是否存在文件或目录
         /// </summary>
-        /// <param name="Path">待检查的路径</param>
+        /// <param name="path">待检查的路径</param>
+        /// <param name="checkMod">如果这个值为<see langword="true"/>，代表检查文件是否存在，
+        /// 如果这个值为<see langword="false"/>，代表检查目录是否存在，
+        /// 如果这个值为<see langword="null"/>，代表上述两者皆可</param>
         /// <returns></returns>
-        public static bool CheckPathAvailable(string Path)
-            => File.Exists(Path) || Directory.Exists(Path);
+        public static bool CheckPathExist(string path, bool? checkMod = null)
+            => checkMod switch
+            {
+                true => File.Exists(path),
+                false => Directory.Exists(path),
+                null => File.Exists(path) || Directory.Exists(path)
+            };
         #endregion
         #region 将路径的名称和扩展名拆分
         /// <summary>

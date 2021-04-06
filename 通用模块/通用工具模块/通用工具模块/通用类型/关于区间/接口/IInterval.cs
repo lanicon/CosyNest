@@ -28,18 +28,18 @@
         /// 也就是区间同时具有下限和上限
         /// </summary>
         bool IsClosed
-            => (Min, Max) is ({ }, { });
+            => Min is { } && Max is { };
         #endregion
         #region 解构区间
         /// <summary>
         /// 将区间解构为下限和上限
         /// </summary>
-        /// <param name="Min">用来接收区间下限的对象</param>
-        /// <param name="Max">用来接收区间上限的对象</param>
-        void Deconstruct(out IComparable<Obj>? Min, out IComparable<Obj>? Max)
+        /// <param name="min">用来接收区间下限的对象</param>
+        /// <param name="max">用来接收区间上限的对象</param>
+        void Deconstruct(out IComparable<Obj>? min, out IComparable<Obj>? max)
         {
-            Min = this.Min;
-            Max = this.Max;
+            min = this.Min;
+            max = this.Max;
         }
         #endregion
         #region 检查对象是否位于区间中
@@ -50,9 +50,9 @@
         /// <returns>一个枚举，它指示对象在区间中的位置</returns>
         IntervalPosition CheckInInterval(Obj obj)
         {
-            if (Max != null && Max.CompareTo(obj) < 0)
+            if (Max is { } && Max.CompareTo(obj) < 0)
                 return IntervalPosition.Overflow;
-            return Min != null && Min.CompareTo(obj) > 0 ? IntervalPosition.Insufficient : IntervalPosition.Located;
+            return Min is { } && Min.CompareTo(obj) > 0 ? IntervalPosition.Insufficient : IntervalPosition.Located;
         }
         #endregion
     }

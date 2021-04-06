@@ -85,7 +85,7 @@ namespace System.Office.Realize
             switch ((this.Path, path?.Path))
             {
                 case (null, null):
-                    throw new Exception("该文件没有指定保存目录");
+                    throw new Exception("该Office对象没有文件路径，且没有指定保存目录");
                 case (string p, null):
                     SaveRealize(p); break;
                 case (null, string p):
@@ -143,8 +143,9 @@ namespace System.Office.Realize
         /// <param name="supported">这个Office对象所支持的文件类型</param>
         public OfficeFile(PathText? path, IFileType supported)
         {
-            if (path is { })                                       //如果文件路径不为null，则检查扩展名是否受支持
+            if (path is { })                                       //如果文件路径不为null，则检查路径是否存在，以及扩展名是否受支持
             {
+                ExceptionIO.CheckExist(path, true);
                 ExceptionIO.CheckFileType(path, supported);
                 this.Path = path;                                   //还会检查路径是否被占用
             }

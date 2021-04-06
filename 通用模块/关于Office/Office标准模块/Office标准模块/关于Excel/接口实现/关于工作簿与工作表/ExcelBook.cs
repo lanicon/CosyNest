@@ -21,7 +21,14 @@ namespace System.Office.Excel.Realize
         public abstract IOfficePrint Print { get; }
         #endregion
         #region 开启或关闭自动计算
-        public abstract bool AutoCalculation { get; set; }
+        public virtual bool AutoCalculation
+        {
+            get => false;
+            set
+            {
+
+            }
+        }
         #endregion
         #endregion
         #region 返回工作表的容器

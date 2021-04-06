@@ -20,6 +20,11 @@ namespace System.Office.Excel
         /// 将本属性设置为<see langword="false"/>可以改善性能
         /// </summary>
         bool AutoCalculation { get; set; }
+
+        /*实现本API请遵循以下规范：
+          #如果该Excel实现没有自动计算这个概念，
+          事实上，恐怕也只有COM组件实现的工作簿有自动计算这种说法，
+          则该属性读访问器直接返回false，写访问器不执行任何操作*/
         #endregion
         #region 删除工作簿
         /// <summary>
@@ -28,7 +33,7 @@ namespace System.Office.Excel
         void DeleteBook()
         {
             Dispose();
-            if (Path != null)
+            if (Path is { })
                 File.Delete(Path);
         }
         #endregion

@@ -12,14 +12,14 @@ namespace System
         /// 通过反射比较两个对象的值，比较的内容包括：
         /// 所有属性和字段，无论访问级别
         /// </summary>
-        /// <param name="A">要比较的第一个对象</param>
-        /// <param name="B">要比较的第二个对象</param>
+        /// <param name="a">要比较的第一个对象</param>
+        /// <param name="b">要比较的第二个对象</param>
         /// <returns></returns>
-        public static bool IsEquivalent(object A, object? B)
-            => JudgeNull(A, B) ??
-            A.GetType() == B!.GetType() &&
-            A.GetTypeData().Field.All(f => f.IsStatic ||
-                Equals(f.GetValue(A), f.GetValue(B)));
+        public static bool IsEquivalent(object a, object? b)
+            => JudgeNull(a, b) ??
+            a.GetType() == b!.GetType() &&
+            a.GetTypeData().Field.All(f => f.IsStatic ||
+                Equals(f.GetValue(a), f.GetValue(b)));
 
         /*注释：
           问：为什么这个方法只比较字段？
@@ -42,21 +42,21 @@ namespace System
         {
             if (a == b)
                 return true;
-            return a == null || b == null ? false : null;
+            return a is null || b is null ? false : null;
         }
         #endregion
         #region 使用多个对象生成哈希值
         /// <summary>
         /// 使用多个对象生成一个哈希值
         /// </summary>
-        /// <param name="Objs">用于计算哈希值的对象</param>
+        /// <param name="objs">用于计算哈希值的对象</param>
         /// <returns>最后生成的哈希值，
-        /// 如果<paramref name="Objs"/>中的所有元素全部相同，
+        /// 如果<paramref name="objs"/>中的所有元素全部相同，
         /// 则生成的哈希值也相同</returns>
-        public static int CreateHash(params object[] Objs)
+        public static int CreateHash(params object[] objs)
         {
             var hash = new HashCode();
-            foreach (var item in Objs)
+            foreach (var item in objs)
                 hash.Add(item);
             return hash.ToHashCode();
         }

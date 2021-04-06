@@ -32,12 +32,12 @@
         /// <summary>
         /// 将区间解构为下限和上限
         /// </summary>
-        /// <param name="Min">用来接收区间下限的对象</param>
-        /// <param name="Max">用来接收区间上限的对象</param>
-        void Deconstruct(out Obj? Min, out Obj? Max)
+        /// <param name="min">用来接收区间下限的对象</param>
+        /// <param name="max">用来接收区间上限的对象</param>
+        void Deconstruct(out Obj? min, out Obj? max)
         {
-            Min = this.Min;
-            Max = this.Max;
+            min = this.Min;
+            max = this.Max;
         }
         #endregion
     }

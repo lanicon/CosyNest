@@ -43,7 +43,7 @@ namespace System.Office.Excel
             await Task.Run(() => PackBook.PrintOut
                   (Beg + 1, End + 1, Number,
                   ActivePrinter: MSOfficeRealize.PrinterName(ActivePrinter, Printer, FilePath),
-                  PrintToFile: FilePath == null ? null : (object)true,
+                  PrintToFile: FilePath == null ? null : true,
                   PrToFileName: FilePath?.Path));
             Application.ActivePrinter = ActivePrinter;      //还原默认打印机，不破坏设置
         }

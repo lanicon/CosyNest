@@ -60,7 +60,7 @@ namespace System.Maths
             var IsDef = Equals(Wrapping, 0);
             #region 本地函数
             int RC(Num num)                                    //辅助方法， 输入宽或高，计算出所处的行列数
-                => IsDef ? N : (int)Sim(num * N / Wrapping);
+                => IsDef ? N : Sim(num * N / Wrapping);
             /*注释：
               1.这个本地函数要将num转换为分数的原因在于：
               如果num是Int，在相除的时候会错误地用去尾法取近似值，

@@ -23,13 +23,13 @@
         /// <summary>
         /// 使用指定的对象和区间初始化异常
         /// </summary>
-        /// <param name="ExceptionObj">引发异常的对象</param>
-        /// <param name="Interval">对象的合法区间</param>
-        public ExceptionIntervalOut(Obj ExceptionObj, IInterval<Obj> Interval)
-            : base($"{ExceptionObj}不在区间中，合法{Interval}")
+        /// <param name="exceptionObj">引发异常的对象</param>
+        /// <param name="interval">对象的合法区间</param>
+        public ExceptionIntervalOut(Obj exceptionObj, IInterval<Obj> interval)
+            : base($"{exceptionObj}不在区间中，合法{interval}")
         {
-            this.ExceptionObj = ExceptionObj;
-            this.Interval = Interval;
+            this.ExceptionObj = exceptionObj;
+            this.Interval = interval;
         }
         #endregion
     }
@@ -43,11 +43,11 @@
         /// <summary>
         /// 使用指定的对象和区间初始化异常
         /// </summary>
-        /// <param name="ExceptionObj">引发异常的对象</param>
-        /// <param name="Interval">对象的合法区间</param>
+        /// <param name="exceptionObj">引发异常的对象</param>
+        /// <param name="interval">对象的合法区间</param>
         /// <returns>新创建的异常对象</returns>
-        public static ExceptionIntervalOut<Obj> Create<Obj>(Obj ExceptionObj, IInterval<Obj> Interval)
-            => new(ExceptionObj, Interval);
+        public static ExceptionIntervalOut<Obj> Create<Obj>(Obj exceptionObj, IInterval<Obj> interval)
+            => new(exceptionObj, interval);
         #endregion
         #region 检查对象是否位于区间中
         #region 传入区间
@@ -74,14 +74,14 @@
         /// </summary>
         /// <typeparam name="Obj">位于区间中的对象，
         /// 它通过<see cref="IComparable{T}"/>进行比较</typeparam>
-        /// <param name="Min">区间的下限，
+        /// <param name="min">区间的下限，
         /// 如果为<see langword="null"/>，代表没有下限</param>
-        /// <param name="Max">区间的上限，
+        /// <param name="max">区间的上限，
         /// 如果为<see langword="null"/>，代表没有上限</param>
         /// <param name="objs">待检查的对象数组</param>
         /// <exception cref="ExceptionIntervalOut{Obj}"><paramref name="objs"/>中的一个或多个对象不在区间中</exception>
-        public static void Check<Obj>(IComparable<Obj>? Min, IComparable<Obj>? Max, params Obj[] objs)
-            => Check(IInterval.Create(Min, Max), objs);
+        public static void Check<Obj>(IComparable<Obj>? min, IComparable<Obj>? max, params Obj[] objs)
+            => Check(IInterval.Create(min, max), objs);
         #endregion
         #endregion
     }

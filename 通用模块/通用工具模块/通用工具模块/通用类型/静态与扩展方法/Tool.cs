@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace System
@@ -25,28 +26,29 @@ namespace System
         /// </summary>
         /// <typeparam name="Ret">拷贝的返回值类型</typeparam>
         /// <param name="obj">被拷贝的对象</param>
-        /// <param name="IsShallow">如果这个值为真，则执行浅拷贝，否则执行深拷贝</param>
-        /// <param name="Exception">出现在这个集合中的字段或自动属性名将作为例外，不会被拷贝</param>
+        /// <param name="isShallow">如果这个值为真，则执行浅拷贝，否则执行深拷贝</param>
+        /// <param name="exception">出现在这个集合中的字段或自动属性名将作为例外，不会被拷贝</param>
         /// <returns></returns>
-        public static Ret Copy<Ret>(Ret obj, bool IsShallow = true, params string[] Exception)
+        [return: NotNullIfNotNull("obj")]
+        public static Ret? Copy<Ret>(Ret? obj, bool isShallow = true, params string[] exception)
         {
-            if (obj == null)
-                return default!;
+            if (obj is null)
+                return default;
             var type = obj.GetTypeData();
-            var New = type.ConstructorCreate<Ret>();
-            var Field = type.Field.Where(x => !x.IsStatic);               //不拷贝静态属性
-            if (Exception.Length > 0)
+            var @new = type.ConstructorCreate<Ret>();
+            var field = type.Field.Where(x => !x.IsStatic);               //不拷贝静态属性
+            if (exception.Length > 0)
             {
-                var FieldName = Exception.Union(Exception).Select(x => $"<{x}>k__BackingField").ToHashSet();        //获取属性，以及该自动属性对应的字段名称
-                Field = Field.Where(x => !FieldName.Contains(x.Name));
+                var fieldName = exception.Union(exception).Select(x => $"<{x}>k__BackingField").ToHashSet();        //获取属性，以及该自动属性对应的字段名称
+                field = field.Where(x => !fieldName.Contains(x.Name));
             }
-            Field.ForEach(x =>
+            field.ForEach(x =>
             {
                 var Value = x.GetValue(obj);
-                x.SetValue(New,
-                    IsShallow || Value is ValueType ? Value : Copy(Value, IsShallow));
+                x.SetValue(@new,
+                    isShallow || Value is ValueType ? Value : Copy(Value, isShallow));
             });
-            return New;
+            return @new!;
         }
 
         /*说明文档：
@@ -63,13 +65,13 @@ namespace System
         /// 将两个对象的引用交换
         /// </summary>
         /// <typeparam name="Obj">要交换的对象类型</typeparam>
-        /// <param name="A">第一个对象</param>
-        /// <param name="B">第二个对象</param>
-        public static void Exchange<Obj>(ref Obj A, ref Obj B)
+        /// <param name="a">第一个对象</param>
+        /// <param name="b">第二个对象</param>
+        public static void Exchange<Obj>(ref Obj a, ref Obj b)
         {
-            Obj C = B;
-            B = A;
-            A = C;
+            Obj C = b;
+            b = a;
+            a = C;
         }
         #endregion
     }

@@ -44,13 +44,6 @@ namespace System.Office.Excel
         #region 获取打印对象
         public override IOfficePrint Print => throw CreateException.NotSupported();
         #endregion
-        #region 自动计算
-        public override bool AutoCalculation
-        {
-            get => throw CreateException.NotSupported();
-            set => throw CreateException.NotSupported();
-        }
-        #endregion
         #endregion
         #region 构造函数
         #region 指定流

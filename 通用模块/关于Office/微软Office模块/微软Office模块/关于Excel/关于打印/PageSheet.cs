@@ -39,7 +39,7 @@ namespace System.Office.Excel
                 return add.IsVoid() ? null : ExcelRealize.AddressToTISizePos(add);
             }
             set => PackSheet.PageSetup.PrintArea =
-                value == null ? "" : ExcelRealize.GetAddress(value);
+                value is null ? "" : ExcelRealize.GetAddress(value);
         }
         #endregion
         #region 返回页数
@@ -52,87 +52,87 @@ namespace System.Office.Excel
         /// <summary>
         /// 执行打印操作
         /// </summary>
-        /// <param name="From">打印的起始页数，从0开始，如果为<see langword="null"/>，代表通过打印区域确定打印范围</param>
-        /// <param name="To">打印的结束页数，从0开始，代表通过打印区域确定打印范围</param>
-        /// <param name="Number">打印的份数</param>
-        /// <param name="Printer">指定的打印机名称，如果为<see langword="null"/>，代表不打印到文件</param>
-        /// <param name="FilePath">指定的打印到文件的路径，如果为<see langword="null"/>，代表不打印到纸张</param>
+        /// <param name="from">打印的起始页数，从0开始，如果为<see langword="null"/>，代表通过打印区域确定打印范围</param>
+        /// <param name="to">打印的结束页数，从0开始，代表通过打印区域确定打印范围</param>
+        /// <param name="number">打印的份数</param>
+        /// <param name="printer">指定的打印机名称，如果为<see langword="null"/>，代表不打印到文件</param>
+        /// <param name="filePath">指定的打印到文件的路径，如果为<see langword="null"/>，代表不打印到纸张</param>
         /// <returns>一个用于等待打印任务完成的<see cref="Task"/></returns>
-        private Task Print(int? From = null, int? To = null, int Number = 1, IPrinter? Printer = null, PathText? FilePath = null)
+        private Task Print(int? from = null, int? to = null, int number = 1, IPrinter? printer = null, PathText? filePath = null)
             => Task.Run(() => PackSheet.PrintOut
-            (From is null ? 1 : From.Value + 1,
-                To is null ? PageCount : To.Value + 1, Number,
-                ActivePrinter: MSOfficeRealize.PrinterName(Application.ActivePrinter, Printer, FilePath),
-                PrintToFile: FilePath == null ? null : (object)true,
-                PrToFileName: FilePath?.Path));
+            (from is null ? 1 : from.Value + 1,
+                to is null ? PageCount : to.Value + 1, number,
+                ActivePrinter: MSOfficeRealize.PrinterName(Application.ActivePrinter, printer, filePath),
+                PrintToFile: filePath == null ? null : true,
+                PrToFileName: filePath?.Path));
         #endregion
         #region 按照页数打印的基础方法
         /// <summary>
         /// 按照页数打印的基本方法
         /// </summary>
-        /// <param name="Page">要打印的页数范围</param>
-        /// <param name="Number">要打印的份数</param>
-        /// <param name="Printer">打印机的名称</param>
-        /// <param name="FilePath">要打印到的文件路径</param>
+        /// <param name="page">要打印的页数范围</param>
+        /// <param name="number">要打印的份数</param>
+        /// <param name="printer">打印机的名称</param>
+        /// <param name="filePath">要打印到的文件路径</param>
         /// <returns>一个用于等待打印任务完成的<see cref="Task"/></returns>
-        private async Task PrintFromPageBase(Range? Page = null, int Number = 1, IPrinter? Printer = null, PathText? FilePath = null)
+        private async Task PrintFromPageBase(Range? page = null, int number = 1, IPrinter? printer = null, PathText? filePath = null)
         {
-            var ActivePrinter = Application.ActivePrinter;
-            var (Beg, End) = (Page ?? Range.All).GetOffsetAndEnd(PageCount);
-            await Print(Beg, End, Number, Printer, FilePath);
-            Application.ActivePrinter = ActivePrinter;                      //打印后还原活动打印机，不破坏原有设置
+            var activePrinter = Application.ActivePrinter;
+            var (beg, end) = (page ?? Range.All).GetOffsetAndEnd(PageCount);
+            await Print(beg, end, number, printer, filePath);
+            Application.ActivePrinter = activePrinter;                      //打印后还原活动打印机，不破坏原有设置
         }
         #endregion
         #region 按照范围打印的基础方法
         /// <summary>
         /// 按照范围打印的基础方法
         /// </summary>
-        /// <param name="Regional">打印区域，
+        /// <param name="regional">打印区域，
         /// 如果为<see langword="null"/>，则遵照<see cref="PrintRegional"/>属性设置的打印区域</param>
-        /// <param name="Number">打印的份数</param>
-        /// <param name="Printer">执行打印的打印机，如果为<see langword="null"/>，则使用默认打印机</param>
-        /// <param name="FilePath">指定打印的目标文件路径，
+        /// <param name="number">打印的份数</param>
+        /// <param name="printer">执行打印的打印机，如果为<see langword="null"/>，则使用默认打印机</param>
+        /// <param name="filePath">指定打印的目标文件路径，
         /// 函数会根据该路径的扩展名自动判断应使用哪个打印机</param>
         /// <returns>一个用于等待打印任务完成的<see cref="Task"/></returns>
-        private async Task PrintFromRegionalBase(ISizePosPixel? Regional = null, int Number = 1, IPrinter? Printer = null, PathText? FilePath = null)
+        private async Task PrintFromRegionalBase(ISizePosPixel? regional = null, int number = 1, IPrinter? printer = null, PathText? filePath = null)
         {
-            var ActivePrinter = Application.ActivePrinter;
-            if (Regional != null)
+            var activePrinter = Application.ActivePrinter;
+            if (regional != null)
             {
                 var PS = PackSheet.PageSetup;
-                var PrintArea = PS.PrintArea;
-                PS.PrintArea = ExcelRealize.GetAddress(Regional);
-                await Print(Number: Number, Printer: Printer, FilePath: FilePath);
-                PS.PrintArea = PrintArea;                                          //打印后还原默认打印区域，不破坏原有设置
+                var printArea = PS.PrintArea;
+                PS.PrintArea = ExcelRealize.GetAddress(regional);
+                await Print(number: number, printer: printer, filePath: filePath);
+                PS.PrintArea = printArea;                                          //打印后还原默认打印区域，不破坏原有设置
             }
-            else await Print(Number: Number, Printer: Printer, FilePath: FilePath);
-            Application.ActivePrinter = ActivePrinter;                  //打印后还原活动打印机，不破坏原有设置
+            else await Print(number: number, printer: printer, filePath: filePath);
+            Application.ActivePrinter = activePrinter;                  //打印后还原活动打印机，不破坏原有设置
         }
         #endregion
         #endregion
         #region 按照页数打印
         #region 打印到文件
-        public Task PrintFromPageToFile(Range? Page, PathText FilePath)
-            => PrintFromPageBase(Page, FilePath: FilePath);
+        public Task PrintFromPageToFile(Range? page, PathText filePath)
+            => PrintFromPageBase(page, filePath: filePath);
         #endregion
         #region 打印到纸张
-        public Task PrintFromPage(Range? Page = null, int Number = 1, IPrinter? Printer = null)
+        public Task PrintFromPage(Range? page = null, int number = 1, IPrinter? printer = null)
         {
-            ExceptionIntervalOut.Check(1, null, Number);
-            return PrintFromPageBase(Page, Number, Printer);
+            ExceptionIntervalOut.Check(1, null, number);
+            return PrintFromPageBase(page, number, printer);
         }
         #endregion
         #endregion
         #region 按照范围打印
         #region 打印到文件
-        public Task PrintFromRegionalToFile(ISizePosPixel? Regional, PathText FilePath)
-            => PrintFromRegionalBase(Regional, FilePath: FilePath);
+        public Task PrintFromRegionalToFile(ISizePosPixel? regional, PathText filePath)
+            => PrintFromRegionalBase(regional, filePath: filePath);
         #endregion
         #region 打印到纸张
-        public Task PrintFromRegional(ISizePosPixel? Regional = null, int Number = 1, IPrinter? Printer = null)
+        public Task PrintFromRegional(ISizePosPixel? regional = null, int number = 1, IPrinter? printer = null)
         {
-            ExceptionIntervalOut.Check(1, null, Number);
-            return PrintFromRegionalBase(Regional, Number, Printer);
+            ExceptionIntervalOut.Check(1, null, number);
+            return PrintFromRegionalBase(regional, number, printer);
         }
         #endregion
         #endregion
@@ -141,10 +141,10 @@ namespace System.Office.Excel
         /// <summary>
         /// 将指定的工作表封装进对象
         /// </summary>
-        /// <param name="PackSheet">指定的工作表</param>
-        public PageSheet(Worksheet PackSheet)
+        /// <param name="packSheet">指定的工作表</param>
+        public PageSheet(Worksheet packSheet)
         {
-            this.PackSheet = PackSheet;
+            this.PackSheet = packSheet;
         }
         #endregion
     }

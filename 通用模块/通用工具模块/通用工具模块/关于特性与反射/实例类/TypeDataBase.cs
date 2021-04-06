@@ -158,7 +158,7 @@ namespace System.Reflection
         /// <returns>具有<paramref name="characteristics"/>指定的特征，在<paramref name="DeclaringType"/>类型中声明，
         /// 且符合<paramref name="Screening"/>所指定条件的成员，
         /// 如果没有找到，或找到了多个成员，则会引发异常</returns>
-        private Mem Find<Characteristics, Mem>(ILookup<Characteristics, Mem> Dictionary, Characteristics characteristics, Type? DeclaringType = null, Func<Mem, bool>? Screening = null)
+        private static Mem Find<Characteristics, Mem>(ILookup<Characteristics, Mem> Dictionary, Characteristics characteristics, Type? DeclaringType = null, Func<Mem, bool>? Screening = null)
             where Mem : MemberInfo
         {
             var arry = Dictionary[characteristics].Where(x =>

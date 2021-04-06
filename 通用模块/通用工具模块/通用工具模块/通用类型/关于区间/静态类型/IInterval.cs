@@ -12,16 +12,16 @@
         /// </summary>
         /// <typeparam name="Obj">位于区间中的对象，
         /// 它通过<see cref="IComparable{T}"/>进行比较</typeparam>
-        /// <param name="Min">区间的下限，
+        /// <param name="min">区间的下限，
         /// 如果为<see langword="null"/>，代表没有下限</param>
-        /// <param name="Max">区间的上限，
+        /// <param name="max">区间的上限，
         /// 如果为<see langword="null"/>，代表没有上限</param>
         /// <returns></returns>
-        public static IInterval<Obj> Create<Obj>(IComparable<Obj>? Min, IComparable<Obj>? Max)
+        public static IInterval<Obj> Create<Obj>(IComparable<Obj>? min, IComparable<Obj>? max)
             => new Interval<Obj>
             {
-                Min = Min,
-                Max = Max
+                Min = min,
+                Max = max
             };
         #endregion
         #region 创建具体区间
@@ -29,14 +29,14 @@
         /// 使用指定的下限和上限创建区间
         /// </summary>
         /// <typeparam name="Obj">位于区间中的对象</typeparam>
-        /// <param name="Min">区间的下限，
+        /// <param name="min">区间的下限，
         /// 如果为<see langword="null"/>，代表没有下限</param>
-        /// <param name="Max">区间的上限，
+        /// <param name="max">区间的上限，
         /// 如果为<see langword="null"/>，代表没有上限</param>
         /// <returns></returns>
-        public static IIntervalSpecific<Obj> Create<Obj>(Obj? Min, Obj? Max)
+        public static IIntervalSpecific<Obj> Create<Obj>(Obj? min, Obj? max)
             where Obj : struct, IComparable<Obj>
-            => new IntervalSpecific<Obj>(Min, Max);
+            => new IntervalSpecific<Obj>(min, max);
         #endregion
         #endregion
         #region 检查对象是否位于区间中
@@ -46,13 +46,13 @@
         /// <typeparam name="Obj">位于区间中的对象，
         /// 它通过<see cref="IComparable{T}"/>进行比较</typeparam>
         /// <param name="obj">待检查的对象</param>
-        /// <param name="Min">区间的下限，
+        /// <param name="min">区间的下限，
         /// 如果为<see langword="null"/>，代表没有下限</param>
-        /// <param name="Max">区间的上限，
+        /// <param name="max">区间的上限，
         /// 如果为<see langword="null"/>，代表没有上限</param>
         /// <returns>一个枚举，它指示对象在区间中的位置</returns>
-        public static IntervalPosition CheckInInterval<Obj>(Obj obj, IComparable<Obj>? Min, IComparable<Obj>? Max)
-            => Create(Min, Max).CheckInInterval(obj);
+        public static IntervalPosition CheckInInterval<Obj>(Obj obj, IComparable<Obj>? min, IComparable<Obj>? max)
+            => Create(min, max).CheckInInterval(obj);
         #endregion
     }
 }

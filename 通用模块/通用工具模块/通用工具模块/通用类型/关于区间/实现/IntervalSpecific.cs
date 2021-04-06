@@ -12,14 +12,14 @@
         /// <summary>
         /// 使用指定的最小值和最大值初始化对象
         /// </summary>
-        /// <param name="Min">区间的最小值</param>
-        /// <param name="Max">区间的最大值</param>
-        public IntervalSpecific(Obj? Min, Obj? Max)
+        /// <param name="min">区间的最小值</param>
+        /// <param name="max">区间的最大值</param>
+        public IntervalSpecific(Obj? min, Obj? max)
         {
-            if (Min != null && Max != null && Min.Value.CompareTo(Max.Value) > 0)
-                Tool.Exchange(ref Min, ref Max);
-            this.Min = Min == null ? null : (IComparable<Obj>)Min.Value;
-            this.Max = Max == null ? null : (IComparable<Obj>)Max.Value;
+            if (min is { } && max is { } && min.Value.CompareTo(max.Value) > 0)
+                Tool.Exchange(ref min, ref max);
+            this.Min = min;
+            this.Max = max;
         }
         #endregion
     }
