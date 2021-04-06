@@ -48,9 +48,7 @@ namespace System.Office.Excel
         #endregion
         #region 获取行或列
         public override IExcelRC GetRC(int begin, int? end, bool isRow)
-        {
-            throw new NotImplementedException();
-        }
+            => throw CreateException.NotSupported();
         #endregion
         #region 删除工作表
         public override void Delete()
