@@ -63,11 +63,11 @@ namespace System.Office.Excel
         #endregion
         #endregion
         #region 保存工作簿
-        protected override void SaveRealize(string path)
+        protected override void SaveRealize(string path, bool isSitu)
         {
             if (!Sheets.Any())
                 return;
-            if (path == this.Path && File.Exists(path))
+            if (isSitu)
             {
                 if (!PackBook.Saved)
                     PackBook.Save();

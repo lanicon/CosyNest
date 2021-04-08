@@ -24,9 +24,13 @@ namespace System.Office.Excel
             => ExcelPackage.Dispose();
         #endregion
         #region 保存工作簿
-        protected override void SaveRealize(string path)
+        protected override void SaveRealize(string path, bool isSitu)
         {
-            throw new NotImplementedException();
+            if (isSitu)
+            {
+                ExcelPackage.Save();
+            }
+            else ExcelPackage.SaveAs(new FileInfo(path));
         }
         #endregion
         #endregion

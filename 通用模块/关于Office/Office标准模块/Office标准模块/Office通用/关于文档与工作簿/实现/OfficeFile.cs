@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Design;
+using System.IO;
 using System.IOFrancis;
 using System.IOFrancis.FileSystem;
 
@@ -87,13 +88,13 @@ namespace System.Office.Realize
                 case (null, null):
                     throw new Exception("该Office对象没有文件路径，且没有指定保存目录");
                 case (string p, null):
-                    SaveRealize(p); break;
+                    SaveRealize(p, File.Exists(p)); break;
                 case (null, string p):
                     this.Path = p;
-                    SaveRealize(p);
+                    SaveRealize(p, false);
                     break;
                 case (_, string p):
-                    SaveRealize(p); break;
+                    SaveRealize(p, false); break;
             }
         }
         #endregion
@@ -102,7 +103,9 @@ namespace System.Office.Realize
         /// 保存文件的实际逻辑在这个方法中执行
         /// </summary>
         /// <param name="path">保存文件的目录路径</param>
-        protected abstract void SaveRealize(string path);
+        /// <param name="isSitu">如果这个值为<see langword="true"/>，
+        /// 代表是原地保存，且该文件已经存在，否则代表需要另存为</param>
+        protected abstract void SaveRealize(string path, bool isSitu);
         #endregion
         #endregion
         #region 关于释放资源

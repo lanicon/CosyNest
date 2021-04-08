@@ -48,9 +48,9 @@ namespace System.Office.Word
         }
         #endregion
         #region 保存文档
-        protected override void SaveRealize(string Path)
+        protected override void SaveRealize(string Path, bool isSitu)
         {
-            if (Path == this.Path && File.Exists(Path))
+            if (isSitu)
             {
                 if (!PackDocument.Saved)
                     PackDocument.Save();
