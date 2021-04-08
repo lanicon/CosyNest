@@ -16,7 +16,7 @@ namespace System.Office.Excel
         /// 获取Excel封装包对象，
         /// 本对象的功能就是通过它实现的
         /// </summary>
-        private ExcelPackage ExcelPackage { get; }
+        public ExcelPackage ExcelPackage { get; }
         #endregion
         #region 关于工作簿
         #region 释放工作簿
@@ -38,7 +38,7 @@ namespace System.Office.Excel
         public override IOfficePrint Print => throw new NotImplementedException();
         #endregion
         #region 返回工作表集合
-        public override IExcelSheetCollection Sheets => throw new NotImplementedException();
+        public override IExcelSheetCollection Sheets { get; }
         #endregion
         #region 构造函数
         #region 使用流
@@ -50,6 +50,7 @@ namespace System.Office.Excel
             : base(null, CreateEPPlusOffice.SupportExcel)
         {
             ExcelPackage = new ExcelPackage(stream);
+            Sheets = new ExcelSheetCollectionEPPlus(this);
         }
         #endregion
         #region 使用路径
@@ -62,6 +63,7 @@ namespace System.Office.Excel
             : base(path, CreateEPPlusOffice.SupportExcel)
         {
             ExcelPackage = path is null ? new() : new(new FileInfo(path));
+            Sheets = new ExcelSheetCollectionEPPlus(this);
         }
         #endregion
         #endregion

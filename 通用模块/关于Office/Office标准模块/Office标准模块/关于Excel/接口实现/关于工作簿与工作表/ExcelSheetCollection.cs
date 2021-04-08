@@ -42,7 +42,8 @@ namespace System.Office.Excel.Realize
             => item.Book == ExcelBook;
         #endregion
         #region 返回工作表数量
-        public abstract int Count { get; }
+        public virtual int Count
+            => this.ToArray().Length;
         #endregion
         #region 返回集合是否只读
         public virtual bool IsReadOnly
@@ -68,7 +69,8 @@ namespace System.Office.Excel.Realize
             => this[index].Delete();
         #endregion
         #region 移除全部工作表
-        public abstract void Clear();
+        public virtual void Clear()
+            => this.ToArray().ForEach(x => x.Delete());
         #endregion
         #region 移除指定工作表
         public virtual bool Remove(IExcelSheet item)

@@ -62,7 +62,7 @@ namespace System.Office.Excel
         #endregion
         #region 移除全部工作表
         public override void Clear()
-        {
+        {                                               //此处实现遵循接口文档要求的规范，详情请到IExcelSheetCollection源文件查看
             var sheets = this.ToArray();
             foreach (var (e, i, _) in sheets.PackIndex())
             {
