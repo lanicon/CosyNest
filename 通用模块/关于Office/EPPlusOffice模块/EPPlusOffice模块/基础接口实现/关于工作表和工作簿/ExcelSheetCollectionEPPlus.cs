@@ -17,8 +17,8 @@ namespace System.Office.Excel
         /// 获取封装的工作表集合，
         /// 本对象的功能就是通过它实现的
         /// </summary>
-        private ExcelWorksheets Sheets
-            => ExcelBook.To<ExcelBookEPPlus>().ExcelPackage.Workbook.Worksheets;
+        public ExcelWorksheets Sheets
+            => Book.To<ExcelBookEPPlus>().ExcelPackage.Workbook.Worksheets;
         #endregion
         #region 工作表数量
         public override int Count => Sheets.Count;
@@ -32,13 +32,13 @@ namespace System.Office.Excel
         #endregion
         #region 枚举工作表
         public override IEnumerator<IExcelSheet> GetEnumerator()
-            => Sheets.Select(x => new ExcelSheetEPPlus(ExcelBook, x)).GetEnumerator();
+            => Sheets.Select(x => new ExcelSheetEPPlus(Book, x)).GetEnumerator();
         #endregion
         #region 添加工作表
         public override IExcelSheet Add(string name = "Sheet")
         {
             var sheet = Sheets.Add(ExcelRealize.SheetRepeat(this, name));
-            return new ExcelSheetEPPlus(ExcelBook, sheet);
+            return new ExcelSheetEPPlus(Book, sheet);
         }
         #endregion
         #region 构造函数

@@ -12,7 +12,7 @@ namespace System.Office.Excel.Realize
     public abstract class ExcelSheetCollection : IExcelSheetCollection
     {
         #region 返回工作簿
-        public IExcelBook ExcelBook { get; }
+        public IExcelBook Book { get; }
         #endregion
         #region 关于工作表集合
         #region 获取工作表
@@ -39,7 +39,7 @@ namespace System.Office.Excel.Realize
         #endregion
         #region 检查某工作表是否存在
         public virtual bool Contains(IExcelSheet item)
-            => item.Book == ExcelBook;
+            => item.Book == Book;
         #endregion
         #region 返回工作表数量
         public virtual int Count
@@ -97,7 +97,7 @@ namespace System.Office.Excel.Realize
         /// <param name="excelBook">指定的工作簿</param>
         public ExcelSheetCollection(IExcelBook excelBook)
         {
-            this.ExcelBook = excelBook;
+            this.Book = excelBook;
         }
         #endregion
     }

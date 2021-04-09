@@ -16,7 +16,7 @@
         #endregion
         #region 运算符重载
         #region 隐式类型转换
-        #region 正向转换
+        #region 转换为Num
         public static implicit operator short(Num num)
             => (short)num.Value;
         public static implicit operator int(Num num)
@@ -30,7 +30,7 @@
         public static implicit operator decimal(Num num)
             => num.Value;
         #endregion
-        #region 反向转换
+        #region 从Num转换
         public static implicit operator Num(short num)
             => new(num);
         public static implicit operator Num(int num)

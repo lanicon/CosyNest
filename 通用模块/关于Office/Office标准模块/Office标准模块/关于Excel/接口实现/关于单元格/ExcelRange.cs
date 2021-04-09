@@ -13,7 +13,7 @@
         public abstract IRangeStyle Style { get; set; }
         #endregion
         #region 返回单元格地址
-        public abstract string AddressText(bool IsR1C1 = true, bool IsComplete = false);
+        public abstract string AddressText(bool isR1C1 = true, bool isComplete = false);
         #endregion
         #region 重写的ToString
         public sealed override string ToString()

@@ -26,7 +26,11 @@ namespace System.Office.Excel.Realize
         public abstract string? FormulaR1C1 { get; set; }
         #endregion
         #region 格式化后的文本
-        public abstract string? Text { get; set; }
+        public virtual string? Text
+        {
+            get => Value?.ToText;
+            set => Value = value;
+        }
         #endregion
         #region 获取或设置超链接
         public abstract string? Link { get; set; }
@@ -34,7 +38,7 @@ namespace System.Office.Excel.Realize
         #endregion
         #region 关于单元格地址
         #region 获取完整地址
-        public (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
+        public abstract (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
         #endregion
         #endregion
         #region 返回视觉位置
@@ -56,7 +60,7 @@ namespace System.Office.Excel.Realize
         #endregion
         #region 返回子单元格的索引器
         #region 根据绝对位置
-        public abstract IExcelCells this[int BeginRow, int BeginCol, int EndRow = -1, int EndCol = -1] { get; }
+        public abstract IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1] { get; }
         #endregion
         #endregion
         #region 枚举所有子单元格
@@ -68,11 +72,10 @@ namespace System.Office.Excel.Realize
         /// 用指定的工作表和地址初始化单元格
         /// </summary>
         /// <param name="sheet">指定的工作表</param>
-        /// <param name="address">单元格的地址，包含起始和结束的行列数</param>
-        public ExcelCells(IExcelSheet sheet, (int BeginRow, int BeginCol, int EndRwo, int EndCol) address)
+        public ExcelCells(IExcelSheet sheet)
             : base(sheet)
         {
-            this.Address = address;
+
         }
         #endregion
     }

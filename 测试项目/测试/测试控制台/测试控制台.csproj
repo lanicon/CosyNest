@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\PC专用\PC通用模块\PC通用模块\PC通用模块.csproj" />
+    <ProjectReference Include="..\..\..\通用模块\关于Office\EPPlusOffice模块\EPPlusOffice模块\EPPlusOffice模块.csproj" />
     <ProjectReference Include="..\..\..\通用模块\关于Office\Office标准模块\Office标准模块\Office标准模块.csproj" />
     <ProjectReference Include="..\..\..\通用模块\关于Office\微软Office模块\微软Office模块\微软Office模块.csproj" />
     <ProjectReference Include="..\..\..\通用模块\关于XML和JSON\树形文档模型模块\树形文档模型模块\树形文档模型模块.csproj" />

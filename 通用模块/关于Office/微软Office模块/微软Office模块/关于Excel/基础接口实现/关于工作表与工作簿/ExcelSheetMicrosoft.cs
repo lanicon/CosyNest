@@ -48,7 +48,7 @@ namespace System.Office.Excel
         #region 复制工作表
         public override IExcelSheet Copy(IExcelSheetCollection collection)
         {
-            var Book = collection.ExcelBook.To<ExcelBookMicrosoft>();
+            var Book = collection.Book.To<ExcelBookMicrosoft>();
             var Sheets = Book.PackBook.Sheets;
             PackSheet.Copy(After: Sheets.Last());
             return new ExcelSheetMicrosoft(Book, Sheets.Last());

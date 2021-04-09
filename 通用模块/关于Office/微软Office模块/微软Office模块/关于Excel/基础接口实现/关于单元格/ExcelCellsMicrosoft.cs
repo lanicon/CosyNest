@@ -35,7 +35,7 @@ namespace System.Office.Excel
         #region 获取或设置值
         public override RangeValue? Value
         {
-            get => RangeValue.Create(MergeRangeMS.Value);
+            get => new() { Content = MergeRangeMS.Value };
             set => MergeRangeMS.Value = value?.Content;
         }
         #endregion
@@ -47,20 +47,12 @@ namespace System.Office.Excel
                 string text when text.StartsWith("=") => text[1..],
                 _ => null
             };
-            set => MergeRangeMS.FormulaR1C1 = (value switch
+            set => MergeRangeMS.FormulaR1C1 = value switch
             {
                 null => null,
                 var f when f.StartsWith("=") => f,
                 var f => "=" + f
-            });
-        }
-        #endregion
-        #region 关于格式
-        #region 读写文本
-        public override string? Text
-        {
-            get => PackRange.Text as string;
-            set => PackRange.Value = value;
+            };
         }
         #endregion
         #region 读写样式
@@ -71,7 +63,6 @@ namespace System.Office.Excel
             set => ExcelRealize.CopyStyle(value, Style);
         }
         #endregion
-        #endregion
         #region 获取或设置超链接
         #region 辅助方法
         /// <summary>
@@ -81,12 +72,12 @@ namespace System.Office.Excel
         /// <returns></returns>
         private (bool IsLink, string? Link, string? Value) LinkAided()
         {
-            var Formula = FormulaR1C1;
-            if (Formula == null)
+            var formula = FormulaR1C1;
+            if (formula is null)
                 return (false, null, null);
             var match = @"^HYPERLINK\(""(?<link>[\S]+?)""(,""?(?<value>[\S]+?)""?)?\)$".
-                ToRegex(RegexOptions.IgnoreCase).MatcheFirst(Formula)?.GroupsNamed;
-            return match == null ?
+                ToRegex(RegexOptions.IgnoreCase).MatcheFirst(formula)?.GroupsNamed;
+            return match is null ?
             (false, null, null) :
             (true, match["link"].Match, match.TryGetValue("value").Value?.Match);
         }
@@ -101,14 +92,14 @@ namespace System.Office.Excel
             }
             set
             {
-                if (value == null)
+                if (value is null)
                 {
                     if (PackRange.Hyperlinks.Count > 0)         //如果链接集合中有元素
                         PackRange.Hyperlinks.Delete();          //则将其删除
                     else
                     {
-                        var (IsLink, _, Value) = LinkAided();       //否则检查公式中是否设置了链接
-                        if (IsLink)
+                        var (isLink, _, Value) = LinkAided();       //否则检查公式中是否设置了链接
+                        if (isLink)
                             FormulaR1C1 = Value;
                     }
                 }
@@ -123,22 +114,27 @@ namespace System.Office.Excel
         #endregion
         #endregion
         #region 返回单元格地址
-        public override string AddressText(bool IsR1C1 = true, bool IsComplete = false)
-            => PackRange.GetAddressFull(IsR1C1, IsComplete);
+        #region 以文本形式返回
+        public override string AddressText(bool isR1C1 = true, bool isComplete = false)
+            => PackRange.GetAddressFull(isR1C1, isComplete);
         #endregion
-        #endregion 
+        #region 完整地址
+        public override (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
+        #endregion
+        #endregion
+        #endregion
         #region 关于单元格和子单元格
         #region 返回子单元格的索引器
-        public override IExcelCells this[int BeginRow, int BeginCol, int EndRow = -1, int EndCol = -1]
+        public override IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1]
         {
             get
             {
                 var (BR, BC, _, _) = Address;
-                BeginRow += BR;
-                BeginCol += BC;
-                EndRow = EndRow == -1 ? -1 : EndRow + BR;
-                EndCol = EndCol == -1 ? -1 : EndCol + BC;
-                var add = ExcelRealize.GetAddress(BeginRow, BeginCol, EndRow, EndCol);
+                beginRow += BR;
+                beginColumn += BC;
+                endRow = endRow == -1 ? -1 : endRow + BR;
+                endColumn = endColumn == -1 ? -1 : endColumn + BC;
+                var add = ExcelRealize.GetAddress(beginRow, beginColumn, endRow, endColumn);
                 return new ExcelCellsMicrosoft(Sheet, PackRange.Worksheet.Range[add]);
             }
         }
@@ -174,18 +170,17 @@ namespace System.Office.Excel
         #endregion
         #endregion
         #region 构造函数
-        #region 封装工作表和单元格
         /// <summary>
         /// 将指定的工作表和单元格封装进对象
         /// </summary>
-        /// <param name="Sheet">指定的工作表</param>
-        /// <param name="Range">指定的单元格</param>
-        public ExcelCellsMicrosoft(IExcelSheet Sheet, EXRange Range)
-            : base(Sheet, Range.GetAddress())
+        /// <param name="sheet">指定的工作表</param>
+        /// <param name="range">指定的单元格</param>
+        public ExcelCellsMicrosoft(IExcelSheet sheet, EXRange range)
+            : base(sheet)
         {
-            PackRange = Range;
+            PackRange = range;
+            Address = range.GetAddress();
         }
-        #endregion 
         #endregion
     }
 }

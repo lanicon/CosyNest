@@ -14,19 +14,62 @@ namespace System.Office.Excel
     /// </summary>
     class ExcelSheetEPPlus : ExcelSheet
     {
-        #region 封装的工作表
+        #region 封装的对象
+        #region 工作表
         /// <summary>
         /// 获取封装的工作表，
         /// 本对象的功能就是通过它实现的
         /// </summary>
         private ExcelWorksheet Sheet { get; }
         #endregion
+        #region 工作表集合
+        /// <summary>
+        /// 获取封装的工作表集合，
+        /// 本对象的功能就是通过它实现的
+        /// </summary>
+        private ExcelWorksheets Sheets
+            => Sheet.Workbook.Worksheets;
+        #endregion
+        #endregion
+        #region 关于工作表
         #region 名称
         public override string Name
         {
             get => Sheet.Name;
             set => Sheet.Name = value;
         }
+        #endregion
+        #region 删除工作表
+        public override void Delete()
+            => Sheets.Delete(Sheet);
+        #endregion
+        #region 复制工作表
+        public override IExcelSheet Copy(IExcelSheetCollection collection)
+        {
+            var sheets = collection.To<ExcelSheetCollectionEPPlus>().Sheets;
+            var newSheet = sheets.Add(ExcelRealize.SheetRepeat(Book.Sheets, Name), Sheet);
+            return new ExcelSheetEPPlus(collection.Book, newSheet);
+        }
+        #endregion
+        #endregion
+        #region 关于单元格
+        #region 返回用户范围
+        public override IExcelCells RangUser
+        {
+            get
+            {
+                var cells = Sheet.Cells;
+                var end = cells.End;
+                return new ExcelCellsEPPlus(this, Sheet.Cells);
+            }
+        }
+        #endregion
+        #region 返回行或列
+        public override IExcelRC GetRC(int begin, int? end, bool isRow)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
         #endregion
         #region 关于打印和Excel对象
         #region 获取页面对象
@@ -50,25 +93,6 @@ namespace System.Office.Excel
         #region 获取画布
         public override ICanvas Canvas => throw new NotImplementedException();
         #endregion
-        #endregion
-        #region 未实现的成员
-        public override IExcelCells RangUser => throw new NotImplementedException();
-
-        public override IExcelRC GetRC(int begin, int? end, bool isRow)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public override void Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IExcelSheet Copy(IExcelSheetCollection collection)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
         #region 构造函数
         /// <inheritdoc cref="ExcelSheet(IExcelBook)"/>

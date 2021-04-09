@@ -10,7 +10,7 @@ namespace System.Linq
     {
         /*所有关于集合的操作的方法，全部放在这个部分类中，
           操作指的是：API不返回任何值，或者改变了集合的状态*/
-        
+
         #region 如果集合不存在任何元素，则抛出异常
         /// <summary>
         /// 如果集合中不存在任何元素，则抛出一个异常
@@ -54,6 +54,29 @@ namespace System.Linq
             {
                 first(First, () => other(First));
                 Other.ForEach(other);
+            }
+        }
+        #endregion
+        #region 遍历一个二维数组
+        /// <summary>
+        /// 遍历一个二维数组
+        /// </summary>
+        /// <typeparam name="Obj">二维数组的元素类型</typeparam>
+        /// <param name="array">要遍历的二维数组</param>
+        /// <param name="delegate">遍历二维数组的委托，
+        /// 它的参数分别是数组的列号，行号，以及数组对应的元素</param>
+        /// <exception cref="AggregateException"><paramref name="array"/>不是二维数组</exception>
+        public static void ForEach<Obj>(this Obj[,] array, Action<int, int, Obj> @delegate)
+        {
+            var len = array.GetLength();
+            if (len.Length is not 2)
+                throw new AggregateException($"仅支持遍历二维数组，但是的数组维度为{len.Length}");
+            for (int col = 0, maxCol = len[0]; col < maxCol; col++)
+            {
+                for (int row = 0, maxRow = len[1]; row < maxRow; row++)
+                {
+                    @delegate(col, row, array[col, row]);
+                }
             }
         }
         #endregion

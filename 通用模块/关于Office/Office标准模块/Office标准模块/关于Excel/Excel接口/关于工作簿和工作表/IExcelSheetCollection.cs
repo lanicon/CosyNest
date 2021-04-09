@@ -19,7 +19,7 @@ namespace System.Office.Excel
         /// <summary>
         /// 返回这个容器所在的工作簿
         /// </summary>
-        IExcelBook ExcelBook { get; }
+        IExcelBook Book { get; }
         #endregion
         #region 根据名称返回工作表
         #region 不会返回null

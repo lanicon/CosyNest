@@ -12,6 +12,61 @@ namespace System.Office.Excel
     /// </summary>
     public interface IExcelSheet
     {
+        #region 关于工作簿与工作表
+        #region 返回工作表所在的工作簿
+        /// <summary>
+        /// 返回本工作表所在的工作簿
+        /// </summary>
+        IExcelBook Book { get; }
+        #endregion
+        #region 工作表的名称
+        /// <summary>
+        /// 获取或设置工作表的名称
+        /// </summary>
+        string Name { get; set; }
+        #endregion
+        #region 对工作表的操作
+        #region 复制工作表
+        /// <summary>
+        /// 将这个工作表复制到新工作簿，
+        /// 并放置在工作表集合的末尾
+        /// </summary>
+        /// <param name="collection">目标工作簿的工作表容器</param>
+        /// <returns>复制后的新工作表</returns>
+        IExcelSheet Copy(IExcelSheetCollection collection);
+        #endregion
+        #region 剪切工作表
+        /// <summary>
+        /// 将这个工作表剪切到其他工作簿
+        /// </summary>
+        /// <param name="collection">目标工作簿的工作表容器</param>
+        /// <returns>剪切后的新工作表</returns>
+        IExcelSheet Cut(IExcelSheetCollection collection)
+        {
+            var NewSheet = Copy(collection);
+            Delete();
+            return NewSheet;
+        }
+        #endregion
+        #region 删除工作表
+        /// <summary>
+        /// 将这个工作表从工作簿中删除
+        /// </summary>
+        void Delete();
+
+        /*实现本API请遵循以下规范：
+          如果删除了工作簿中的唯一工作表，
+          则不会引发异常，而是将工作簿文件删除*/
+        #endregion
+        #endregion
+        #region 返回页面对象
+        /// <summary>
+        /// 返回页面对象，
+        /// 它可以管理这个工作表的页面设置和打印
+        /// </summary>
+        IPageSheet Page { get; }
+        #endregion
+        #endregion
         #region 关于单元格
         #region 索引器
         #region 根据绝对位置
@@ -73,61 +128,6 @@ namespace System.Office.Excel
         /// 代表返回行，否则返回列</param>
         /// <returns></returns>
         IExcelRC GetRC(int begin, int? end, bool isRow);
-        #endregion
-        #endregion
-        #region 关于工作簿与工作表
-        #region 返回工作表所在的工作簿
-        /// <summary>
-        /// 返回本工作表所在的工作簿
-        /// </summary>
-        IExcelBook Book { get; }
-        #endregion
-        #region 工作表的名称
-        /// <summary>
-        /// 获取或设置工作表的名称
-        /// </summary>
-        string Name { get; set; }
-        #endregion
-        #region 对工作表的操作
-        #region 复制工作表
-        /// <summary>
-        /// 将这个工作表复制到新工作簿，
-        /// 并放置在工作表集合的末尾
-        /// </summary>
-        /// <param name="collection">目标工作簿的工作表容器</param>
-        /// <returns>复制后的新工作表</returns>
-        IExcelSheet Copy(IExcelSheetCollection collection);
-        #endregion
-        #region 剪切工作表
-        /// <summary>
-        /// 将这个工作表剪切到其他工作簿
-        /// </summary>
-        /// <param name="collection">目标工作簿的工作表容器</param>
-        /// <returns>剪切后的新工作表</returns>
-        IExcelSheet Cut(IExcelSheetCollection collection)
-        {
-            var NewSheet = Copy(collection);
-            Delete();
-            return NewSheet;
-        }
-        #endregion
-        #region 删除工作表
-        /// <summary>
-        /// 将这个工作表从工作簿中删除
-        /// </summary>
-        void Delete();
-
-        /*实现本API请遵循以下规范：
-          如果删除了工作簿中的唯一工作表，
-          则不会引发异常，而是将工作簿文件删除*/
-        #endregion
-        #endregion
-        #region 返回页面对象
-        /// <summary>
-        /// 返回页面对象，
-        /// 它可以管理这个工作表的页面设置和打印
-        /// </summary>
-        IPageSheet Page { get; }
         #endregion
         #endregion
         #region 关于Office对象

@@ -5,8 +5,19 @@ namespace System.Linq
     public static partial class ExtenIEnumerable
     {
         /*这个分部类专门储存为特定集合类型优化过的扩展方法，
-          它们耦合更强，但是具有更高的性能*/
+          它们耦合更强，但是具有更高的性能，或者具有特定集合类型特有的功能*/
 
+        #region 为数组优化
+        #region 返回所有维度的长度
+        /// <summary>
+        /// 返回数组中所有维度的长度
+        /// </summary>
+        /// <param name="array">要返回所有维度长度的数组</param>
+        /// <returns></returns>
+        public static int[] GetLength(this Array array)
+            => Enumerable.Range(0, array.Rank).Select(array.GetLength).ToArray();
+        #endregion
+        #endregion
         #region 为ICollection<T>优化
         #region 合并ICollection<T>
         /// <summary>

@@ -66,6 +66,12 @@ namespace System.Office.Excel
             Sheets = new ExcelSheetCollectionEPPlus(this);
         }
         #endregion
+        #region 静态构造函数
+        static ExcelBookEPPlus()
+        {
+            ExcelPackage.LicenseContext ??= LicenseContext.NonCommercial;
+        }
+        #endregion
         #endregion
     }
 }

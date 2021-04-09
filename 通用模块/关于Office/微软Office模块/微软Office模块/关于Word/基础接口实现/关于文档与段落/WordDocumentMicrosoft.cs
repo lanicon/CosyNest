@@ -156,12 +156,12 @@ namespace System.Office.Word
             {
                 var arry = PackDocument.InlineShapes.OfType<object>().
                     Union(PackDocument.Hyperlinks.OfType<object>()).
-                    Select(x => (x switch
+                    Select(x => x switch
                     {
                         InlineShape s => ((object)s, s.Range.Start, s.Range.End),
                         Hyperlink h => (h, h.Range.Start, h.Range.End),
                         _ => default
-                    })).Sort(x => x.End);
+                    }).Sort(x => x.End);
                 return arry.AggregateSelect(new WordPos(default, default, default), (range, seed) =>
                   {
                       var ((_, TextBegin), (_, ActualBegin), (_, LastUnderlyingEnd)) = seed;
