@@ -35,7 +35,7 @@ namespace System
         /// </summary>
         /// <param name="Range">待返回行列数的单元格</param>
         /// <returns></returns>
-        public static (int, int, int, int) GetAddress(this EXRange Range)
+        public static (int BR, int BC, int ER, int EC) GetAddress(this EXRange Range)
         {
             var BR = Range.Row - 1;
             var BC = Range.Column - 1;

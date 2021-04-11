@@ -65,7 +65,11 @@ namespace System.Office.Excel
         /// 当读取这个属性时，返回格式化后的文本，
         /// 当写入这个属性时，等同于设置<see cref="Value"/>
         /// </summary>
-        string? Text { get; set; }
+        string? Text
+        {
+            get => Value?.ToText;
+            set => Value = value;
+        }
         #endregion
         #region 获取或设置超链接
         /// <summary>

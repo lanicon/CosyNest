@@ -24,7 +24,7 @@ namespace System.Office.Excel
 
         public override ISizePos VisualPosition => throw new NotImplementedException();
 
-        public override IExcelCells MergeRange => throw new NotImplementedException();
+        protected override IExcelCells MergeRange => throw new NotImplementedException();
 
         public override bool IsMerge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

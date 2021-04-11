@@ -11,7 +11,7 @@ namespace System.Office.Excel
     /// <summary>
     /// 这个对象代表通过微软COM组件实现的Excel单元格
     /// </summary>
-    class ExcelCellsMicrosoft : ExcelCells
+    class ExcelCellsMicrosoft : ExcelCells, IExcelCells
     {
         #region 封装的对象
         /// <summary>
@@ -105,7 +105,7 @@ namespace System.Office.Excel
                 }
                 else
                 {
-                    var text = FormulaR1C1 ?? Text ?? value;
+                    var text = FormulaR1C1 ?? Interface.Text ?? value;
                     FormulaR1C1 = @$"HYPERLINK(""{value}"",{(FormulaR1C1 == null ? $"\"{text}\"" : text)})";
                 }
             }
@@ -129,12 +129,7 @@ namespace System.Office.Excel
         {
             get
             {
-                var (BR, BC, _, _) = Address;
-                beginRow += BR;
-                beginColumn += BC;
-                endRow = endRow == -1 ? -1 : endRow + BR;
-                endColumn = endColumn == -1 ? -1 : endColumn + BC;
-                var add = ExcelRealize.GetAddress(beginRow, beginColumn, endRow, endColumn);
+                var add = ExcelRealize.GetAddress(Interface.AddressMath);
                 return new ExcelCellsMicrosoft(Sheet, PackRange.Worksheet.Range[add]);
             }
         }
@@ -152,7 +147,7 @@ namespace System.Office.Excel
             => IsMerge ? MergeRange.CellsAll.First().To<ExcelCellsMicrosoft>().PackRange : PackRange;
         #endregion
         #region 返回合并的单元格
-        public override IExcelCells MergeRange
+        protected override IExcelCells MergeRange
             => IsMerge ? new ExcelCellsMicrosoft(Sheet, PackRange.ElementAt(0).MergeArea) : this;
         #endregion
         #region 合并和取消合并

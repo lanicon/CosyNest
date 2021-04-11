@@ -51,15 +51,14 @@ namespace System.Office.Excel.Realize
         #endregion
         #endregion
         #region 关于地址
-        #region 关于A1地址
-        #region 返回A1地址
+        #region 返回地址
         #region 将列号转换为文本形式
         /// <summary>
         /// 将列号转换为文本形式
         /// </summary>
         /// <param name="column">待转换的列号，从0开始</param>
         /// <returns>列号对应的A1格式地址</returns>
-        public static string ColToText(int column)
+        internal static string ColumnToText(int column)
         {
             ExceptionIntervalOut.Check(0, null, column);
             const int begin = 'A';
@@ -69,43 +68,52 @@ namespace System.Office.Excel.Realize
         #endregion
         #region 根据行列号
         /// <summary>
-        /// 根据起止行列号，返回A1地址
+        /// 根据起止行列号，返回行或列的地址
         /// </summary>
         /// <param name="begin">开始行列号，从0开始</param>
         /// <param name="end">结束行列号，从0开始</param>
         /// <param name="isRow">如果这个值为<see langword="true"/>，
         /// 代表要返回地址的对象是行，否则是列</param>
-        /// <returns>行列号对应的A1格式地址</returns>
-        public static string GetAddress(int begin, int end, bool isRow)
+        /// <param name="isA1">如果这个值为<see langword="true"/>，则返回A1地址，否则返回R1C1地址</param>
+        /// <returns></returns>
+        public static string GetAddress(int begin, int end, bool isRow, bool isA1 = true)
         {
             ExceptionIntervalOut.Check(0, null, begin, end);
-            return isRow ? $"{begin + 1}:{end + 1}" :
-                ColToText(begin) + ":" + ColToText(end);
+            begin++;
+            end++;
+            return (isRow, isA1) switch
+            {
+                (true, true) => $"{begin}:{end}",
+                (false, true) => $"{ColumnToText(begin - 1)}:{ColumnToText(end - 1)}",
+                (true, false) => $"R{begin}:R{end}",
+                (false, false) => $"C{begin}:C{end}"
+            };
         }
         #endregion
         #region 根据坐标
         /// <summary>
-        /// 根据坐标，返回A1地址，
+        /// 根据坐标，返回地址，
         /// 注意：这里的坐标全部从0开始
         /// </summary>
         /// <param name="BR">起始行号</param>
         /// <param name="BC">起始列号</param>
         /// <param name="ER">结束行号，如果为-1，则与起始行号相同</param>
         /// <param name="EC">结束列号，如果为-1，则与起始列号相同</param>
-        /// <returns>行列号对应的A1格式地址</returns>
-        public static string GetAddress(int BR, int BC, int ER = -1, int EC = -1)
+        /// <param name="isA1">如果这个值为<see langword="true"/>，则返回A1地址，否则返回R1C1地址</param>
+        /// <returns></returns>
+        public static string GetAddress(int BR, int BC, int ER = -1, int EC = -1, bool isA1 = true)
         {
             #region 本地函数
-            static string Get(int R, int C)
-                => ColToText(C) + (R + 1);
+            static string Fun(int R, int C)
+                => ColumnToText(C) + (R + 1);
             #endregion
             ER = ER == -1 ? BR : ER;
             EC = EC == -1 ? BC : EC;
-            return Get(BR, BC) +
-                (BR == ER && BC == EC ? "" : $":{Get(ER, EC)}");
+            return Fun(BR, BC) +
+                (BR == ER && BC == EC ? "" : $":{Fun(ER, EC)}");
         }
         #endregion
-        #region 根据ISizePos
+        #region 根据ISizePosPixel
         /// <summary>
         /// 根据一个平面，返回它的A1地址
         /// </summary>
@@ -118,6 +126,18 @@ namespace System.Office.Excel.Realize
             var (EC, ER) = bottomRight.Abs();
             return GetAddress(BR, BC, ER, EC);
         }
+        #endregion
+        #region 获取完整地址
+        /// <summary>
+        /// 获取一个单元格的完整地址，
+        /// 它由文件名，工作表名和单元格地址组成
+        /// </summary>
+        /// <param name="file">工作簿所在的文件</param>
+        /// <param name="sheetName">工作表的名称</param>
+        /// <param name="address">单元格地址</param>
+        /// <returns></returns>
+        public static string GetAddressFull(IFile file, string sheetName, string address)
+            => $"'{file.Father?.Path}\\[{file.NameFull}]{sheetName}'!{address}";
         #endregion
         #endregion
         #region 解析A1地址
@@ -163,19 +183,6 @@ namespace System.Office.Excel.Realize
                 EC - BC + 1, ER - BR + 1);
         }
         #endregion
-        #endregion
-        #endregion
-        #region 获取完整地址
-        /// <summary>
-        /// 获取一个单元格的完整地址，
-        /// 它由文件名，工作表名和单元格地址组成
-        /// </summary>
-        /// <param name="file">工作簿所在的文件</param>
-        /// <param name="sheetName">工作表的名称</param>
-        /// <param name="address">单元格地址</param>
-        /// <returns></returns>
-        public static string GetAddressFull(IFile file, string sheetName, string address)
-            => $"'{file.Father?.Path}\\[{file.NameFull}]{sheetName}'!{address}";
         #endregion
         #endregion
         #endregion

@@ -25,21 +25,27 @@ namespace System.Office.Excel.Realize
         #region 设置或者获取公式
         public abstract string? FormulaR1C1 { get; set; }
         #endregion
-        #region 格式化后的文本
-        public virtual string? Text
-        {
-            get => Value?.ToText;
-            set => Value = value;
-        }
-        #endregion
         #region 获取或设置超链接
         public abstract string? Link { get; set; }
         #endregion
         #endregion
-        #region 关于单元格地址
         #region 获取完整地址
         public abstract (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
         #endregion
+        #region 以文本形式返回地址
+        public override string AddressText(bool isR1C1 = true, bool isComplete = false)
+        {
+            string address;
+            if (isR1C1)
+            {
+                var (BeginRow, BeginCol, EndRwo, EndCol) = Address;
+                address = $"R{BeginRow}C{BeginCol}";
+                if (BeginRow != EndRwo || BeginCol != EndCol)
+                    address += $":R{EndRwo}C{EndCol}";
+            }
+            else address = ExcelRealize.GetAddress(Interface.AddressMath);
+            return default;
+        }
         #endregion
         #region 返回视觉位置
         public abstract ISizePos VisualPosition { get; }
@@ -52,16 +58,14 @@ namespace System.Office.Excel.Realize
         /// 如果<see cref="IsMerge"/>为<see langword="true"/>，则返回包含这个单元格的合并单元格，
         /// 如果为<see langword="false"/>，则返回这个单元格自己
         /// </summary>
-        public abstract IExcelCells MergeRange { get; }
+        protected abstract IExcelCells MergeRange { get; }
         #endregion
         #region 合并和取消合并
         public abstract bool IsMerge { get; set; }
         #endregion
         #endregion
-        #region 返回子单元格的索引器
-        #region 根据绝对位置
+        #region 根据绝对位置返回单元格
         public abstract IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1] { get; }
-        #endregion
         #endregion
         #region 枚举所有子单元格
         public abstract IEnumerable<IExcelCells> CellsAll { get; }

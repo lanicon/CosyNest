@@ -54,15 +54,7 @@ namespace System.Office.Excel
         #endregion
         #region 关于单元格
         #region 返回用户范围
-        public override IExcelCells RangUser
-        {
-            get
-            {
-                var cells = Sheet.Cells;
-                var end = cells.End;
-                return new ExcelCellsEPPlus(this, Sheet.Cells);
-            }
-        }
+        public override IExcelCells RangUser { get; }
         #endregion
         #region 返回行或列
         public override IExcelRC GetRC(int begin, int? end, bool isRow)
@@ -101,6 +93,7 @@ namespace System.Office.Excel
             : base(book)
         {
             Sheet = sheet;
+            RangUser = new ExcelCellsEPPlus(this, Sheet.Cells);
         }
         #endregion
     }

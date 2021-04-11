@@ -62,11 +62,11 @@ namespace System.Office.Excel
         #endregion
         #region 关于Range
         #region 返回行或者列
-        public override IExcelRC GetRC(int Begin, int? End, bool IsRow)
+        public override IExcelRC GetRC(int begin, int? end, bool isRow)
         {
-            var end = End ?? Begin;
-            var Range = PackSheet.Range[ExcelRealize.GetAddress(Begin, end, IsRow)];
-            return new ExcelRCMicrosoft(this, Range, IsRow, Begin, end);
+            var end2 = end ?? begin;
+            var range = PackSheet.Range[ExcelRealize.GetAddress(begin, end2, isRow)];
+            return new ExcelRCMicrosoft(this, range, isRow, begin, end2);
         }
         #endregion
         #region 返回用户范围
@@ -75,8 +75,8 @@ namespace System.Office.Excel
             get
             {
                 var (_, _, ER, EC) = PackSheet.UsedRange.GetAddress();
-                var Range = PackSheet.Range[ExcelRealize.GetAddress(0, 0, ER, EC)];
-                return new ExcelCellsMicrosoft(this, Range);
+                var range = PackSheet.Range[ExcelRealize.GetAddress(0, 0, ER, EC)];
+                return new ExcelCellsMicrosoft(this, range);
             }
         }
         #endregion
@@ -107,16 +107,16 @@ namespace System.Office.Excel
         {
             var path = MSOfficeRealize.SaveImage(image);
             using var i = Image.FromFile(path.Path);
-            var (W, H) = (i.Width, i.Height);
+            var (w, h) = (i.Width, i.Height);
             #region 转换单位的本地函数
-            static float Conver(Num Num, IUTLength UT)
-                => CreateBaseMathObj.Unit(Num, UT).ConvertSingle(DrawingUnitsCom.LengthPoint);
+            static float Conver(Num num, IUTLength UT)
+                => CreateBaseMathObj.Unit(num, UT).ConvertSingle(DrawingUnitsCom.LengthPoint);
             #endregion
-            var NewImage = PackSheet.Shapes.AddPicture
+            var newImage = PackSheet.Shapes.AddPicture
                 (path.Path, MsoTriState.msoFalse, MsoTriState.msoTrue, 0, 0,
-                Conver(W, CreateHardwarePC.Screen.LengthPixelX),
-                Conver(H, CreateHardwarePC.Screen.LengthPixelY));
-            return new ExcelImageObj(this, NewImage);
+                Conver(w, CreateHardwarePC.Screen.LengthPixelX),
+                Conver(h, CreateHardwarePC.Screen.LengthPixelY));
+            return new ExcelImageObj(this, newImage);
         }
         #endregion
         #endregion
@@ -127,15 +127,12 @@ namespace System.Office.Excel
         #endregion
         #endregion
         #region 构造函数
-        /// <summary>
-        /// 使用指定的工作簿和工作表初始化对象
-        /// </summary>
-        /// <param name="Book">这个工作表所在的工作簿</param>
-        /// <param name="Sheet">被封装的工作表</param>
-        public ExcelSheetMicrosoft(IExcelBook Book, Worksheet Sheet)
-            : base(Book)
+        /// <inheritdoc cref="ExcelSheet(IExcelBook)"/>
+        /// <param name="sheet">被封装的工作表</param>
+        public ExcelSheetMicrosoft(IExcelBook book, Worksheet sheet)
+            : base(book)
         {
-            this.PackSheet = Sheet;
+            this.PackSheet = sheet;
         }
         #endregion
     }
