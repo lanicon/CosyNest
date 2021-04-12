@@ -48,7 +48,7 @@ namespace System.Office
         /// <returns></returns>
         IBitRead Read()
         {
-            var format = Path is { } p ? ToolPath.Split(p).Extended : "";
+            var format = Path is { } p ? ToolPath.SplitPathFile(p).Extended : "";
             var file = ToolPerfo.CreateTemporaryFile(format);
             Save(file.Path);
             file.Refresh();

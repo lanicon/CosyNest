@@ -181,8 +181,8 @@ namespace System.Office.Excel
         IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1] { get; }
 
         /*实现本API请遵循以下规范：
-           1.所有行列号从0开始，而不是从1开始，这是为了与C#的习惯相统一
-           2.之所以强制实现这个索引器，是因为绝对行列号实现起来容易一些*/
+          1.所有行列号从0开始，而不是从1开始，这是为了与C#的习惯相统一
+          2.之所以强制实现这个索引器，是因为绝对行列号实现起来容易一些*/
         #endregion
         #region 根据相对位置
         /// <summary>

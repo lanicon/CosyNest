@@ -32,7 +32,7 @@ namespace System.IOFrancis.FileSystem
         /// <returns></returns>
         public static string RefactoringPath(PathText path, string? newSimple, string? newExtension)
         {
-            var (simple, extended) = Split(path);
+            var (simple, extended) = SplitPathFile(path);
             var father = Path.GetDirectoryName(path)!;
             return Path.Combine(father, GetFullName(newSimple ?? simple, newExtension ?? extended));
         }
@@ -109,23 +109,34 @@ namespace System.IOFrancis.FileSystem
                 null => File.Exists(path) || Directory.Exists(path)
             };
         #endregion
-        #region 将路径的名称和扩展名拆分
+        #region 拆分路径
+        #region 拆分为文件名和扩展名
         /// <summary>
-        /// 将文件或目录的名称和扩展名拆分
+        /// 将文件或目录的名称，以及它的扩展名（如果有）从路径中分离开来
         /// </summary>
         /// <param name="path">待拆分的路径</param>
         /// <param name="withDot">在路径带有扩展名的情况下，
         /// 如果这个值为<see langword="true"/>，代表扩展名应带点号，否则不带点号</param>
         /// <returns>一个元组，它的项分别是文件或目录名称，
         /// 以及文件的扩展名，如果没有扩展名，则返回<see cref="string.Empty"/></returns>
-        public static (string Simple, string Extended) Split(string path, bool withDot = false)
+        public static (string Simple, string Extended) SplitPathFile(string path, bool withDot = false)
         {
-            var Simple = Path.GetFileNameWithoutExtension(path);
-            var Extended = Path.GetExtension(path);
-            return (Simple, Extended.IsVoid() ? string.Empty : withDot ? Extended : Extended[1..]);
+            var simple = Path.GetFileNameWithoutExtension(path);
+            var extended = Path.GetExtension(path);
+            return (simple, extended.IsVoid() ? string.Empty : withDot ? extended : extended[1..]);
         }
         #endregion
-        #endregion 
+        #region 拆分为父目录和文件/目录
+        /// <summary>
+        /// 将路径拆分为父目录的路径，以及文件/目录的名称
+        /// </summary>
+        /// <param name="path">待拆分的路径</param>
+        /// <returns></returns>
+        public static (string FatherPath, string Name) SplitPath(string path)
+            => (Path.GetDirectoryName(path) ?? "", Path.GetFileName(path));
+        #endregion
+        #endregion
+        #endregion
     }
     #region 路径状态枚举
     /// <summary>

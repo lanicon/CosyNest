@@ -101,7 +101,7 @@ namespace System.IOFrancis.FileSystem
         /// <returns>如果兼容，返回<see langword="true"/>，否则返回<see langword="false"/></returns>
         bool IsCompatible(string extensionNameOrPath)
         {
-            var extensionName = ToolPath.Split(extensionNameOrPath).Extended;
+            var extensionName = ToolPath.SplitPathFile(extensionNameOrPath).Extended;
             return this.ExtensionName.Contains(extensionName is "" ? extensionNameOrPath : extensionName);
         }
         #endregion

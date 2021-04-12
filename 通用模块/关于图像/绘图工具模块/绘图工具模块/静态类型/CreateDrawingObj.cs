@@ -109,7 +109,7 @@ namespace System.DrawingFrancis
         public static async Task<IImage> ImageMemory(PathText Path)
         {
             var stream = CreateIO.File(Path).GetBitPipe();
-            return ImageMemory(await stream.Read().FirstAsync(), ToolPath.Split(Path).Extended);
+            return ImageMemory(await stream.Read().FirstAsync(), ToolPath.SplitPathFile(Path).Extended);
         }
         #endregion
         #endregion

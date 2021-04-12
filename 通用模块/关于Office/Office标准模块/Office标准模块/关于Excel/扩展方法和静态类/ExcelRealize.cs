@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.IOFrancis.FileSystem;
 using System.Linq;
 using System.Maths;
@@ -45,9 +46,7 @@ namespace System.Office.Excel.Realize
         /// <param name="source">待复制的格式</param>
         /// <param name="target">复制的目标格式</param>
         public static void CopyStyle(IRangeStyle source, IRangeStyle target)
-        {
-            CacheStyleProperty.ForEach(x => x.Copy(source, target));
-        }
+            => CacheStyleProperty.ForEach(x => x.Copy(source, target));
         #endregion
         #endregion
         #region 关于地址
@@ -76,7 +75,7 @@ namespace System.Office.Excel.Realize
         /// 代表要返回地址的对象是行，否则是列</param>
         /// <param name="isA1">如果这个值为<see langword="true"/>，则返回A1地址，否则返回R1C1地址</param>
         /// <returns></returns>
-        public static string GetAddress(int begin, int end, bool isRow, bool isA1 = true)
+        public static string GetAddressRC(int begin, int end, bool isRow, bool isA1 = true)
         {
             ExceptionIntervalOut.Check(0, null, begin, end);
             begin++;
@@ -97,34 +96,46 @@ namespace System.Office.Excel.Realize
         /// </summary>
         /// <param name="BR">起始行号</param>
         /// <param name="BC">起始列号</param>
-        /// <param name="ER">结束行号，如果为-1，则与起始行号相同</param>
-        /// <param name="EC">结束列号，如果为-1，则与起始列号相同</param>
+        /// <param name="ER">结束行号，如果小于0，则与起始行号相同</param>
+        /// <param name="EC">结束列号，如果小于0，则与起始列号相同</param>
         /// <param name="isA1">如果这个值为<see langword="true"/>，则返回A1地址，否则返回R1C1地址</param>
         /// <returns></returns>
         public static string GetAddress(int BR, int BC, int ER = -1, int EC = -1, bool isA1 = true)
         {
+            ExceptionIntervalOut.Check(0, null, BR, BC);
+            ER = ER < 0 ? BR : ER;
+            EC = EC < 0 ? BC : EC;
+            var isSingle = BR == ER && BC == EC;
+            if (isA1)
+            {
+                #region 本地函数
+                static string FunA1(int R, int C)
+                    => ColumnToText(C) + (R + 1);
+                #endregion
+                return FunA1(BR, BC) +
+                (isSingle ? "" : $":{FunA1(ER, EC)}");
+            }
             #region 本地函数
-            static string Fun(int R, int C)
-                => ColumnToText(C) + (R + 1);
+            static string FunR1C1(int R, int C)
+                => $"R{R + 1}C{C + 1}";
             #endregion
-            ER = ER == -1 ? BR : ER;
-            EC = EC == -1 ? BC : EC;
-            return Fun(BR, BC) +
-                (BR == ER && BC == EC ? "" : $":{Fun(ER, EC)}");
+            return FunR1C1(BR, BC) +
+                (isSingle ? "" : $":{FunR1C1(ER, EC)}");
         }
         #endregion
         #region 根据ISizePosPixel
         /// <summary>
-        /// 根据一个平面，返回它的A1地址
+        /// 根据一个平面，返回它的地址
         /// </summary>
-        /// <param name="rectangular">待返回A1地址的平面</param>
-        /// <returns>平面所对应的A1格式地址</returns>
-        public static string GetAddress(ISizePosPixel rectangular)
+        /// <param name="rectangular">待返回地址的平面</param>
+        /// <param name="isA1">如果这个值为<see langword="true"/>，则返回A1地址，否则返回R1C1地址</param>
+        /// <returns></returns>
+        public static string GetAddress(ISizePosPixel rectangular, bool isA1 = true)
         {
             var (topLeft, bottomRight) = rectangular.Boundaries;
             var (BC, BR) = topLeft.Abs();
             var (EC, ER) = bottomRight.Abs();
-            return GetAddress(BR, BC, ER, EC);
+            return GetAddress(BR, BC, ER, EC, isA1);
         }
         #endregion
         #region 获取完整地址
@@ -132,12 +143,16 @@ namespace System.Office.Excel.Realize
         /// 获取一个单元格的完整地址，
         /// 它由文件名，工作表名和单元格地址组成
         /// </summary>
-        /// <param name="file">工作簿所在的文件</param>
+        /// <param name="fullPath">工作簿所在的文件</param>
         /// <param name="sheetName">工作表的名称</param>
         /// <param name="address">单元格地址</param>
         /// <returns></returns>
-        public static string GetAddressFull(IFile file, string sheetName, string address)
-            => $"'{file.Father?.Path}\\[{file.NameFull}]{sheetName}'!{address}";
+        public static string GetAddressFull(string fullPath, string sheetName, string address)
+        {
+            var father = Path.GetDirectoryName(fullPath);
+            var file = Path.GetFileName(fullPath);
+            return $"'{father}\\[{file}]{sheetName}'!{address}";
+        }
         #endregion
         #endregion
         #region 解析A1地址
@@ -175,7 +190,7 @@ namespace System.Office.Excel.Realize
         /// </summary>
         /// <param name="addressA1">待解析的A1格式地址</param>
         /// <returns></returns>
-        public static ISizePosPixel AddressToTISizePos(string addressA1)
+        public static ISizePosPixel AddressToSizePos(string addressA1)
         {
             var (BR, BC, ER, EC) = AddressToTupts(addressA1);
             return CreateMathObj.SizePosPixel(

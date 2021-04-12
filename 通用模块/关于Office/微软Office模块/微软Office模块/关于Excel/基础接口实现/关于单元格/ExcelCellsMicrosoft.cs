@@ -113,14 +113,8 @@ namespace System.Office.Excel
         #endregion
         #endregion
         #endregion
-        #region 返回单元格地址
-        #region 以文本形式返回
-        public override string AddressText(bool isR1C1 = true, bool isComplete = false)
-            => PackRange.GetAddressFull(isR1C1, isComplete);
-        #endregion
-        #region 完整地址
+        #region 返回单元格完整地址
         public override (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
-        #endregion
         #endregion
         #endregion
         #region 关于单元格和子单元格

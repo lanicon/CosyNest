@@ -69,10 +69,6 @@ namespace System.Office.Excel
         }
         #endregion
         #endregion
-        #region 返回单元格地址
-        public override string AddressText(bool isR1C1 = true, bool isComplete = false)
-            => PackRange.GetAddressFull(isR1C1, isComplete);
-        #endregion
         #region 删除行或者列
         public override void Delete()
             => PackRange.Delete();

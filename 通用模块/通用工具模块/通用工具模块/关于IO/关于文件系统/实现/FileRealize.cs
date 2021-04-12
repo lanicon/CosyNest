@@ -52,7 +52,7 @@ namespace System.IOFrancis.FileSystem
             NewName ??= File.NameFull;
             if (Rename != null)
             {
-                var (Simple, Extended) = ToolPath.Split(NewName);
+                var (Simple, Extended) = ToolPath.SplitPathFile(NewName);
                 NewName = ToolPath.Distinct(Target, NewName,
                     (x, y) => ToolPath.GetFullName(Rename(Simple, y), Extended));
             }

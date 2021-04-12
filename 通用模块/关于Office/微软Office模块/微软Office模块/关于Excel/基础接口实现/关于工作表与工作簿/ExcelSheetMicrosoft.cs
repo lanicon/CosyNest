@@ -65,7 +65,7 @@ namespace System.Office.Excel
         public override IExcelRC GetRC(int begin, int? end, bool isRow)
         {
             var end2 = end ?? begin;
-            var range = PackSheet.Range[ExcelRealize.GetAddress(begin, end2, isRow)];
+            var range = PackSheet.Range[ExcelRealize.GetAddressRC(begin, end2, isRow)];
             return new ExcelRCMicrosoft(this, range, isRow, begin, end2);
         }
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Maths;
 
 using OfficeOpenXml;
@@ -15,12 +16,35 @@ namespace System.Office.Excel
         /// 获取封装的Excel单元格，
         /// 本对象的功能就是通过它实现的
         /// </summary>
-        private ExcelRange Range { get; }
+        private ExcelRangeBase Range { get; }
+        #endregion
+        #region 关于子单元格和其他单元格
+        #region 枚举所有子单元格
+        public override IEnumerable<IExcelCells> CellsAll
+            => Range.Select(x => new ExcelCellsEPPlus(Sheet, x));
+        #endregion
+        #region 按索引获取子单元格
+        public override IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1]
+        {
+            get
+            {
+                var range = Range switch
+                {
+                    ExcelRange r => r[beginRow++, beginColumn++, endRow < 0 ? beginRow : endRow, endColumn < 0 ? beginColumn : endColumn],
+                    ExcelRangeBase r when (beginRow, beginColumn, endRow, endColumn) is (0, 0, 0 or -1, 0 or -1) => r,
+                    _ => throw new ArgumentException("仅有一个单元格，除非地址为(0,0,0,0)，否则无法获取子单元格")
+                };
+                return new ExcelCellsEPPlus(Sheet, range);
+            }
+        }
+        #endregion
         #endregion
         #region 未实现的成员
         public override RangeValue? Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override string? FormulaR1C1 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override string? Link { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public override (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address => throw new NotImplementedException();
 
         public override ISizePos VisualPosition => throw new NotImplementedException();
 
@@ -28,22 +52,12 @@ namespace System.Office.Excel
 
         public override bool IsMerge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public override IExcelCells this[int beginRow, int beginColumn, int endRow = -1, int endColumn = -1] => throw new NotImplementedException();
-
-        public override IEnumerable<IExcelCells> CellsAll => throw new NotImplementedException();
-
         public override IRangeStyle Style { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address => throw new NotImplementedException();
-        public override string AddressText(bool isR1C1 = true, bool isComplete = false)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
         #region 构造函数
         /// <inheritdoc cref="Realize.ExcelCells.ExcelCells(IExcelSheet)"/>
         /// <param name="range">封装的Excel单元格，本对象的功能就是通过它实现的</param>
-        public ExcelCellsEPPlus(IExcelSheet sheet, ExcelRange range)
+        public ExcelCellsEPPlus(IExcelSheet sheet, ExcelRangeBase range)
             : base(sheet)
         {
             Range = range;

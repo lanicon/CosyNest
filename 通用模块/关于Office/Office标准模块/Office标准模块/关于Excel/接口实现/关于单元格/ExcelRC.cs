@@ -16,6 +16,13 @@ namespace System.Office.Excel.Realize
         #region 返回开始和结束行列数
         public (int Begin, int End) Range { get; }
         #endregion
+        #region 以文本形式返回地址（重写辅助方法）
+        private protected override string AddressTextSimple(bool isR1C1)
+        {
+            var (begin, end) = Range;
+            return ExcelRealize.GetAddressRC(begin, end, IsRow, !isR1C1);
+        }
+        #endregion
         #endregion
         #region 关于迭代器
         public virtual IEnumerator<IExcelRC> GetEnumerator()

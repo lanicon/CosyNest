@@ -31,7 +31,7 @@ namespace System.IOFrancis.FileSystem
         /// </summary>
         string NameExtension
         {
-            get => ToolPath.Split(Path, false).Extended;
+            get => ToolPath.SplitPathFile(Path, false).Extended;
             set => Path = ToolPath.RefactoringPath(Path, null,
                 value ?? throw new ArgumentNullException($"{NameExtension}禁止写入null值"));
         }

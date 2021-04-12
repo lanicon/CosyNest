@@ -58,7 +58,7 @@ namespace System.Office
             => (Printer, FilePath) switch
             {
                 (IPrinter p, null) => p.Name,
-                (null, PathText f) => ToolPath.Split(f.Path).Extended switch
+                (null, PathText f) => ToolPath.SplitPathFile(f.Path).Extended switch
                 {
                     "pdf" => "Microsoft Print to PDF",
                     "xps" or "oxps" => "Microsoft XPS Document Writer",

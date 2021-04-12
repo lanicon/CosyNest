@@ -54,19 +54,6 @@ namespace System
         public static EXRange ElementAt(this EXRange Range, int Index)
             => Range.Cells.OfType<EXRange>().ElementAt(Index);
         #endregion
-        #region 获取单元格地址
-        /// <summary>
-        /// 获取单元格地址的辅助方法
-        /// </summary>
-        /// <param name="Range">封装的单元格对象</param>
-        /// <param name="IsR1C1">如果这个值为<see langword="true"/>，
-        /// 代表以R1C1形式返回，否则代表以A1形式返回</param>
-        /// <param name="IsComplete">如果这个值为<see langword="true"/>，
-        /// 代表返回完整地址，它包含了关于所在文件等信息，否则返回标准形式的地址</param>
-        /// <returns></returns>
-        public static string GetAddressFull(this EXRange Range, bool IsR1C1 = true, bool IsComplete = false)
-            => Range.Address[ReferenceStyle: IsR1C1 ? XlReferenceStyle.xlR1C1 : XlReferenceStyle.xlA1, External: IsComplete];
-        #endregion
         #endregion
         #region 关于形状
         #region 获取形状集合中的所有形状

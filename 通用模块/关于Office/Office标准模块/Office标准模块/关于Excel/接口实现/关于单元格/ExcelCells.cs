@@ -32,20 +32,9 @@ namespace System.Office.Excel.Realize
         #region 获取完整地址
         public abstract (int BeginRow, int BeginCol, int EndRwo, int EndCol) Address { get; }
         #endregion
-        #region 以文本形式返回地址
-        public override string AddressText(bool isR1C1 = true, bool isComplete = false)
-        {
-            string address;
-            if (isR1C1)
-            {
-                var (BeginRow, BeginCol, EndRwo, EndCol) = Address;
-                address = $"R{BeginRow}C{BeginCol}";
-                if (BeginRow != EndRwo || BeginCol != EndCol)
-                    address += $":R{EndRwo}C{EndCol}";
-            }
-            else address = ExcelRealize.GetAddress(Interface.AddressMath);
-            return default;
-        }
+        #region 以文本形式返回地址（重写辅助方法）
+        private protected override string AddressTextSimple(bool isR1C1)
+            => ExcelRealize.GetAddress(Interface.AddressMath, !isR1C1);
         #endregion
         #region 返回视觉位置
         public abstract ISizePos VisualPosition { get; }

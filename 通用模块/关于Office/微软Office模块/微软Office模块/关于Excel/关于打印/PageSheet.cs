@@ -36,7 +36,7 @@ namespace System.Office.Excel
             get
             {
                 var add = PackSheet.PageSetup.PrintArea;
-                return add.IsVoid() ? null : ExcelRealize.AddressToTISizePos(add);
+                return add.IsVoid() ? null : ExcelRealize.AddressToSizePos(add);
             }
             set => PackSheet.PageSetup.PrintArea =
                 value is null ? "" : ExcelRealize.GetAddress(value);
