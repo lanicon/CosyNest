@@ -138,7 +138,7 @@ namespace System.Office.Excel
         /// 返回合并单元格封装的单元格对象
         /// </summary>
         private EXRange MergeRangeMS
-            => IsMerge ? MergeRange.CellsAll.First().To<ExcelCellsMicrosoft>().PackRange : PackRange;
+            => MergeRange.CellsAll.First().To<ExcelCellsMicrosoft>().PackRange;
         #endregion
         #region 返回合并的单元格
         protected override IExcelCells MergeRange
