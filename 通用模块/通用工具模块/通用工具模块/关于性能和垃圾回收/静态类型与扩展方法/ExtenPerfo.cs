@@ -14,9 +14,9 @@ namespace System
         /// 删除一个弱引用集合中，所有目标引用丢失的元素
         /// </summary>
         /// <typeparam name="Weak">集合元素的类型</typeparam>
-        public static void RemoveNull<Weak>(this ICollection<Weak> WeakList)
+        public static void RemoveNull<Weak>(this ICollection<Weak> weakList)
             where Weak : WeakReference
-            => WeakList.RemoveWhere(x => x.Target is null);
+            => weakList.RemoveWhere(x => x.Target is null);
         #endregion
         #endregion
         #region 关于IDisposable
@@ -28,14 +28,14 @@ namespace System
         /// <typeparam name="Obj">待求值和释放的对象类型</typeparam>
         /// <typeparam name="Ret">返回值类型</typeparam>
         /// <param name="obj">待求值和释放的对象</param>
-        /// <param name="Del">用于获取返回值的委托</param>
-        /// <returns>执行<paramref name="Del"/>所获取到的返回值</returns>
-        public static Ret AutoRelease<Obj, Ret>(this Obj obj, Func<Obj, Ret> Del)
+        /// <param name="delegate">用于获取返回值的委托</param>
+        /// <returns>执行<paramref name="delegate"/>所获取到的返回值</returns>
+        public static Ret AutoRelease<Obj, Ret>(this Obj obj, Func<Obj, Ret> @delegate)
             where Obj : IDisposable
         {
             using (obj)
             {
-                return Del(obj);
+                return @delegate(obj);
             }
         }
         #endregion
@@ -43,9 +43,9 @@ namespace System
         /// <summary>
         /// 批量释放<see cref="IDisposable"/>
         /// </summary>
-        /// <param name="list">待释放的<see cref="IDisposable"/></param>
-        public static void DisposableAll(this IEnumerable<IDisposable> list)
-            => list.ForEach(x => x.Dispose());
+        /// <param name="collections">待释放的<see cref="IDisposable"/></param>
+        public static void DisposableAll(this IEnumerable<IDisposable> collections)
+            => collections.ForEach(x => x.Dispose());
         #endregion
         #endregion
         #region 关于IAsyncDisposable

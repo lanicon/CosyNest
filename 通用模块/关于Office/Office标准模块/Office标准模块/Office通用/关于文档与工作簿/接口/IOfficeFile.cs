@@ -49,7 +49,7 @@ namespace System.Office
         IBitRead Read()
         {
             var format = Path is { } p ? ToolPath.SplitPathFile(p).Extended : "";
-            var file = ToolPerfo.CreateTemporaryFile(format);
+            var file = ToolPerformance.CreateTemporaryFile(format);
             Save(file.Path);
             file.Refresh();
             return file.GetBitPipe(FileMode.Open);

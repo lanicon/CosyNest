@@ -8,6 +8,14 @@ namespace System.IOFrancis.FileSystem
     /// </summary>
     public interface IDirectory : IIO
     {
+        #region 清除目录
+        /// <summary>
+        /// 清除目录中的所有子文件和目录，
+        /// 但是不将目录本身删除
+        /// </summary>
+        void Clear()
+            => Son.ForEach(x => x.Delete());
+        #endregion
         #region 有关创建文件或目录
         #region 说明文档
         /*实现这些API请遵循以下规范：

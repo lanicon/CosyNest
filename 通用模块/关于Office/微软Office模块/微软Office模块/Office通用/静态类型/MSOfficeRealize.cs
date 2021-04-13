@@ -39,7 +39,7 @@ namespace System.Office
         /// <returns></returns>
         public static IFile SaveImage(IImage image)
         {
-            var file = ToolPerfo.CreateTemporaryFile(image.Format);
+            var file = ToolPerformance.CreateTemporaryFile(image.Format);
             image.Read().SaveToFile(file.Path).Wait();
             return file;
         }

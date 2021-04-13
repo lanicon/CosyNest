@@ -153,7 +153,7 @@ namespace System.Office.Word.Realize
         #region 正式事件
         public event Action<Range, int> LengthChange
         {
-            add => ToolPerfo.AddWeakDel(ref LengthChangeWeak, value);
+            add => ToolPerformance.AddWeakDel(ref LengthChangeWeak, value);
             remove => LengthChangeWeak?.Remove(value);
         }
         #endregion
