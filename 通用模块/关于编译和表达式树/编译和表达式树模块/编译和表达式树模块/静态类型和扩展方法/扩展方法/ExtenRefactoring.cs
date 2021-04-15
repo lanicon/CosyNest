@@ -14,15 +14,15 @@ namespace System
         /// <summary>
         /// 将表达式的部分节点替换，并返回重构后的表达式
         /// </summary>
-        /// <param name="Expression">要重构的表达式</param>
+        /// <param name="expression">要重构的表达式</param>
         /// <param name="c">将原表达式节点替换为新节点的委托，
         /// 如果返回<see cref="ToolExpression.NotExpression"/>，则不替换表达式节点，函数会继续遍历下级节点，
         /// 如果返回<see langword="null"/>或其他表达式类型，该节点会被返回值替换，不会继续遍历</param>
         /// <returns>重构后的新表达式，它的部分节点已被替换，如何替换取决于<paramref name="c"/>委托</returns>
-        public static Expression? Refactoring(this Expression? Expression, Func<Expression?, Expression?> c)
-            => c(Expression) switch
+        public static Expression? Refactoring(this Expression? expression, Func<Expression?, Expression?> c)
+            => c(expression) switch
             {
-                NotExpression => Expression switch
+                NotExpression => expression switch
                 {
                     MethodCallExpression e => Call(e.Object.Refactoring(c), e.Method, e.Arguments.Select(x => x.Refactoring(c))),
                     LambdaExpression e => Lambda(e.Type, e.Body.Refactoring(c), e.Parameters.Select(x => (ParameterExpression)x.Refactoring(c)).ToArray()),

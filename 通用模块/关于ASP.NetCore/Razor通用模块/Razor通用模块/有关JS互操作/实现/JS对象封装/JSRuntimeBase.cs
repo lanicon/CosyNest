@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace Microsoft.JSInterop
+﻿namespace Microsoft.JSInterop
 {
     /// <summary>
     /// 这个抽象类是所有JS对象封装的基类

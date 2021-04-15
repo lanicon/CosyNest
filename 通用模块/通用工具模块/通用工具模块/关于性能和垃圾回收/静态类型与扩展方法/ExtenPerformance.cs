@@ -6,7 +6,7 @@ namespace System
     /// <summary>
     /// 关于性能的扩展方法全部放在这个类中，通常无需专门调用
     /// </summary>
-    public static class ExtenPerfo
+    public static class ExtenPerformance
     {
         #region 关于弱引用
         #region 删除掉一个弱引用集合中所有丢失引用的元素
