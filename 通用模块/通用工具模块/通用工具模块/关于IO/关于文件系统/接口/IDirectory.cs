@@ -44,31 +44,18 @@ namespace System.IOFrancis.FileSystem
         IFile CreateFile(string? Name = null, string Extension = "");
         #endregion
         #endregion
-        #region 有关获取文件或目录
-        #region 获取文件
+        #region 搜索文件或目录
         /// <summary>
-        /// 从目录下搜索具有指定名称的文件
+        /// 从目录下搜索具有指定名称的文件或目录
         /// </summary>
-        /// <param name="Name">要搜索的文件全名</param>
-        /// <param name="IsRecursive">如果这个值为<see langword="true"/>，
-        /// 则递归搜索目录下的所有文件，否则只搜索直接子文件</param>
-        /// <returns>搜索到的文件，如果没有找到，则返回<see langword="null"/></returns>
-        IFile? FindFile(string Name, bool IsRecursive = false)
-            => (IsRecursive ? SonAll : Son).OfType<IFile>().
-            FirstOrDefault(x => x.NameFull == Name);
-        #endregion
-        #region 获取目录
-        /// <summary>
-        /// 从目录下搜索具有指定名称的目录
-        /// </summary>
-        /// <param name="Name">要搜索的目录名称</param>
-        /// <param name="IsRecursive">如果这个值为<see langword="true"/>，
-        /// 则递归搜索目录下的所有目录，否则只搜索直接子目录</param>
-        /// <returns>搜索到的目录，如果没有找到，则返回<see langword="null"/></returns>
-        IDirectory? FindDirectory(string Name, bool IsRecursive = false)
-            => (IsRecursive ? SonAll : Son).OfType<IDirectory>().
-            FirstOrDefault(x => x.NameFull == Name);
-        #endregion
+        /// <typeparam name="IO">要搜索的文件或目录的类型</typeparam>
+        /// <param name="name">要搜索的文件或目录全名</param>
+        /// <param name="isRecursive">如果这个值为<see langword="true"/>，
+        /// 则执行递归搜索，否则只搜索直接子节点</param>
+        /// <returns>搜索到的文件或目录，如果没有找到，则返回<see langword="null"/></returns>
+        IO? Find<IO>(string name, bool isRecursive = false)
+            where IO : IIO
+            => (isRecursive ? SonAll : Son).OfType<IO>().FirstOrDefault(x => x.NameFull == name);
         #endregion
     }
 }

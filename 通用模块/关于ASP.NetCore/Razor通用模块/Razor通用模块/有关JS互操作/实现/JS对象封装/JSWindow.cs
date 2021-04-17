@@ -30,6 +30,10 @@ namespace Microsoft.JSInterop
         #endregion
         #endregion
         #region JS方法
+        #region 弹出确认窗
+        public ValueTask<bool> Confirm(string message)
+              => JSRuntime.InvokeAsync<bool>("confirm", message);
+        #endregion
         #region 弹出消息窗
         public ValueTask Alert(string message)
                => JSRuntime.InvokeVoidAsync("alert", message);
@@ -37,6 +41,10 @@ namespace Microsoft.JSInterop
         #region 打印窗口
         public ValueTask Print()
               => JSRuntime.InvokeVoidAsync("print");
+        #endregion
+        #region 关闭窗口
+        public ValueTask Close()
+             => JSRuntime.InvokeVoidAsync("close");
         #endregion
         #endregion 
         #region 构造函数

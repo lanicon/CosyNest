@@ -10,6 +10,13 @@ namespace System.Office.Excel
     /// </summary>
     public interface IExcelRC : IExcelRange, IEnumerable<IExcelRC>
     {
+        #region 说明文档
+        /*问：按照其他框架的做法，行和列是两个不同的类型，
+          为什么本框架不这么设计？
+          答：因为作者考虑到，它们除了一个是行一个是列以外，
+          在其他地方没有任何区别，因此作者认为这种差别不足以使它们成为两个类型，
+          只需要一个属性来区分它们就可以了*/
+        #endregion
         #region 返回对象是否为行
         /// <summary>
         /// 如果这个属性返回<see langword="true"/>，

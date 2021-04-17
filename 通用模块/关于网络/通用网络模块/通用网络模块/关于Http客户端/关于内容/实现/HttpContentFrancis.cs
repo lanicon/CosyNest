@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 
 namespace System.NetFrancis.Http
 {
@@ -18,13 +19,11 @@ namespace System.NetFrancis.Http
         public HttpHeaderContent Header { get; init; }
         #endregion
         #region Http内容
-        ReadOnlySpan<byte> IHttpContent.Content => Content;
-
         /// <summary>
         /// 返回Http消息的内容，
         /// 它以二进制的格式呈现
         /// </summary>
-        public byte[] Content { get; init; }
+        public IEnumerable<byte> Content { get; init; }
         #endregion
         #region 构造函数
         #region 无参数构造函数
@@ -41,7 +40,7 @@ namespace System.NetFrancis.Http
         /// <param name="content">指定的Http内容</param>
         /// <param name="autoRelease">如果这个参数为<see langword="true"/>，
         /// 则在构造函数执行完毕后，还会自动释放掉<paramref name="content"/></param>
-        internal HttpContentFrancis(HttpContent content, bool autoRelease)
+        public HttpContentFrancis(HttpContent content, bool autoRelease)
         {
             Content = content.ReadAsByteArrayAsync().Result;
             Header = new(content.Headers);

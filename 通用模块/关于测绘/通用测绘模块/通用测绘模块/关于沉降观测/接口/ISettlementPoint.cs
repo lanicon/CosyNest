@@ -16,6 +16,13 @@ namespace System.Mapping.Settlement
         /// </summary>
         string Name { get; }
         #endregion
+        #region 是否为已知点
+        /// <summary>
+        /// 如果该属性返回<see langword="true"/>，代表这个观测点高程已知，
+        /// 反之则代表高程未知，需要通过计算得出
+        /// </summary>
+        bool IsKnown { get; }
+        #endregion
         #region 父代观测站
         /// <summary>
         /// 获取后视该观测点的观测站，

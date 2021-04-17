@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.TreeObject;
 
@@ -40,7 +42,7 @@ namespace System.NetFrancis.Http
         /// 返回Http消息的内容，
         /// 它以二进制的格式呈现
         /// </summary>
-        ReadOnlySpan<byte> Content { get; }
+        IEnumerable<byte> Content { get; }
 
         /*注意：
           本API直接返回消息的内容，
@@ -56,7 +58,7 @@ namespace System.NetFrancis.Http
         /// </summary>
         /// <returns></returns>
         string ToText()
-            => Encoding.UTF8.GetString(Content);
+            => Encoding.UTF8.GetString(Content.ToArray());
         #endregion
         #region 解释为树形文档对象
         /// <summary>
@@ -68,8 +70,8 @@ namespace System.NetFrancis.Http
         /// <returns></returns>
         Obj? ToObject<Obj>(ISerialization<Obj>? serialization = null)
             => serialization is null ?
-            JsonSerializer.Deserialize<Obj>(Content) :
-            serialization.Deserialize(Content);
+            JsonSerializer.Deserialize<Obj>(Content.ToArray()) :
+            serialization.Deserialize(Content.ToArray());
         #endregion
         #endregion
     }

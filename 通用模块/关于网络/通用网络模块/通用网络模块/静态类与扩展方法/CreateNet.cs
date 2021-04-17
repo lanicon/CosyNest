@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.NetFrancis.Http;
 using System.Text.Json;
 
@@ -25,9 +26,20 @@ namespace System.NetFrancis
         /// <typeparam name="Obj">要序列化的对象的类型</typeparam>
         /// <param name="obj">要序列化的对象</param>
         /// <param name="options">控制序列化过程的选项</param>
+        /// <param name="jsonType">如果这个值为<see langword="true"/>，则媒体类型为Json，
+        /// 否则为纯文本，它在某些特殊情况下可能会有用</param>
         /// <returns></returns>
-        public static HttpContentFrancis HttpContentJson<Obj>(Obj? obj, JsonSerializerOptions? options = null)
-            => new(JsonContent.Create(obj, options: options), true);
+        public static HttpContentFrancis HttpContentJson<Obj>(Obj? obj, JsonSerializerOptions? options = null, bool jsonType = true)
+        {
+            var content = new HttpContentFrancis(JsonContent.Create(obj, options: options), true);
+            return jsonType ? content : content with
+            {
+                Header = content.Header with
+                {
+                    ContentType = MediaTypeHeaderValue.Parse(MediaTypeName.Text)
+                }
+            };
+        }
         #endregion
         #endregion
     }

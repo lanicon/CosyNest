@@ -8,6 +8,9 @@ namespace System.Mapping.Settlement
     /// </summary>
     class SettlementPointFixed : SettlementPointBase
     {
+        #region 是否为已知点
+        public override bool IsKnown => true;
+        #endregion
         #region 计算得出的高程
         /// <summary>
         /// 获取经计算得出的高程，

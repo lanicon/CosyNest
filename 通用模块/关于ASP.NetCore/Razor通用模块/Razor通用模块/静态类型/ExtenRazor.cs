@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.NetFrancis.Http;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 
@@ -68,6 +70,17 @@ namespace System
         #endregion
         #endregion
         #region 关于依赖注入
+        #region 注入UriFrancis
+        /// <summary>
+        /// 以范围模式添加一个<see cref="UriFrancis"/>，
+        /// 它的<see cref="UriFrancis.UriBase"/>已经填入本地主机的URI
+        /// </summary>
+        /// <param name="services">待注入的服务容器</param>
+        /// <returns></returns>
+        public static IServiceCollection AddLocalUri(this IServiceCollection services)
+            => services.AddScoped(x => new UriFrancis()
+            { UriBase = x.GetRequiredService<NavigationManager>().BaseUri });
+        #endregion
         #region 注入前端对象
         /// <summary>
         /// 向服务容器注入常用前端对象

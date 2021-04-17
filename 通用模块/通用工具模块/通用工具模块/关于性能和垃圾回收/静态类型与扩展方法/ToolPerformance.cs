@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IOFrancis;
 using System.IOFrancis.FileSystem;
+using System.Linq;
 using System.Maths;
 
 namespace System.Performance
@@ -18,6 +20,14 @@ namespace System.Performance
         /// </summary>
         private static IDirectory TemporaryDirectory { get; }
         = CreateIO.Directory(Guid.NewGuid().ToString(), false);
+        #endregion
+        #region 指定临时目录
+        /// <summary>
+        /// 指定目录为临时目录，在程序退出时，
+        /// 它会被删除，注意，它不受<see cref="TemporaryLimit"/>属性的影响
+        /// </summary>
+        public static IList<IDirectory> Temporary { get; }
+        = new List<IDirectory>();
         #endregion
         #region 指定临时文件上限
         /// <summary>
@@ -89,7 +99,7 @@ namespace System.Performance
         {
             #region 清除缓存的本地函数
             static void Clear(object x, EventArgs y)
-                => TemporaryDirectory.Delete();
+                => Temporary.Prepend(TemporaryDirectory).ForEach(x => x.Delete());
             #endregion
             var app = AppDomain.CurrentDomain;
             app.ProcessExit += Clear!;               //退出或出现异常时清除缓存

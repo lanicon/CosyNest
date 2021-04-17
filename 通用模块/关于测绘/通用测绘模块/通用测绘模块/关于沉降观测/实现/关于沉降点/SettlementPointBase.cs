@@ -12,6 +12,9 @@ namespace System.Mapping.Settlement
         #region 名称
         public string Name { get; }
         #endregion
+        #region 是否为已知点
+        public virtual bool IsKnown => false;
+        #endregion
         #region 关于闭合与附合
         #region 闭合/附合点
         /// <summary>

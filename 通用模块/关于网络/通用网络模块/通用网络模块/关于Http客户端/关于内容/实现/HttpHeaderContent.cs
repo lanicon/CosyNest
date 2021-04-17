@@ -12,11 +12,15 @@ namespace System.NetFrancis.Http
         #region 获取编码标头
         public IEnumerable<string> ContentEncoding { get; init; }
         #endregion
+        #region 获取媒体类型标头
+        public MediaTypeHeaderValue? ContentType { get; init; }
+        #endregion
         #region 枚举预定义标头属性
         protected override IEnumerable<(string Name, string? Value)> Predefined()
             => new[]
             {
-                ("Content-Encoding",ContentEncoding?.Join(","))
+                ("Content-Encoding",ContentEncoding?.Join(",")),
+                ("Content-Type",ContentType?.ToString())
             };
         #endregion
         #region 构造函数
