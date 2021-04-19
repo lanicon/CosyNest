@@ -111,6 +111,13 @@ namespace System
         /// <returns></returns>
         public static Task<Obj> ToTask<Obj>(this Obj obj)
             => Task.FromResult(obj);
+
+        /*问：该方法似乎用处不大，但是代价很大，
+          因为它为所有类型都增加了一个扩展方法，
+          那么请问它的意义在于什么？
+          答：它最大的用处在于异步属性，只要有了它，
+          能够很方便地向异步属性写入同步对象，
+          只需调用本方法将其转换为异步对象即可*/
         #endregion
         #region 关于枚举
         #region 枚举枚举的所有位域

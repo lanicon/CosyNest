@@ -22,7 +22,7 @@ namespace System.Office.Excel
         #region 单元格的值
         public override RangeValue? Value
         {
-            get => new() { Content = Range.Value };
+            get => new(Range.Value);
             set => Range.Value = value?.Content;
         }
         #endregion

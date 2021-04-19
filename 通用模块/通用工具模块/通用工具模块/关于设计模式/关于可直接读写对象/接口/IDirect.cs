@@ -30,13 +30,13 @@ namespace System.Design.Direct
         /// 在写入<see cref="Schema"/>时，
         /// 可以调用这个方法检查非法的输入并抛出异常
         /// </summary>
-        /// <param name="Realize">一个实现本接口的对象</param>
+        /// <param name="realize">一个实现本接口的对象</param>
         /// <param name="newValue"><see cref="Schema"/>的新值</param>
-        protected static void CheckSchemaSet(IDirect Realize, ISchema? newValue)
+        protected static void CheckSchemaSet(IDirect realize, ISchema? newValue)
         {
-            if (Realize.Schema != null)
+            if (realize.Schema is { })
                 throw new ArgumentException("不能在已有架构约束的情况下撤销或写入新约束");
-            newValue?.SchemaCompatible(Realize, true);
+            newValue?.SchemaCompatible(realize, true);
         }
         #endregion
         #endregion

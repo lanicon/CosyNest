@@ -51,7 +51,7 @@ namespace System.DataFrancis.Excel.Block
         public static IBlockProperty BlockProperty(int Row, int Col, string? Title = null)
             => BlockProperty(Row, Col,
                 cell => cell.Value?.Content,
-                (cell, value) => cell.Value = new() { Content = value }, Title);
+                (cell, value) => cell.Value = new(value), Title);
         #endregion
         #endregion
         #region 创建IBlockMap

@@ -69,22 +69,13 @@ namespace System.Collections.Generic
         /// 以及获取到的值，如果键不存在，则为默认值</returns>
         Task<(bool Exist, Value? Value)> TryGetValueAsync(Key key);
         #endregion
-        #region 获取值且可能引发异常
+        #region 通过索引器读写值
         /// <summary>
-        /// 根据键异步读取值
+        /// 通过键异步读取或写入值
         /// </summary>
-        /// <param name="key">用来读取值的键</param>
+        /// <param name="key">用来读写值的键</param>
         /// <returns></returns>
-        Task<Value> GetValueAsync(Key key);
-        #endregion
-        #region 写入键值对
-        /// <summary>
-        /// 向字典中异步写入键值对
-        /// </summary>
-        /// <param name="key">要写入的键</param>
-        /// <param name="value">要写入的值</param>
-        /// <returns>一个用于等待写入完成的<see cref="Task"/></returns>
-        Task SetValueAsync(Key key, Value value);
+        Task<Value> this[Key key] { get; set; }
         #endregion
         #endregion
     }

@@ -43,11 +43,11 @@ namespace System.Design.Direct
         /// 它可以是另一个架构，也可以是一条数据</param>
         /// <param name="screening">用于比较本架构和<paramref name="data"/>同名Value类型的委托，
         /// 如果它返回<see langword="true"/>，表示架构不兼容</param>
-        /// <param name="Throw">如果这个值为<see langword="true"/>，
+        /// <param name="throw">如果这个值为<see langword="true"/>，
         /// 则在架构不兼容时，不是返回异常，而是直接抛出异常</param>
         /// <returns>如果架构兼容，返回<see langword="null"/>，
         /// 否则返回一个<see cref="ExceptionSchema"/>，报告第一个发现的兼容性问题</returns>
-        private ExceptionSchema? SchemaCompatibleBase<Value>(IReadOnlyDictionary<string, Value> data, Func<Type, Value, bool> screening, bool Throw)
+        private ExceptionSchema? SchemaCompatibleBase<Value>(IReadOnlyDictionary<string, Value> data, Func<Type, Value, bool> screening, bool @throw)
         {
             #region 本地函数
             ExceptionSchema? Get()
@@ -67,7 +67,7 @@ namespace System.Design.Direct
             return Get() switch
             {
                 null => null,
-                var ex => Throw ? throw ex : ex
+                var ex => @throw ? throw ex : ex
             };
         }
         #endregion
@@ -76,24 +76,24 @@ namespace System.Design.Direct
         /// 判断本架构是否与另一个架构兼容
         /// </summary>
         /// <param name="schema">待判断的另一个架构</param>
-        /// <param name="Throw">如果这个值为<see langword="true"/>，
+        /// <param name="throw">如果这个值为<see langword="true"/>，
         /// 则在架构不兼容时，不是返回异常，而是直接抛出异常</param>
         /// <returns>如果架构兼容，返回<see langword="null"/>，
         /// 否则返回一个<see cref="ExceptionSchema"/>，报告第一个发现的兼容性问题</returns>
-        ExceptionSchema? SchemaCompatible(ISchema schema, bool Throw = false)
-            => SchemaCompatibleBase(schema.Schema, (t, v) => t != v, Throw);
+        ExceptionSchema? SchemaCompatible(ISchema schema, bool @throw = false)
+            => SchemaCompatibleBase(schema.Schema, (t, v) => t != v, @throw);
         #endregion
         #region 确定架构是否兼容（传入数据）
         /// <summary>
         /// 判断某一数据是否兼容于本架构
         /// </summary>
         /// <param name="data">待判断的数据</param>
-        ///  <param name="Throw">如果这个值为<see langword="true"/>，
+        ///  <param name="throw">如果这个值为<see langword="true"/>，
         /// 则在架构不兼容时，不是返回异常，而是直接抛出异常</param>
         /// <returns>如果架构兼容，返回<see langword="null"/>，
         /// 否则返回一个<see cref="ExceptionSchema"/>，报告第一个发现的兼容性问题</returns>
-        ExceptionSchema? SchemaCompatible(IReadOnlyDictionary<string, object?> data, bool Throw = false)
-            => SchemaCompatibleBase(data, (t, v) => !t.IsAssignableFrom(v), Throw);
+        ExceptionSchema? SchemaCompatible(IReadOnlyDictionary<string, object?> data, bool @throw = false)
+            => SchemaCompatibleBase(data, (t, v) => !t.IsAssignableFrom(v), @throw);
         #endregion
         #endregion
     }

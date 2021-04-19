@@ -15,10 +15,10 @@ namespace System.Design.Direct
         /// <summary>
         /// 使用指定的架构初始化对象
         /// </summary>
-        /// <param name="Schema">指定的架构</param>
-        public Schemas(IReadOnlyDictionary<string, Type> Schema)
+        /// <param name="schema">指定的架构</param>
+        public Schemas(IReadOnlyDictionary<string, Type> schema)
         {
-            this.Schema = Schema;
+            this.Schema = schema;
         }
         #endregion
     }

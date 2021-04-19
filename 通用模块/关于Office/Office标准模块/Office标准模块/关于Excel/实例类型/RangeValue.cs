@@ -20,34 +20,34 @@ namespace System.Office.Excel
         #region 隐式转换
         #region 从String转换
         public static implicit operator RangeValue(string? value)
-            => new() { Content = value };
+            => new(value);
         #endregion
         #region 从Num转换
         public static implicit operator RangeValue(Num value)
-            => new() { Content = value };
+            => new(value);
         #endregion
         #region 从Double转换
         public static implicit operator RangeValue(double value)
-            => new() { Content = value };
+            => new(value);
         #endregion
         #region 从DateTime转换
         public static implicit operator RangeValue(DateTime value)
-            => new() { Content = value };
+            => new(value);
         #endregion
         #region 从数组转换
         public static implicit operator RangeValue(Array? value)
-            => new() { Content = value };
+            => new(value);
         #endregion
         #endregion
         #region 值的内容
-        private readonly object? ContentFiels;
+        private readonly object? ContentField;
 
         /// <summary>
         /// 储存单元格Value的实际值
         /// </summary>
         public object? Content
         {
-            get => ContentFiels;
+            get => ContentField;
             init
             {
                 #region 转换数组的本地函数
@@ -78,7 +78,7 @@ namespace System.Office.Excel
                         typeof(string), typeof(Num), typeof(double), typeof(DateTime), typeof(Array)),
                     };
                 #endregion
-                ContentFiels = Convert(value);
+                ContentField = Convert(value);
             }
         }
         #endregion
@@ -119,6 +119,17 @@ namespace System.Office.Excel
         public DateTime? ToDateTime
             => Content.To<DateTime?>(false);
         #endregion
+        #endregion
+        #region 构造函数
+        /// <summary>
+        /// 将指定的内容封装进对象
+        /// </summary>
+        /// <param name="content">单元格Value的实际值</param>
+        public RangeValue(object? content)
+        {
+            ContentField = null;
+            Content = content;
+        }
         #endregion
         #region 重写ToString
         public override string ToString()
