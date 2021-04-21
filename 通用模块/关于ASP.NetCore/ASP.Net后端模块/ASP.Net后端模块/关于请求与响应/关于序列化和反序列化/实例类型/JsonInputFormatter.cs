@@ -15,16 +15,16 @@ namespace Microsoft.AspNetCore.Json
     /// </summary>
     class JsonInputFormatter : TextInputFormatter
     {
-        #region 检查反序列化的类型
-        protected override bool CanReadType(Type type)
-            => type.IsAssignableFrom(Serialization.DeserializeType);
-        #endregion 
         #region 获取封装的序列化器
         /// <summary>
         /// 获取封装的序列化器，本对象的功能就是通过它实现的
         /// </summary>
         private ISerialization<object> Serialization { get; }
         #endregion
+        #region 检查反序列化的类型
+        protected override bool CanReadType(Type type)
+            => type.IsAssignableFrom(Serialization.DeserializeType);
+        #endregion 
         #region 反序列化对象
         public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
@@ -37,11 +37,11 @@ namespace Microsoft.AspNetCore.Json
         /// <summary>
         /// 使用指定的序列化器初始化对象
         /// </summary>
-        /// <param name="Serialization">指定的序列化器，
+        /// <param name="serialization">指定的序列化器，
         /// 它提供了将对象序列化为Json的功能</param>
-        public JsonInputFormatter(ISerialization<object> Serialization)
+        public JsonInputFormatter(ISerialization<object> serialization)
         {
-            this.Serialization = Serialization;
+            this.Serialization = serialization;
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(MediaTypeName.Json));
             SupportedEncodings.Add(Encoding.UTF8);
             SupportedEncodings.Add(Encoding.Unicode);

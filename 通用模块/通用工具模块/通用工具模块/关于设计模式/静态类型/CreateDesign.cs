@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Design.Direct;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace System.Design
 {
@@ -40,6 +41,29 @@ namespace System.Design
             => Direct.Schema ??
             Schema(Direct.ToDictionary(x => (x.Key, x.Value?.GetType() ?? typeof(object)), true));
         #endregion
+        #endregion
+        #region 创建异步属性
+        /// <summary>
+        /// 使用指定的读取和写入委托创建异步属性
+        /// </summary>
+        /// <typeparam name="Value">异步属性的值的类型</typeparam>
+        /// <param name="getDelegate">用于读取异步属性的委托</param>
+        /// <param name="setDelegate">用于写入异步属性的委托</param>
+        /// <returns></returns>
+        public static IAsyncProperty<Value> AsyncProperty<Value>(Func<Task<Value>> getDelegate, Func<Value, Task> setDelegate)
+            => new AsyncProperty<Value>(getDelegate, setDelegate);
+        #endregion
+        #region 创建异步索引器
+        /// <summary>
+        /// 使用指定的读取和写入委托创建只有一个参数的异步索引器
+        /// </summary>
+        /// <typeparam name="P1">索引器的第一个参数</typeparam>
+        /// <typeparam name="Value">索引器的类型</typeparam>
+        /// <param name="getDelegate">用于读取异步索引器的委托</param>
+        /// <param name="setDelegate">用于写入异步索引器的委托</param>
+        /// <returns></returns>
+        public static IAsyncIndex<P1, Value> AsyncIndex<P1, Value>(Func<P1, Task<Value>> getDelegate, Func<P1, Value, Task> setDelegate)
+            => new AsyncIndexP1<P1, Value>(getDelegate, setDelegate);
         #endregion
     }
 }

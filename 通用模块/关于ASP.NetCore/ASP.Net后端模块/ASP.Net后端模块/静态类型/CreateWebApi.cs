@@ -3,6 +3,7 @@ using System.Linq;
 using System.SafetyFrancis.Authentication;
 using System.Security.Principal;
 using System.TreeObject;
+using System.TreeObject.Json;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +22,7 @@ namespace Microsoft.AspNetCore
         /// <summary>
         /// 获取一个可以序列化和反序列化<see cref="IIdentity"/>的对象
         /// </summary>
-        public static ISerialization<IIdentity> SerializationIIdentity { get; }
+        public static SerializationBase<IIdentity> SerializationIdentity { get; }
         = new SerializationIdentity();
         #endregion
         #region 创建Json格式化器
@@ -56,14 +57,14 @@ namespace Microsoft.AspNetCore
         /// 创建一个<see cref="IHttpAuthentication"/>，
         /// 它从Cookies和Authentication标头中提取信息，并验证身份
         /// </summary>
-        /// <param name="Extraction"> 这个委托被用于从<see cref="HttpContext"/>中提取身份验证信息，
+        /// <param name="extraction"> 这个委托被用于从<see cref="HttpContext"/>中提取身份验证信息，
         /// 如果不存在身份验证信息，则返回<see langword="null"/></param>
-        /// <param name="Authentication">这个委托可以通过验证信息来获取身份验证结果</param>
+        /// <param name="authentication">这个委托可以通过验证信息来获取身份验证结果</param>
         /// <returns></returns>
         public static IHttpAuthentication HttpAuthentication
-            (Func<HttpContext, string?> Extraction,
-            AuthenticationFunction<string> Authentication)
-            => new HttpAuthentication(Extraction, Authentication);
+            (Func<HttpContext, string?> extraction,
+            AuthenticationFunction<string> authentication)
+            => new HttpAuthentication(extraction, authentication);
         #endregion
         #region 简单版本
         /// <summary>
@@ -72,13 +73,13 @@ namespace Microsoft.AspNetCore
         /// </summary>
         /// <param name="Extraction"> 这个委托被用于从<see cref="HttpContext"/>中提取身份验证信息，
         /// 如果不存在身份验证信息，则返回<see langword="null"/></param>
-        /// <param name="AuthenticationKey">用来从Cookies中提取身份验证信息的键名</param>
+        /// <param name="authenticationKey">用来从Cookies中提取身份验证信息的键名</param>
         /// <returns></returns>
         public static IHttpAuthentication HttpAuthentication
-            (AuthenticationFunction<string> Authentication, string AuthenticationKey = CreateASP.AuthenticationKey)
+            (AuthenticationFunction<string> authentication, string authenticationKey = CreateASP.AuthenticationKey)
             => HttpAuthentication(http =>
             http.Request.Headers.TryGetValue("Authentication", out var headers) ? headers.First().Split(" ")[1] :
-            http.Request.Cookies[AuthenticationKey], Authentication);
+            http.Request.Cookies[authenticationKey], authentication);
         #endregion
         #endregion
         #endregion

@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Maths;
-using System.Threading.Tasks;
 
 namespace System
 {
@@ -100,24 +99,6 @@ namespace System
         public static To To<To>(this Enum fromEnum) where To : Enum
             => (To)Enum.ToObject(typeof(To), fromEnum);
         #endregion
-        #endregion
-        #region 返回同步类型的异步包装
-        /// <summary>
-        /// 返回同步类型的异步包装，
-        /// 它等同于调用<see cref="Task.FromResult{TResult}(TResult)"/>
-        /// </summary>
-        /// <typeparam name="Obj">要包装的对象类型</typeparam>
-        /// <param name="obj">要包装为异步类型的对象</param>
-        /// <returns></returns>
-        public static Task<Obj> ToTask<Obj>(this Obj obj)
-            => Task.FromResult(obj);
-
-        /*问：该方法似乎用处不大，但是代价很大，
-          因为它为所有类型都增加了一个扩展方法，
-          那么请问它的意义在于什么？
-          答：它最大的用处在于异步属性，只要有了它，
-          能够很方便地向异步属性写入同步对象，
-          只需调用本方法将其转换为异步对象即可*/
         #endregion
         #region 关于枚举
         #region 枚举枚举的所有位域

@@ -2,13 +2,14 @@
 using System.DataFrancis;
 using System.Design.Direct;
 using System.Linq;
+using System.TreeObject.Json;
 
 namespace System.Text.Json.Serialization
 {
     /// <summary>
     /// 这个类型可以使用Json序列化和反序列化<see cref="IDirect"/>
     /// </summary>
-    public sealed class JsonConverterIDirect : JsonConverter<IDirect>
+    public sealed class JsonConverterIDirect : SerializationBase<IDirect>
     {
         #region 返回是否可序列化类型
         public override bool CanConvert(Type typeToConvert)

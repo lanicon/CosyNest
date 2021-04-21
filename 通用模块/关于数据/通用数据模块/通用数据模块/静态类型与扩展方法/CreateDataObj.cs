@@ -2,9 +2,7 @@
 using System.Design.Direct;
 using System.IOFrancis.FileSystem;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.TreeObject;
 
 namespace System.DataFrancis
 {
@@ -113,29 +111,11 @@ namespace System.DataFrancis
         #endregion
         #region 创建序列化和反序列化对象
         #region 返回支持序列化数据的对象
-        #region 以JsonSerializerOptions形式返回
         /// <summary>
-        /// 返回一个支持序列化和反序列化<see cref="IDirect"/>和<see cref="IData"/>的
-        /// <see cref="JsonSerializerOptions"/>对象
+        /// 返回一个支持序列化和反序列化<see cref="IDirect"/>和<see cref="IData"/>的对象
         /// </summary>
         /// <returns></returns>
-        public static JsonSerializerOptions JsonDirectOptions()
-        {
-            var op = new JsonSerializerOptions();
-            op.Converters.Add(new JsonConverterIDirect());
-            return op;
-        }
-        #endregion
-        #region 以ISerialization的形式返回
-        private static ISerialization<IDirect>? JsonDirectField;
-
-        /// <summary>
-        /// 返回一个支持序列化和反序列化<see cref="IDirect"/>和<see cref="IData"/>的
-        /// <see cref="ISerialization{Output}"/>对象
-        /// </summary>
-        public static ISerialization<IDirect> JsonDirect
-            => JsonDirectField ??= new JsonConverterIDirect().FitSerialization();
-        #endregion
+        public static JsonConverterIDirect JsonDirect { get; } = new();
         #endregion
         #endregion
     }

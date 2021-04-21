@@ -1,7 +1,7 @@
 ﻿using System;
 using System.SafetyFrancis;
 using System.Security.Principal;
-using System.Text;
+using System.Text.Json;
 using System.TreeObject.Json;
 
 namespace Microsoft.AspNetCore.Json
@@ -9,26 +9,23 @@ namespace Microsoft.AspNetCore.Json
     /// <summary>
     /// 这个类型可以用来序列化和反序列化<see cref="IIdentity"/>
     /// </summary>
-    class SerializationIdentity : SerializationJsonBase<IIdentity, IIdentity>
+    class SerializationIdentity : SerializationBase<IIdentity>
     {
         #region 序列化对象
-        protected override ReadOnlySpan<byte> SerializationTemplate(object? obj, Encoding? encoding = null)
+        public override void Write(Utf8JsonWriter writer, IIdentity value, JsonSerializerOptions options)
         {
-            if (obj is null)
-                return SerializationAided(null, encoding);
-            var identity = obj.To<IIdentity>();
-            var pseudoIIdentity = new PseudoIIdentity()
+            var pseudoIIdentity = value is null ? null : new PseudoIIdentity()
             {
-                AuthenticationType = identity.AuthenticationType,
-                Name = identity.Name
+                AuthenticationType = value.AuthenticationType,
+                Name = value.Name
             };
-            return SerializationAided(pseudoIIdentity, encoding);
+            JsonSerializer.Serialize(writer, pseudoIIdentity);
         }
         #endregion
         #region 反序列化对象
-        public override IIdentity? Deserialize(ReadOnlySpan<byte> text, Encoding? encoding = null)
+        public override IIdentity? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var pseudoIIdentity = DeserializeAided<PseudoIIdentity>(text, encoding);
+            var pseudoIIdentity = JsonSerializer.Deserialize<PseudoIIdentity>(ref reader);
             return pseudoIIdentity is null ? null : CreateSafety.Identity(pseudoIIdentity.AuthenticationType, pseudoIIdentity.Name);
         }
         #endregion

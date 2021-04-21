@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Design;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace System.Collections.Generic
@@ -58,7 +59,7 @@ namespace System.Collections.Generic
          => (await TryGetValueAsync(key)).Exist;
         #endregion
         #endregion
-        #region 关于获取或写入键值对
+        #region 关于读取或写入键值对
         #region 获取值且不引发异常
         /// <summary>
         /// 尝试通过键获取值，
@@ -69,13 +70,12 @@ namespace System.Collections.Generic
         /// 以及获取到的值，如果键不存在，则为默认值</returns>
         Task<(bool Exist, Value? Value)> TryGetValueAsync(Key key);
         #endregion
-        #region 通过索引器读写值
+        #region 读取或写入值（异步索引器）
         /// <summary>
-        /// 通过键异步读取或写入值
+        /// 通过该异步索引器，
+        /// 可以通过键来异步读取或写入值
         /// </summary>
-        /// <param name="key">用来读写值的键</param>
-        /// <returns></returns>
-        Task<Value> this[Key key] { get; set; }
+        IAsyncIndex<string, string> IndexAsync { get; }
         #endregion
         #endregion
     }

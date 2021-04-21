@@ -42,25 +42,28 @@ namespace System.TreeObject
           因此不宜将这个类型完全取代
         
           问：在何种情况下应该选择本接口或JsonConverter？
-          答：如果API需要与底层或其他框架交互，而且交互的对象依赖于JsonConverter，
-          此时应该使用JsonConverter以避免不必要的转换，其他情况下应该选择ISerialization，
-          本框架通过扩展方法提供了在这两个类型之间互相转换的功能*/
+          答：根据规范，本接口的实现应该以SerializationBase的形式公开，
+          它既实现了本接口，又继承了JsonConverter，可以同时兼容两者，
+          对于Net中原生的API，继续使用JsonConverter，
+          但是对于本框架中自定义的API，应该使用本接口，它的设计更加泛化，适用性更广*/
         #endregion
         #region 返回协议名称
         /// <summary>
         /// 返回描述树形文档对象的协议名称，
-        /// 例如XML，Json等
+        /// 例如Xml，Json等
         /// </summary>
         string Agreement { get; }
         #endregion
         #region 关于序列化
         #region 是否可序列化
         /// <summary>
-        /// 如果指定的类型可以被序列化，则返回<see langword="true"/>，
-        /// 否则返回<see langword="false"/>
+        /// 检查指定的类型是否可序列化，
+        /// 注意：它不负责检查是否可反序列化，
+        /// 反序列化的合法类型已经由泛型参数确定
         /// </summary>
         /// <param name="type">待检查的类型</param>
-        /// <returns></returns>
+        /// <returns>如果可以被序列化，则返回<see langword="true"/>，
+        /// 否则返回<see langword="false"/></returns>
         bool CanSerialization(Type type);
         #endregion
         #region 序列化为指定编码
@@ -122,4 +125,25 @@ namespace System.TreeObject
         #endregion
         #endregion
     }
+    #region 用于储存协议名称的静态类
+    /// <summary>
+    /// 这个类型不是接口，而是一个静态类，
+    /// 它储存了<see cref="ISerialization{Output}"/>所支持的一些协议名称
+    /// </summary>
+    public static class ISerialization
+    {
+        #region Json
+        /// <summary>
+        /// 返回Json的协议名称
+        /// </summary>
+        public const string Json = "Json";
+        #endregion
+        #region Xml
+        /// <summary>
+        /// 返回Xml的协议名称
+        /// </summary>
+        public const string Xml = "Xml";
+        #endregion
+    }
+    #endregion
 }

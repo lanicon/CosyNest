@@ -12,75 +12,40 @@ namespace System
     /// </summary>
     public static class ExtenJson
     {
-        #region 返回可用的转换器
+        #region 通过JsonConverter创建JsonSerializerOptions
         /// <summary>
-        /// 返回一个<see cref="JsonConverter"/>实际可用的转换器
+        /// 创建一个<see cref="JsonSerializerOptions"/>，
+        /// 并将一个<see cref="JsonConverter"/>添加到它的转换器列表中
         /// </summary>
-        /// <typeparam name="Obj">转换的目标类型</typeparam>
-        /// <param name="converter">待获取实际转换器的转换器</param>
-        /// <param name="options">如果<paramref name="converter"/>为<see cref="JsonConverterFactory"/>，
-        /// 则使用这个配置选项创建转换器，如果为<see langword="null"/>，则使用默认配置</param>
-        /// <exception cref="JsonException"><paramref name="converter"/>不支持转换类型<typeparamref name="Obj"/></exception>
-        /// <exception cref="JsonException"><paramref name="converter"/>既不是<see cref="JsonConverterFactory"/>，
-        /// 也不是<see cref="JsonConverter{T}"/></exception>
+        /// <param name="converter">待添加进转换器列表的<see cref="JsonConverter"/></param>
         /// <returns></returns>
-        public static JsonConverter<Obj> GetConverter<Obj>(this JsonConverter converter, JsonSerializerOptions? options = null)
+        public static JsonSerializerOptions ToOptions(this JsonConverter converter)
         {
-            var type = typeof(Obj);
-            return converter switch
-            {
-                var c when !c.CanConvert(type) => throw CreateJson.ExceptionType(type),
-                JsonConverter<Obj> c => c,
-                JsonConverterFactory c => c.CreateConverter(type, options ??= new()) switch
-                {
-                    null => throw new NullReferenceException($"{nameof(JsonConverterFactory.CreateConverter)}返回null"),
-                    { } convert => convert.GetConverter<Obj>(options)
-                },
-                _ => throw new JsonException($"{converter}既不是{typeof(JsonConverterFactory)}，也不是{typeof(JsonConverter<Obj>)}"),
-            };
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(converter);
+            return options;
         }
-
-        /*问：转换器拥有一个共同基类JsonConverter，
-          为什么需要使用这个函数来获取JsonConverter<T>？
-          答：这是由于微软对JsonConverter的设计非常不合理，原因如下：
-          1.JsonConverter只声明了检查类型是否可序列化的API，
-          而没有声明直接执行序列化功能的API，这导致在仅仅已知基类的情况下，
-          无法独自完成整个序列化过程,违反了里氏替换原则
-          2.由于上一点所导致，JsonConverter拥有两个派生类，
-          JsonConverterFactory和JsonConverter<T>，而且无法扩展第三个派生类，
-          而JsonConverterFactory的目的只是创建JsonConverter<T>的工厂，
-          因此JsonConverter<T>是BCL中唯一可以独立完成序列化的类型，
-          欲完成此功能，必须先获取它*/
         #endregion
         #region 关于适配
-        #region 适配为ISerialization<object>
+        #region 从JsonConverter<T>适配
         /// <summary>
-        /// 将<see cref="JsonConverter"/>适配为<see cref="ISerialization{Output}"/>
+        /// 将<see cref="JsonConverter{T}"/>适配为<see cref="SerializationBase{Output}"/>
         /// </summary>
+        /// <typeparam name="Output">可序列化的目标类型</typeparam>
         /// <param name="converter">待适配的转换器</param>
         /// <returns></returns>
-        public static ISerialization<object> FitSerialization(this JsonConverter converter)
-            => new SerializationFit<object>(converter);
+        public static SerializationBase<Output> Fit<Output>(this JsonConverter<Output> converter)
+            => converter is SerializationBase<Output> c ? c : new FitJsonConverter<Output>(converter);
         #endregion
-        #region 适配为ISerialization<T>
+        #region 从ISerialization<T>适配
         /// <summary>
-        /// 将<see cref="JsonConverter{T}"/>适配为<see cref="ISerialization{Output}"/>
+        /// 将<see cref="ISerialization{Output}"/>适配为<see cref="SerializationBase{Output}"/>
         /// </summary>
-        /// <typeparam name="Obj">可序列化的目标类型</typeparam>
-        /// <param name="converter">待适配的转换器</param>
-        /// <returns></returns>
-        public static ISerialization<Obj> FitSerialization<Obj>(this JsonConverter<Obj> converter)
-            => converter is JsonConverterFit<Obj> c ? c.Serialization : new SerializationFit<Obj>(converter);
-        #endregion
-        #region 适配为JsonConverter<T>
-        /// <summary>
-        /// 将<see cref="ISerialization{Output}"/>适配为<see cref="JsonConverter{T}"/>
-        /// </summary>
-        /// <typeparam name="Obj">可序列化的目标类型</typeparam>
+        /// <typeparam name="Output">可序列化的目标类型</typeparam>
         /// <param name="serialization">待适配的序列化器</param>
         /// <returns></returns>
-        public static JsonConverter<Obj> FitJsonConverter<Obj>(this ISerialization<Obj> serialization)
-            => serialization is SerializationFit<Obj> s ? s.Converter : new JsonConverterFit<Obj>(serialization);
+        public static SerializationBase<Output> Fit<Output>(this ISerialization<Output> serialization)
+            => serialization is SerializationBase<Output> s ? s : new FitSerialization<Output>(serialization);
         #endregion
         #endregion
         #region 关于读取Json

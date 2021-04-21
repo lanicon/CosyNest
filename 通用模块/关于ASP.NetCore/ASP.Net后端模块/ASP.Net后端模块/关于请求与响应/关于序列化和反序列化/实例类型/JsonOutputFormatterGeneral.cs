@@ -37,11 +37,11 @@ namespace Microsoft.AspNetCore.Json
         /// <summary>
         /// 使用指定的序列化器初始化对象
         /// </summary>
-        /// <param name="Serialization">指定的序列化器，
+        /// <param name="serialization">指定的序列化器，
         /// 它提供了将对象序列化为Json的功能</param>
-        public JsonOutputFormatterGeneral(ISerialization<object> Serialization)
+        public JsonOutputFormatterGeneral(ISerialization<object> serialization)
         {
-            this.Serialization = Serialization;
+            this.Serialization = serialization;
             SupportedMediaTypes.Add(MediaTypeHeaderValue.Parse(MediaTypeName.Json));
             SupportedEncodings.Add(Encoding.UTF8);
             SupportedEncodings.Add(Encoding.Unicode);

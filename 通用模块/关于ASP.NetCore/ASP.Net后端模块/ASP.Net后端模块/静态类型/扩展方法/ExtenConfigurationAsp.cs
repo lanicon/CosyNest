@@ -61,7 +61,7 @@ namespace System
             void AddInput(params ISerialization<object>[] items)
                 => items.ForEach(x => options.InputFormatters.Insert(0, InputFormatterJson(x)));
             #endregion
-            AddInput(new JsonConverterIDirect().FitSerialization(), SerializationIIdentity);
+            AddInput(new JsonConverterIDirect(), SerializationIdentity);
         }
         #endregion
         #endregion

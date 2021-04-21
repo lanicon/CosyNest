@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Design;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -41,9 +42,8 @@ namespace Microsoft.JSInterop
         #endregion
         #endregion
         #region 关于读取和写入Cookie
-        #region 读取Cookie
-        public async Task<string> GetValueAsync(string key)
-            => (await this.FirstAsync(x => x.Key == key)).Value;
+        #region 读取或写入值（异步索引器）
+        public IAsyncIndex<string, string> IndexAsync { get; }
         #endregion
         #region 读取Cookie且不引发异常
         public async Task<(bool Exist, string? Value)> TryGetValueAsync(string key)
@@ -51,10 +51,6 @@ namespace Microsoft.JSInterop
             var kv = await this.FirstOrDefaultAsync(x => x.Key == key);
             return kv.Equals(default(KeyValuePair<string, string>)) ? (false, null) : (true, kv.Value);
         }
-        #endregion
-        #region 写入Cookie
-        public Task SetValueAsync(string key, string value)
-            => SetCookie($"{key}={value}").AsTask();
         #endregion
         #endregion
         #region 关于集合
@@ -104,7 +100,7 @@ namespace Microsoft.JSInterop
         #endregion
         #region 添加键值对
         public Task AddAsync(KeyValuePair<string, string> item)
-            => SetValueAsync(item.Key, item.Value);
+            => IndexAsync.Set(item.Key, item.Value);
         #endregion
         #endregion
         #region 构造函数
@@ -115,7 +111,9 @@ namespace Microsoft.JSInterop
         public JSCookie(IJSRuntime JSRuntime)
             : base(JSRuntime)
         {
-
+            IndexAsync = CreateDesign.AsyncIndex<string, string>(
+               async key => (await this.FirstAsync(x => x.Key == key)).Value,
+               (key, value) => SetCookie($"{key}={value}").AsTask());
         }
         #endregion
     }

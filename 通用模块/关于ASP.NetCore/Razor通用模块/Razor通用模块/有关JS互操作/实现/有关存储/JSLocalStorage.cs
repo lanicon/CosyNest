@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Design;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,10 +12,8 @@ namespace Microsoft.JSInterop
     class JSLocalStorage : JSRuntimeBase, IAsyncDictionary<string, string>
     {
         #region 关于根据键读写值
-        #region 根据键读取值
-        public async Task<string> GetValueAsync(string key)
-            => (await JSRuntime.InvokeAsync<string?>("localStorage.getItem", key)) ??
-            throw new KeyNotFoundException($"未找到键{key}");
+        #region 读取或写入值（异步索引器）
+        public IAsyncIndex<string, string> IndexAsync { get; }
         #endregion
         #region 根据键读取值（不会引发异常）
         public async Task<(bool Exist, string? Value)> TryGetValueAsync(string key)
@@ -22,10 +21,6 @@ namespace Microsoft.JSInterop
             var value = await JSRuntime.InvokeAsync<string?>("localStorage.getItem", key);
             return (value is { }, value);
         }
-        #endregion
-        #region 根据键写入值
-        public Task SetValueAsync(string key, string value)
-            => JSRuntime.InvokeVoidAsync("localStorage.setItem", key, value).AsTask();
         #endregion
         #endregion
         #region 关于集合
@@ -39,7 +34,7 @@ namespace Microsoft.JSInterop
             for (int count = await CountAsync, i = 0; i < count; i++)
             {
                 var key = await JSRuntime.InvokeAsync<string>("localStorage.key", i);
-                yield return new(key, await GetValueAsync(key));
+                yield return new(key, await IndexAsync.Get(key));
             }
         }
         #endregion
@@ -65,7 +60,7 @@ namespace Microsoft.JSInterop
         #endregion
         #region 添加键值对
         public Task AddAsync(KeyValuePair<string, string> item)
-            => SetValueAsync(item.Key, item.Value);
+            => IndexAsync.Set(item.Key, item.Value);
         #endregion
         #endregion
         #region 检查键值对是否存在
@@ -81,7 +76,11 @@ namespace Microsoft.JSInterop
         public JSLocalStorage(IJSRuntime JSRuntime)
             : base(JSRuntime)
         {
-
+            IndexAsync = CreateDesign.AsyncIndex<string, string>(
+               async key =>
+               (await JSRuntime.InvokeAsync<string?>("localStorage.getItem", key)) ??
+               throw new KeyNotFoundException($"未找到键{key}"),
+               (key, value) => JSRuntime.InvokeVoidAsync("localStorage.setItem", key, value).AsTask());
         }
         #endregion
     }
