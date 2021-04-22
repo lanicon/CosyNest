@@ -13,7 +13,6 @@ namespace Microsoft.JSInterop
     /// </summary>
     class JSCookie : JSRuntimeBase, IAsyncDictionary<string, string>
     {
-        #region 封装的对象
         #region 通过JS读写Cookie文本
         #region 读取
         /// <summary>
@@ -31,7 +30,6 @@ namespace Microsoft.JSInterop
         /// <returns></returns>
         private ValueTask SetCookie(string cookie)
             => JSRuntime.SetProperty("document.cookie", cookie);
-        #endregion
         #endregion
         #region 返回最小UTC时间的字符串
         /// <summary>
@@ -104,10 +102,7 @@ namespace Microsoft.JSInterop
         #endregion
         #endregion
         #region 构造函数
-        /// <summary>
-        /// 使用指定的JS运行时初始化对象
-        /// </summary>
-        /// <param name="JSRuntime">封装的JS运行时对象，本对象的功能就是通过它实现的</param>
+        /// <inheritdoc cref="JSRuntimeBase(IJSRuntime)"/>
         public JSCookie(IJSRuntime JSRuntime)
             : base(JSRuntime)
         {

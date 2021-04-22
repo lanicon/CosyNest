@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Design;
+using System.Threading.Tasks;
 
 namespace Microsoft.JSInterop
 {
@@ -8,15 +10,30 @@ namespace Microsoft.JSInterop
     /// </summary>
     class JSLocation : JSRuntimeBase, IJSLocation
     {
+        #region 关于Uri
+        #region 获取或设置当前Uri
+        private IAsyncProperty<string>? HrefField;
+
+        public IAsyncProperty<string> Href
+            => HrefField ??= CreateDesign.AsyncProperty(
+                () => JSRuntime.GetProperty<string>("location.href").AsTask(),
+                value => JSRuntime.SetProperty("location.href", value).AsTask());
+        #endregion
+        #region 获取主机名称
+        public ValueTask<string> Host
+            => JSRuntime.GetProperty<string>("location.host");
+        #endregion
+        #region 获取协议部分
+        public ValueTask<string> Protocol
+              => JSRuntime.GetProperty<string>("location.protocol");
+        #endregion
+        #endregion
         #region 刷新页面
         public ValueTask Reload(bool forceGet = false)
             => JSRuntime.InvokeVoidAsync("location.reload", forceGet);
         #endregion
         #region 构造函数
-        /// <summary>
-        /// 使用指定的JS运行时初始化对象
-        /// </summary>
-        /// <param name="JSRuntime">封装的JS运行时对象，本对象的功能就是通过它实现的</param>
+        /// <inheritdoc cref="JSRuntimeBase(IJSRuntime)"/>
         public JSLocation(IJSRuntime JSRuntime)
             : base(JSRuntime)
         {

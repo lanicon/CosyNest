@@ -5,13 +5,13 @@
     /// </summary>
     abstract class JSRuntimeBase
     {
-        #region 封装的JS对象
+        #region 封装的JS运行时
         /// <summary>
         /// 获取封装的JS运行时对象，
         /// 本对象的功能就是通过它实现的
         /// </summary>
         protected IJSRuntime JSRuntime { get; }
-        #endregion
+        #endregion 
         #region 构造函数
         /// <summary>
         /// 使用指定的JS运行时初始化对象

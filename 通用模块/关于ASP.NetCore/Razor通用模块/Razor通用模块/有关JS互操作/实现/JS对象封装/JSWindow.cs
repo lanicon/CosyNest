@@ -46,12 +46,9 @@ namespace Microsoft.JSInterop
         public ValueTask Close()
              => JSRuntime.InvokeVoidAsync("close");
         #endregion
-        #endregion 
+        #endregion
         #region 构造函数
-        /// <summary>
-        /// 使用指定的JS运行时初始化对象
-        /// </summary>
-        /// <param name="JSRuntime">封装的JS运行时对象，本对象的功能就是通过它实现的</param>
+        /// <inheritdoc cref="JSRuntimeBase(IJSRuntime)"/>
         public JSWindow(IJSRuntime JSRuntime)
             : base(JSRuntime)
         {

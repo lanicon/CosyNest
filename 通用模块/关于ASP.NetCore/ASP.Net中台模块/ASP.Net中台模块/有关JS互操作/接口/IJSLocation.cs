@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Design;
+using System.Threading.Tasks;
 
 namespace Microsoft.JSInterop
 {
@@ -8,6 +9,28 @@ namespace Microsoft.JSInterop
     /// </summary>
     public interface IJSLocation
     {
+        #region 关于Uri
+        #region 获取或设置当前Uri
+        /// <summary>
+        /// 通过这个异步属性，
+        /// 可以获取或设置当前Uri，
+        /// 在写入这个属性时，可以写入相对或绝对Uri
+        /// </summary>
+        IAsyncProperty<string> Href { get; }
+        #endregion
+        #region 获取主机名称
+        /// <summary>
+        /// 获取主机名称和端口号
+        /// </summary>
+        ValueTask<string> Host { get; }
+        #endregion
+        #region 获取协议部分
+        /// <summary>
+        /// 获取Uri的协议部分
+        /// </summary>
+        ValueTask<string> Protocol { get; }
+        #endregion
+        #endregion
         #region 刷新页面
         /// <summary>
         /// 刷新当前页面
