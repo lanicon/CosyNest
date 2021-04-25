@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.IOFrancis;
 using System.IOFrancis.FileSystem;
 using System.Linq;
@@ -14,12 +15,14 @@ namespace System.Performance
     {
         #region 关于临时文件
         #region 缓存目录
+        private static IDirectory? TemporaryDirectoryField;
+
         /// <summary>
         /// 获取缓存目录，
         /// 在这个目录中的文件会在程序退出时自动删除
         /// </summary>
-        private static IDirectory TemporaryDirectory { get; }
-        = CreateIO.Directory(Guid.NewGuid().ToString(), false);
+        private static IDirectory TemporaryDirectory
+            => TemporaryDirectoryField ??= CreateIO.Directory(Path.GetTempPath()).CreateDirectory();
         #endregion
         #region 指定临时目录
         /// <summary>
@@ -49,6 +52,13 @@ namespace System.Performance
                 TemporaryDirectory.Clear();
             return TemporaryDirectory.CreateFile(null, extension);
         }
+        #endregion
+        #region 清除所有临时文件
+        /// <summary>
+        /// 手动清除所有临时文件
+        /// </summary>
+        public static void ClearTemporaryFile()
+            => Temporary.Prepend(TemporaryDirectoryField).ForEach(x => x?.Delete());
         #endregion
         #endregion
         #region 关于垃圾回收
@@ -97,13 +107,12 @@ namespace System.Performance
         #region 静态构造函数
         static ToolPerformance()
         {
-            #region 清除缓存的本地函数
-            static void Clear(object x, EventArgs y)
-                => Temporary.Prepend(TemporaryDirectory).ForEach(x => x.Delete());
+            #region 注意事项
+            /*如果程序不是自然退出，而是通过停止调试退出，
+              则这个事件不会触发，这意味着清除临时文件这个功能在ASPNet上无法工作，
+              因为服务器进程默认就是永不退出的，在这种情况下，请执行手动清理*/
             #endregion
-            var app = AppDomain.CurrentDomain;
-            app.ProcessExit += Clear!;               //退出或出现异常时清除缓存
-            app.UnhandledException += Clear;
+            AppDomain.CurrentDomain.ProcessExit += (_, _) => ClearTemporaryFile();               //退出时清除缓存
         }
         #endregion
     }
