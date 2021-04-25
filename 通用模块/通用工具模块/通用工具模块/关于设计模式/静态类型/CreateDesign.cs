@@ -2,6 +2,7 @@
 using System.Design.Direct;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Design.Async;
 
 namespace System.Design
 {

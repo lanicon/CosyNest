@@ -92,19 +92,19 @@ namespace System.Maths
         /// <summary>
         /// 将本单位转换为一个单一单位，并返回它的数量
         /// </summary>
-        /// <param name="Template">新单位的模板</param>
+        /// <param name="template">新单位的模板</param>
         /// <returns></returns>
-        Num ConvertSingle(Template Template)
-            => Template.FromMetric(ValueMetric);
+        Num ConvertSingle(Template template)
+            => template.FromMetric(ValueMetric);
         #endregion
         #endregion
         #region 创建计量单位
         /// <summary>
         /// 创建一个模板相同，但值不同的新计量单位
         /// </summary>
-        /// <param name="Num">新计量单位的数量，以公制单位计算</param>
+        /// <param name="num">新计量单位的数量，以公制单位计算</param>
         /// <returns></returns>
-        protected IUnit<Template> Create(Num Num);
+        protected IUnit<Template> Create(Num num);
         #endregion
     }
 }

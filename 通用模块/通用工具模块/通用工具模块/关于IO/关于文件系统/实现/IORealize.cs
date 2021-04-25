@@ -85,33 +85,33 @@ namespace System.IOFrancis.FileSystem
         }
         #endregion
         #region 复制
-        public abstract IIO Copy(IDirectory? Target, string? NewName = null, Func<string, int, string>? Rename = null);
+        public abstract IIO Copy(IDirectory? target, string? newName = null, Func<string, int, string>? rename = null);
         #endregion
         #region 对文件或目录执行原子操作
-        public Ret Atomic<Ret>(Func<IIO, Ret> Del)
+        public Ret Atomic<Ret>(Func<IIO, Ret> @delegate)
         {
-            IIO IO = this;
-            var IsVoid = IO.IsVoid;
-            var Backup = IsVoid ? this : Copy(IO.Father!, Guid.NewGuid().ToString());         //如果文件或目录为空，则不进行备份，因为它很可能是新创建的文件
-            Ret R;
+            IIO iO = this;
+            var isVoid = iO.IsVoid;
+            var backup = isVoid ? this : Copy(iO.Father!, Guid.NewGuid().ToString());         //如果文件或目录为空，则不进行备份，因为它很可能是新创建的文件
+            Ret r;
             try
             {
-                R = Del(this);                                  //对原始文件，而不是备份执行操作
+                r = @delegate(this);                                  //对原始文件，而不是备份执行操作
             }
             catch (Exception)
             {
                 Delete();                                           //如果出现异常，则删除自身
-                if (!IsVoid)                                        //如果做了备份，则将备份转正
+                if (!isVoid)                                        //如果做了备份，则将备份转正
                 {
-                    Backup.Path = Path;
+                    backup.Path = Path;
                     PackFS = this is IFile ?
-                        new FileInfo(Backup.Path) : new DirectoryInfo(Backup.Path);
+                        new FileInfo(backup.Path) : new DirectoryInfo(backup.Path);
                 }
                 throw;
             }
-            if (!IsVoid)                                //在做了备份的情况下，如果没有出现异常，则还会删除备份
-                Backup.Delete();
-            return R;
+            if (!isVoid)                                //在做了备份的情况下，如果没有出现异常，则还会删除备份
+                backup.Delete();
+            return r;
         }
         #endregion
         #region 手动刷新文件或目录的状态
@@ -138,11 +138,11 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 使用指定的文件目录对象初始化对象
         /// </summary>
-        /// <param name="PackFS">指定的文件目录对象，
+        /// <param name="packFS">指定的文件目录对象，
         /// 本对象的功能就是通过它实现的</param>
-        public IORealize(FileSystemInfo PackFS)
+        public IORealize(FileSystemInfo packFS)
         {
-            this.PackFS = PackFS;
+            this.PackFS = packFS;
         }
         #endregion
     }

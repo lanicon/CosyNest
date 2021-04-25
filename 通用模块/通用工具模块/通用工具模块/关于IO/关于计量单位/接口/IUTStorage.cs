@@ -56,12 +56,12 @@ namespace System.IOFrancis
         /// <summary>
         /// 用指定的名称和转换常数创建计算机存储单位
         /// </summary>
-        /// <param name="Name">计算机存储单位的名称</param>
-        /// <param name="Conver">一个用来和公制单位进行换算的常数，
+        /// <param name="name">计算机存储单位的名称</param>
+        /// <param name="size">一个用来和公制单位进行换算的常数，
         /// 假设本单位为a，常数为b，公制单位为c，c=a*b，a=c/b</param>
         /// <returns></returns>
-        public static IUTStorage Create(string Name, Num Conver)
-            => new UTStorage(Name, Conver);
+        public static IUTStorage Create(string name, Num size)
+            => new UTStorage(name, size);
         #endregion
     }
 }

@@ -16,13 +16,13 @@ namespace System
         /// <summary>
         /// 在一个文件集合中，筛选出所有与指定文件类型兼容的文件
         /// </summary>
-        /// <param name="List">要筛选的集合</param>
+        /// <param name="list">要筛选的集合</param>
         /// <param name="fileType">作为条件的路径对象</param>
-        /// <param name="IsForward">如果这个值为<see langword="true"/>，选择是这个类型的文件，
+        /// <param name="isForward">如果这个值为<see langword="true"/>，选择是这个类型的文件，
         /// 否则选择不是这个类型的文件，即取反</param>
         /// <returns></returns>
-        public static IEnumerable<IFile> WhereFileType(this IEnumerable<IFile> List, IFileType fileType, bool IsForward = true)
-            => List.Where(x => x.IsCompatible(fileType) == IsForward);
+        public static IEnumerable<IFile> WhereFileType(this IEnumerable<IFile> list, IFileType fileType, bool isForward = true)
+            => list.Where(x => x.IsCompatible(fileType) == isForward);
         #endregion
         #region 关于流
         #region 读取流的全部内容
@@ -44,45 +44,45 @@ namespace System
         /// <summary>
         /// 将一个<see cref="Stream"/>转换为等效的<see cref="IBitPipe"/>
         /// </summary>
-        /// <param name="Stream">待转换的<see cref="Stream"/>对象</param>
-        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
-        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <param name="stream">待转换的<see cref="Stream"/>对象</param>
+        /// <param name="format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
         /// <returns></returns>
-        public static IBitPipe ToBitPipe(this Stream Stream, string Format = "", string? Describe = null)
-            => new BitPipeStream(Stream, Format, Describe);
+        public static IBitPipe ToBitPipe(this Stream stream, string format = "", string? describe = null)
+            => new BitPipeStream(stream, format, describe);
         #endregion
         #region 转换异步迭代器
         /// <summary>
         /// 将异步迭代器转换为<see cref="IBitRead"/>
         /// </summary>
-        /// <param name="Bytes">用来枚举数据的异步迭代器</param>
-        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
-        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <param name="bytes">用来枚举数据的异步迭代器</param>
+        /// <param name="format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
         /// <returns></returns>
-        public static IBitRead ToBitRead(this IAsyncEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
-            => new BitReadEnumerable(Bytes, Format, Describe);
+        public static IBitRead ToBitRead(this IAsyncEnumerable<byte[]> bytes, string format = "", string? describe = null)
+            => new BitReadEnumerable(bytes, format, describe);
         #endregion
         #region 转换枚举字节数组的同步迭代器
         /// <summary>
         /// 将枚举字节数组的同步迭代器转换为<see cref="IBitRead"/>
         /// </summary>
-        /// <param name="Bytes">用来枚举数据的同步迭代器</param>
-        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
-        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <param name="bytes">用来枚举数据的同步迭代器</param>
+        /// <param name="format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
         /// <returns></returns>
-        public static IBitRead ToBitRead(this IEnumerable<byte[]> Bytes, string Format = "", string? Describe = null)
-            => new BitReadEnumerable(Bytes.ToAsyncEnumerable(), Format, Describe);
+        public static IBitRead ToBitRead(this IEnumerable<byte[]> bytes, string format = "", string? describe = null)
+            => new BitReadEnumerable(bytes.ToAsyncEnumerable(), format, describe);
         #endregion
         #region 转换枚举字节的同步迭代器
         /// <summary>
         /// 将枚举字节的同步迭代器转换为<see cref="IBitRead"/>
         /// </summary>
-        /// <param name="Bytes">用来枚举数据的同步迭代器</param>
-        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
-        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        /// <param name="bytes">用来枚举数据的同步迭代器</param>
+        /// <param name="format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
         /// <returns></returns>
-        public static IBitRead ToBitRead(this IEnumerable<byte> Bytes, string Format = "", string? Describe = null)
-            => ToBitRead(new[] { Bytes.ToArray() }, Format, Describe);
+        public static IBitRead ToBitRead(this IEnumerable<byte> bytes, string format = "", string? describe = null)
+            => ToBitRead(new[] { bytes.ToArray() }, format, describe);
         #endregion
         #endregion
         #region 分割缓冲区

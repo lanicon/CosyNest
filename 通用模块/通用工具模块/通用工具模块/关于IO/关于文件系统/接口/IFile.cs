@@ -53,7 +53,7 @@ namespace System.IOFrancis.FileSystem
             }
         }
         #endregion
-        #region 返回文件类型是否兼容
+        #region 判断文件类型是否兼容
         /// <summary>
         /// 检查这个文件是否与一个文件类型兼容
         /// </summary>
@@ -69,28 +69,28 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 复制文件
         /// </summary>
-        /// <param name="Target">复制的目标目录，
+        /// <param name="target">复制的目标目录，
         /// 如果为<see langword="null"/>，则默认复制到当前目录</param>
-        /// <param name="NewSimple">新文件的名称，不带扩展名，如果为<see langword="null"/>，代表不修改</param>
-        /// <param name="NewExtension">新文件的扩展名，如果为<see langword="null"/>，代表不修改</param>
-        ///  <param name="Rename">当复制的目标目录存在同名文件时，
+        /// <param name="newSimple">新文件的名称，不带扩展名，如果为<see langword="null"/>，代表不修改</param>
+        /// <param name="newExtension">新文件的扩展名，如果为<see langword="null"/>，代表不修改</param>
+        ///  <param name="rename">当复制的目标目录存在同名文件时，
         /// 如果这个值为<see langword="null"/>，则覆盖同名文件，
         /// 否则执行该委托赋予一个新的名称，委托的第一个参数是不带扩展名的原始名称，
         /// 第二个参数是尝试重命名失败的次数，从2开始，返回值就是重命名后的新名称，以上名称均不带扩展名</param>
         /// <returns>复制后的新文件</returns>
-        IFile Copy(IDirectory? Target, string? NewSimple, string? NewExtension, Func<string, int, string>? Rename = null)
-            => (IFile)Copy(Target,
-                ToolPath.GetFullName(NewSimple ?? NameSimple, NewExtension ?? NameExtension), Rename);
+        IFile Copy(IDirectory? target, string? newSimple, string? newExtension, Func<string, int, string>? rename = null)
+            => (IFile)Copy(target,
+                ToolPath.GetFullName(newSimple ?? NameSimple, newExtension ?? NameExtension), rename);
         #endregion
         #endregion
         #region 创建数据管道
         /// <summary>
         /// 创建一个可以读写文件的数据管道
         /// </summary>
-        /// <param name="Mod">指定打开文件的方式</param>
+        /// <param name="mod">指定打开文件的方式</param>
         /// <returns></returns>
-        IBitPipe GetBitPipe(FileMode Mod = FileMode.Open)
-            => new FileStream(Path, Mod).ToBitPipe(NameExtension, NameSimple);
+        IBitPipe GetBitPipe(FileMode mod = FileMode.Open)
+            => new FileStream(Path, mod).ToBitPipe(NameExtension, NameSimple);
         #endregion
     }
 }

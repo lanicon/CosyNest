@@ -59,23 +59,25 @@
         /// <summary>
         /// 用指定的名称和换算标准（常数）创建长度单位
         /// </summary>
-        /// <param name="Name">长度单位的名称</param>
-        /// <param name="Conver">一个用来和公制单位进行换算的常数，
+        /// <param name="name">长度单位的名称</param>
+        /// <param name="conver">一个用来和公制单位进行换算的常数，
         /// 假设本单位为a，常数为b，公制单位为c，c=a*b，a=c/b</param>
         /// <returns></returns>
-        public static IUTLength Create(string Name, Num Conver)
-            => new UTLength(Name, Conver);
+        public static IUTLength Create(string name, Num conver)
+            => new UTLength(name, conver);
         #endregion
         #region 使用委托
         /// <summary>
         /// 用指定的名称和转换方法创建长度单位
         /// </summary>
-        /// <param name="Name">本单位的名称</param>
-        /// <param name="ToMetric">从本单位转换为公制单位的委托</param>
-        /// <param name="FromMetric">从公制单位转换为本单位的委托</param>
+        /// <param name="name">本单位的名称</param>
+        /// <param name="toMetric">从本单位转换为公制单位的委托</param>
+        /// <param name="fromMetric">从公制单位转换为本单位的委托</param>
+        /// <param name="isStatic">如果这个值为<see langword="true"/>，
+        /// 代表本单位为静态单位，否则为动态单位</param>
         /// <returns></returns>
-        public static IUTLength Create(string Name, Func<Num, Num> ToMetric, Func<Num, Num> FromMetric)
-            => new UTLength(Name, ToMetric, FromMetric);
+        public static IUTLength Create(string name, Func<Num, Num> toMetric, Func<Num, Num> fromMetric, bool isStatic = true)
+            => new UTLength(name, toMetric, fromMetric, isStatic);
         #endregion
         #endregion
     }

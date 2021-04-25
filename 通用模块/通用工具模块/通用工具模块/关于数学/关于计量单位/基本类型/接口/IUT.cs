@@ -23,11 +23,11 @@ namespace System.Maths
         /// <summary>
         /// 获取指定类型计量单位的公制单位
         /// </summary>
-        /// <param name="UTType">要获取公制单位的计量单位类型，
+        /// <param name="uTType">要获取公制单位的计量单位类型，
         /// 必须实现<see cref="IUT"/></param>
         /// <returns>获取到的公制单位</returns>
-        public static IUT GetMetric(Type UTType)
-            => MetricCache[UTType];
+        public static IUT GetMetric(Type uTType)
+            => MetricCache[uTType];
         #endregion
         #region 泛型方法
         /// <summary>
@@ -54,13 +54,13 @@ namespace System.Maths
                 #endregion
                 if (!Check(x))
                     throw new NotSupportedException($"{x}没有实现{nameof(IUT)}");
-                var Regex = /*language=regex*/"Metric$".ToRegex();
-                var Pro = x.GetTypeData().Property.Where(x => x.IsStatic() && Regex.IsMatch(x.Name) && Check(x.PropertyType) && x.IsPublic()).ToArray();
-                return Pro.Length switch
+                var regex = /*language=regex*/"Metric$".ToRegex();
+                var pro = x.GetTypeData().Property.Where(x => x.IsStatic() && regex.IsMatch(x.Name) && Check(x.PropertyType) && x.IsPublic()).ToArray();
+                return pro.Length switch
                 {
                     0 => throw new Exception($"{x}中没有符合约定的公制单位"),
-                    1 => Pro[0].GetValue<IUT>() ?? throw new NullReferenceException("储存公制单位的静态属性返回null"),
-                    _ => throw new Exception($"{x}中存在多个符合约定的公制单位，它们是：{Pro.Select(p => p.Name).Join("，")}")
+                    1 => pro[0].GetValue<IUT>() ?? throw new NullReferenceException("储存公制单位的静态属性返回null"),
+                    _ => throw new Exception($"{x}中存在多个符合约定的公制单位，它们是：{pro.Select(p => p.Name).Join("，")}")
                 };
             }, 75, MetricCache);
         #endregion

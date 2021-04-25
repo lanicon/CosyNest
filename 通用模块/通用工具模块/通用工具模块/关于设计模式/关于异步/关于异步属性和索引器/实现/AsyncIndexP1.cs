@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace System.Design
+namespace System.Design.Async
 {
     /// <summary>
     /// 这个类型是<see cref="IAsyncIndex{P1, Value}"/>的实现，

@@ -106,8 +106,8 @@ namespace System.IOFrancis.FileSystem
             set
             {
 #pragma warning disable CA2208
-                var Father = IO.Path.GetDirectoryName(Path)!;
-                Path = IO.Path.Combine(Father, value ?? throw new ArgumentNullException($"{nameof(NameFull)}禁止写入null值"));
+                var father = IO.Path.GetDirectoryName(Path)!;
+                Path = IO.Path.Combine(father, value ?? throw new ArgumentNullException($"{nameof(NameFull)}禁止写入null值"));
 #pragma warning restore
             }
         }
@@ -126,16 +126,16 @@ namespace System.IOFrancis.FileSystem
         /// 将这个文件或目录复制到新目录，
         /// 如果这个对象是目录，还会递归复制所有子目录
         /// </summary>
-        /// <param name="Target">复制的目标目录，
+        /// <param name="target">复制的目标目录，
         /// 如果为<see langword="null"/>，则默认复制到当前目录</param>
-        /// <param name="NewName">这个参数允许在复制的同时修改文件或目录的名称（指全名），
+        /// <param name="newName">这个参数允许在复制的同时修改文件或目录的名称（指全名），
         /// 如果为<see langword="null"/>，代表不改名</param>
-        /// <param name="Rename">当复制的目标目录存在同名文件或目录时，
+        /// <param name="rename">当复制的目标目录存在同名文件或目录时，
         /// 如果这个值为<see langword="null"/>，则覆盖同名文件或合并同名目录，
         /// 否则执行该委托赋予一个新的名称，委托的第一个参数是原始名称，
         /// 第二个参数是尝试重命名失败的次数，从2开始，以上名称均不带扩展名</param>
         /// <returns>复制后的新文件或目录</returns>
-        IIO Copy(IDirectory? Target, string? NewName = null, Func<string, int, string>? Rename = null);
+        IIO Copy(IDirectory? target, string? newName = null, Func<string, int, string>? rename = null);
         #endregion
         #region 打开
         /// <summary>
@@ -162,21 +162,21 @@ namespace System.IOFrancis.FileSystem
         /// 对文件或目录执行原子操作
         /// </summary>
         /// <typeparam name="Ret">返回值类型</typeparam>
-        /// <param name="Del">对文件或目录进行原子操作的委托，
+        /// <param name="delegate">对文件或目录进行原子操作的委托，
         /// 参数就是这个<see cref="IIO"/>对象本身</param>
-        /// <returns>执行<paramref name="Del"/>所获取的返回值</returns>
-        Ret Atomic<Ret>(Func<IIO, Ret> Del);
+        /// <returns>执行<paramref name="delegate"/>所获取的返回值</returns>
+        Ret Atomic<Ret>(Func<IIO, Ret> @delegate);
         #endregion
         #region 无返回值
         /// <summary>
         /// 对文件或目录执行原子操作
         /// </summary>
-        /// <param name="Del">对文件或目录进行原子操作的委托，
+        /// <param name="delegate">对文件或目录进行原子操作的委托，
         /// 参数就是这个<see cref="IIO"/>对象本身</param>
-        void Atomic(Action<IIO> Del)
+        void Atomic(Action<IIO> @delegate)
             => Atomic<object?>(x =>
             {
-                Del(x);
+                @delegate(x);
                 return null;
             });
         #endregion

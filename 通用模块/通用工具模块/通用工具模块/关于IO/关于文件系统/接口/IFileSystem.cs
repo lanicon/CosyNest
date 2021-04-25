@@ -21,20 +21,20 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 根据名称获取驱动器
         /// </summary>
-        /// <param name="Name">要寻找的驱动器的名称</param>
+        /// <param name="name">要寻找的驱动器的名称</param>
         /// <returns>具有指定名称的驱动器，如果没有找到，则返回<see langword="null"/></returns>
-        IDrive? this[string Name]
-            => Son.FirstOrDefault(x => x.Name == Name);
+        IDrive? this[string name]
+            => Son.FirstOrDefault(x => x.Name == name);
         #endregion
         #region 关于容量
         #region 辅助方法
         /// <summary>
         /// 计算容量的辅助方法
         /// </summary>
-        /// <param name="Del">通过驱动器获取容量的委托</param>
+        /// <param name="delegate">通过驱动器获取容量的委托</param>
         /// <returns></returns>
-        private IUnit<IUTStorage> SizeAided(Func<IDrive, IUnit<IUTStorage>> Del)
-            => Son.Select(Del).Sum();
+        private IUnit<IUTStorage> SizeAided(Func<IDrive, IUnit<IUTStorage>> @delegate)
+            => Son.Select(@delegate).Sum();
         #endregion
         #region 获取总容量
         /// <summary>

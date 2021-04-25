@@ -79,17 +79,17 @@
         /// <summary>
         /// 指定本单位的名称和转换方法，然后初始化单位
         /// </summary>
-        /// <param name="Name">本单位的名称</param>
-        /// <param name="ToMetricDelegate">从本单位转换为公制单位的委托</param>
-        /// <param name="FromMetricDelegate">从公制单位转换为本单位的委托</param>
-        /// <param name="IsStatic">如果这个值为<see langword="true"/>，
+        /// <param name="name">本单位的名称</param>
+        /// <param name="toMetricDelegate">从本单位转换为公制单位的委托</param>
+        /// <param name="fromMetricDelegate">从公制单位转换为本单位的委托</param>
+        /// <param name="isStatic">如果这个值为<see langword="true"/>，
         /// 代表本单位为静态单位，否则为动态单位</param>
-        public UT(string Name, Func<Num, Num> ToMetricDelegate, Func<Num, Num> FromMetricDelegate, bool IsStatic = true)
+        public UT(string name, Func<Num, Num> toMetricDelegate, Func<Num, Num> fromMetricDelegate, bool isStatic = true)
         {
-            this.Name = Name;
-            this.ToMetricDelegate = ToMetricDelegate;
-            this.FromMetricDelegate = FromMetricDelegate;
-            this.IsStatic = IsStatic;
+            this.Name = name;
+            this.ToMetricDelegate = toMetricDelegate;
+            this.FromMetricDelegate = fromMetricDelegate;
+            this.IsStatic = isStatic;
         }
         #endregion
         #region 指定名称与转换常数
@@ -98,11 +98,11 @@
         /// 以及一个和公制单位进行转换的常数，
         /// 然后初始化本单位
         /// </summary>
-        /// <param name="Name">本单位的名称</param>
-        /// <param name="Size">一个常数，代表1单位的本单位，等于多少公制单位，
+        /// <param name="name">本单位的名称</param>
+        /// <param name="size">一个常数，代表1单位的本单位，等于多少公制单位，
         /// 本对象使用它进行单位转换</param>
-        public UT(string Name, Num Size)
-            : this(Name, x => x * Size, x => x / Size)
+        public UT(string name, Num size)
+            : this(name, x => x * size, x => x / size)
         {
 
         }

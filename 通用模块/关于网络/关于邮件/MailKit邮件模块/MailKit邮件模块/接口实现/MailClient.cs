@@ -149,7 +149,7 @@ namespace System.NetFrancis.Mail
         /// <summary>
         /// <see cref="NewMail"/>事件的延迟加载封装
         /// </summary>
-        private NewMailEvent NewMailEvent { get; set; }
+        private DelayEvent<Action<IMailClient, IMailServed>> NewMailEvent { get; set; }
         #endregion
         #region 事件本体
         public event Action<IMailClient, IMailServed>? NewMail
@@ -178,7 +178,7 @@ namespace System.NetFrancis.Mail
             SmtpConnection = Smtp;
             ImapConnection = Imap;
             this.Credentials = Credentials;
-            NewMailEvent = new(this, CheckInterval ?? TimeSpan.FromMinutes(1));
+            NewMailEvent = new NewMailEvent(this, CheckInterval ?? TimeSpan.FromMinutes(1));
         }
         #endregion
     }

@@ -25,7 +25,7 @@
         /// <param name="delayEvent">待注册的事件</param>
         /// <param name="event">要注册进事件的委托</param>
         /// <returns>原路返回参数<paramref name="delayEvent"/></returns>
-        public static dynamic operator +(DelayEvent<Event> delayEvent, Event? @event)
+        public static DelayEvent<Event> operator +(DelayEvent<Event> delayEvent, Event? @event)
         {
             var de = delayEvent.Delegate;
             if (de is null && @event is { })
@@ -42,7 +42,7 @@
         /// <param name="delayEvent">待移除委托的事件</param>
         /// <param name="event">要从事件中移除的委托</param>
         /// <returns>原路返回参数<paramref name="delayEvent"/></returns>
-        public static dynamic operator -(DelayEvent<Event> delayEvent, Event? @event)
+        public static DelayEvent<Event> operator -(DelayEvent<Event> delayEvent, Event? @event)
         {
             var de = delayEvent.Delegate;
             var @delegate = System.Delegate.RemoveAll(de, @event);

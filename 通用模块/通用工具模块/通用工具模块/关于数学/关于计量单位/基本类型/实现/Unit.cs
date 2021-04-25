@@ -31,8 +31,8 @@ namespace System.Maths
         #endregion
         #endregion
         #region 创建计量单位
-        IUnit<Template> IUnit<Template>.Create(Num Num)
-            => UnitMetric(Num, this);
+        IUnit<Template> IUnit<Template>.Create(Num num)
+            => UnitMetric(num, this);
         #endregion
         #region 转换为复合单位
         public IUnit<Template> Convert(params Template[] templates)
@@ -65,21 +65,21 @@ namespace System.Maths
         /// <summary>
         /// 使用指定的公制单位数量和模板初始化单位
         /// </summary>
-        /// <param name="MetricCount">公制单位的数量</param>
+        /// <param name="metricCount">公制单位的数量</param>
         /// <param name="templates">枚举单位的模板</param>
-        public Unit(Num MetricCount, params Template[] templates)
+        public Unit(Num metricCount, params Template[] templates)
         {
             templates.AnyCheck("公制单位模板");
-            ValueMetric = MetricCount;
+            ValueMetric = metricCount;
             Value = templates.Distinct().Sort(false).ToArray().PackIndex(true).
-                AggregateSelect(MetricCount, (source, seed) =>
+                AggregateSelect(metricCount, (source, seed) =>
               {
                   var (tem, index, count) = source;
                   var temCount = tem.FromMetric(seed);
                   if (index == count - 1)
                       return ((tem, temCount), default);
-                  var (Divisor, Remainder, _) = ToolArithmetic.Split(temCount);
-                  return ((tem, Divisor), tem.ToMetric(Remainder));
+                  var (divisor, remainder, _) = ToolArithmetic.Split(temCount);
+                  return ((tem, divisor), tem.ToMetric(remainder));
               }).ToArray();
         }
         #endregion

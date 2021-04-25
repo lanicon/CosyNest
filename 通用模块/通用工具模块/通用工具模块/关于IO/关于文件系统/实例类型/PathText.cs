@@ -25,7 +25,6 @@ namespace System.IOFrancis.FileSystem
         public static implicit operator PathText(string a)
             => new(a);
         #endregion
-        #region 运算符重载
         #region 重载+号
         /// <summary>
         /// 将两个路径文本的路径拼接起来，
@@ -36,7 +35,6 @@ namespace System.IOFrancis.FileSystem
         /// <returns></returns>
         public static PathText operator +(PathText a, PathText b)
             => a.Path + b.Path;
-        #endregion
         #endregion
         #region 缓存字典
         /// <summary>
@@ -59,23 +57,21 @@ namespace System.IOFrancis.FileSystem
         /// </summary>
         public string Path { get; }
         #endregion
-        #region 重写的方法
         #region 重写ToString
         ///<inheritdoc/>
         public override string ToString()
             => Path ?? "";
         #endregion
-        #endregion
         #region 构造方法
         /// <summary>
         /// 将指定的路径文本封装进对象中
         /// </summary>
-        /// <param name="Path">指定的路径文本</param>
-        public PathText(string Path)
+        /// <param name="path">指定的路径文本</param>
+        public PathText(string path)
         {
-            this.Path = Path.IsVoid() ?
+            this.Path = path.IsVoid() ?
                    throw new ArgumentException("路径文本不能为null或空字符串") :
-                   Cache[Path];
+                   Cache[path];
         }
         #endregion
     }

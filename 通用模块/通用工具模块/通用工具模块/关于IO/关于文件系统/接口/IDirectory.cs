@@ -26,22 +26,22 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 在目录下创建新目录
         /// </summary>
-        /// <param name="Name">新目录的名称，
+        /// <param name="name">新目录的名称，
         /// 如果为<see langword="null"/>，则给予一个不重复的随机名称，
         /// 如果不为<see langword="null"/>但是名称重复，则自动对名称进行重命名</param>
         /// <returns>新创建的目录</returns>
-        IDirectory CreateDirectory(string? Name = null);
+        IDirectory CreateDirectory(string? name = null);
         #endregion
         #region 在目录下创建文件
         /// <summary>
         /// 在目录下创建新文件
         /// </summary>
-        /// <param name="Name">新文件的名称，
+        /// <param name="name">新文件的名称，
         /// 如果为<see langword="null"/>，则给予一个不重复的随机名称，
         /// 如果不为<see langword="null"/>但是名称重复，则自动对名称进行重命名</param>
-        /// <param name="Extension">新文件的扩展名</param>
+        /// <param name="extension">新文件的扩展名</param>
         /// <returns>新创建的文件</returns>
-        IFile CreateFile(string? Name = null, string Extension = "");
+        IFile CreateFile(string? name = null, string extension = "");
         #endregion
         #endregion
         #region 搜索文件或目录

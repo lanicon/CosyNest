@@ -13,14 +13,9 @@ namespace System.IOFrancis
             => typeof(IUTStorage);
         #endregion
         #region 构造方法
-        /// <summary>
-        /// 用指定的名称和转换常数初始化计算机存储单位
-        /// </summary>
-        /// <param name="Name">计算机存储单位的名称</param>
-        /// <param name="Conver">一个用来和公制单位进行转换的常数，
-        /// 假设本单位为a，常数为b，公制单位为c，c=a*b，a=c/b</param>
-        public UTStorage(string Name, Num Conver)
-            : base(Name, Conver)
+        /// <inheritdoc cref="UT(string, Num)"/>
+        public UTStorage(string name, Num size)
+            : base(name, size)
         {
 
         }

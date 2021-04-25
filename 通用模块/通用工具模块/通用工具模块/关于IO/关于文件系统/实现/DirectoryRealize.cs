@@ -51,15 +51,15 @@ namespace System.IOFrancis.FileSystem
         #endregion
         #region 关于对目录的操作
         #region 复制
-        public override IIO Copy(IDirectory? Target, string? NewName = null, Func<string, int, string>? Rename = null)
+        public override IIO Copy(IDirectory? target, string? newName = null, Func<string, int, string>? rename = null)
         {
-            Target ??= Directory.Father ?? throw new ArgumentException("父目录不能为null");
-            NewName ??= Directory.NameFull;
-            if (Rename != null)
-                NewName = ToolPath.Distinct(Target, NewName, Rename);
-            var NewPosition = new DirectoryRealize(IO.Path.Combine(Target.Path, NewName), false);                //如果父目录不存在，则会自动创建
-            Directory.Son.ForEach(x => x.Copy(NewPosition));
-            return NewPosition;
+            target ??= Directory.Father ?? throw new ArgumentException("父目录不能为null");
+            newName ??= Directory.NameFull;
+            if (rename != null)
+                newName = ToolPath.Distinct(target, newName, rename);
+            var newPosition = new DirectoryRealize(IO.Path.Combine(target.Path, newName), false);                //如果父目录不存在，则会自动创建
+            Directory.Son.ForEach(x => x.Copy(newPosition));
+            return newPosition;
         }
         #endregion
         #region 关于创建文件与目录
@@ -68,31 +68,31 @@ namespace System.IOFrancis.FileSystem
         /// 创建文件或目录的辅助方法
         /// </summary>
         /// <typeparam name="IO">返回值类型</typeparam>
-        /// <param name="Name">新文件或目录的名称，如果为<see langword="null"/>，
+        /// <param name="name">新文件或目录的名称，如果为<see langword="null"/>，
         /// 则自动赋予一个不重复的随机名称</param>
-        /// <param name="Extension">新文件的扩展名，如果为<see langword="null"/>，
+        /// <param name="extension">新文件的扩展名，如果为<see langword="null"/>，
         /// 代表没有扩展名</param>
-        /// <param name="Create">用于创建新文件或目录的委托</param>
+        /// <param name="create">用于创建新文件或目录的委托</param>
         /// <returns></returns>
-        private IO CreateAided<IO>(string? Name, string? Extension, Func<string, IO> Create)
+        private IO CreateAided<IO>(string? name, string? extension, Func<string, IO> create)
             where IO : IIO
         {
             #region 本地函数
             IO Get(string? Name)
-                => Create(System.IO.Path.Combine(Path, Name ?? Guid.NewGuid().ToString() + Extension));
+                => create(System.IO.Path.Combine(Path, Name ?? Guid.NewGuid().ToString() + extension));
             #endregion
-            return Name is null ?
-                Get(Name) :
-                Get(Son.OfType<IIO>().Select(x => x.NameFull).Distinct(Name));        //当指定了名称但是重名时，自动将其重命名
+            return name is null ?
+                Get(name) :
+                Get(Son.OfType<IIO>().Select(x => x.NameFull).Distinct(name));        //当指定了名称但是重名时，自动将其重命名
         }
         #endregion
         #region 在目录下创建目录
-        public IDirectory CreateDirectory(string? Name = null)
-            => CreateAided(Name, null, x => CreateIO.Directory(x, false));
+        public IDirectory CreateDirectory(string? name = null)
+            => CreateAided(name, null, x => CreateIO.Directory(x, false));
         #endregion
         #region 在目录下创建文件
-        public IFile CreateFile(string? Name = null, string Extension = "")
-            => CreateAided(Name, Extension, x => CreateIO.File(x, false));
+        public IFile CreateFile(string? name = null, string extension = "")
+            => CreateAided(name, extension, x => CreateIO.File(x, false));
         #endregion
         #endregion
         #endregion
@@ -100,16 +100,16 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 用指定的路径初始化目录对象
         /// </summary>
-        /// <param name="Path">指定的路径</param>
-        /// <param name="CheckExist">在路径不存在的时候，如果这个值为<see langword="true"/>，会抛出一个异常，
+        /// <param name="path">指定的路径</param>
+        /// <param name="checkExist">在路径不存在的时候，如果这个值为<see langword="true"/>，会抛出一个异常，
         /// 如果为<see langword="false"/>，则不会抛出异常，而是会创建这个目录</param>
-        public DirectoryRealize(PathText Path, bool CheckExist = true)
-            : base(new DirectoryInfo(Path))
+        public DirectoryRealize(PathText path, bool checkExist = true)
+            : base(new DirectoryInfo(path))
         {
             if (!PackFS.Exists)
             {
-                if (CheckExist)
-                    throw ExceptionIO.BecauseExist(Path.Path ?? "null");
+                if (checkExist)
+                    throw ExceptionIO.BecauseExist(path.Path ?? "null");
                 PackFS.Create();
                 PackFS.Refresh();
             }

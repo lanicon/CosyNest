@@ -44,39 +44,37 @@ namespace System.IOFrancis.FileSystem
             => CreateBaseMathObj.Unit(PackFS.Length, IUTStorage.ByteMetric);
         #endregion
         #endregion
-        #region 对文件的操作
-        #region 复制
-        public override IIO Copy(IDirectory? Target, string? NewName = null, Func<string, int, string>? Rename = null)
+        #region 复制文件
+        public override IIO Copy(IDirectory? target, string? newName = null, Func<string, int, string>? rename = null)
         {
-            Target ??= File.Father ?? throw new ArgumentNullException($"父目录不能为null");
-            NewName ??= File.NameFull;
-            if (Rename != null)
+            target ??= File.Father ?? throw new ArgumentNullException($"父目录不能为null");
+            newName ??= File.NameFull;
+            if (rename != null)
             {
-                var (Simple, Extended) = ToolPath.SplitPathFile(NewName);
-                NewName = ToolPath.Distinct(Target, NewName,
-                    (x, y) => ToolPath.GetFullName(Rename(Simple, y), Extended));
+                var (simple, extended) = ToolPath.SplitPathFile(newName);
+                newName = ToolPath.Distinct(target, newName,
+                    (x, y) => ToolPath.GetFullName(rename(simple, y), extended));
             }
-            var NewPath = IO.Path.Combine(Target.Path, NewName);
-            PackFS.CopyTo(NewPath, true);
-            return new FileRealize(NewPath);
+            var newPath = IO.Path.Combine(target.Path, newName);
+            PackFS.CopyTo(newPath, true);
+            return new FileRealize(newPath);
         }
-        #endregion
         #endregion
         #region 构造函数
         /// <summary>
         /// 用指定的路径初始化文件对象，
         /// 不允许指定不存在的路径
         /// </summary>
-        /// <param name="Path">指定的路径</param>
-        /// <param name="CheckExist">在文件不存在的时候，如果这个值为<see langword="true"/>，
+        /// <param name="path">指定的路径</param>
+        /// <param name="checkExist">在文件不存在的时候，如果这个值为<see langword="true"/>，
         /// 则抛出一个异常，为<see langword="false"/>，则不会抛出异常，而是会创建一个新文件</param>
-        public FileRealize(PathText Path, bool CheckExist = true)
-            : base(new FileInfo(Path))
+        public FileRealize(PathText path, bool checkExist = true)
+            : base(new FileInfo(path))
         {
             if (!PackFS.Exists)
             {
-                if (CheckExist)
-                    throw ExceptionIO.BecauseExist(Path.Path ?? "null");
+                if (checkExist)
+                    throw ExceptionIO.BecauseExist(path.Path ?? "null");
                 PackFS.Create().Dispose();
                 PackFS.Refresh();
             }

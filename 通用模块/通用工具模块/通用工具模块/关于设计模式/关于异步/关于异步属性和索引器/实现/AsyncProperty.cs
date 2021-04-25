@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace System.Design
+namespace System.Design.Async
 {
     /// <summary>
     /// 该类型是<see cref="IAsyncPropertyP1{Value}"/>的实现，

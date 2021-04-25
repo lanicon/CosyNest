@@ -40,14 +40,14 @@ namespace System.IOFrancis.Bit
         /// <summary>
         /// 使用指定的参数初始化对象
         /// </summary>
-        /// <param name="Bytes">指定的异步迭代器对象，本对象的功能就是通过它实现的</param>
-        /// <param name="Format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
-        /// <param name="Describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
-        public BitReadEnumerable(IAsyncEnumerable<byte[]> Bytes, string Format, string? Describe)
+        /// <param name="bytes">指定的异步迭代器对象，本对象的功能就是通过它实现的</param>
+        /// <param name="format">二进制数据的格式，如果格式未知，则为<see cref="string.Empty"/></param>
+        /// <param name="describe">对数据的描述，如果没有描述，则为<see langword="null"/></param>
+        public BitReadEnumerable(IAsyncEnumerable<byte[]> bytes, string format, string? describe)
         {
-            this.Bytes = Bytes;
-            this.Format = Format;
-            this.Describe = Describe;
+            this.Bytes = bytes;
+            this.Format = format;
+            this.Describe = describe;
         }
         #endregion
     }

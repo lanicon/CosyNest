@@ -15,10 +15,13 @@
             => ScreenField ??= new();
         #endregion
         #region 获取IPower对象
+        private static PowerPC? PowerField;
+
         /// <summary>
         /// 获取特定于PC平台的<see cref="IPower"/>对象
         /// </summary>
-        public static IPower Power { get; } = new PowerPC();
+        public static IPower Power
+            => PowerField ??= new();
         #endregion
         #region 获取IPrinterPanel对象
         private static PrinterPanelPC? PrinterPanelField;

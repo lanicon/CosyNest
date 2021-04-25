@@ -54,10 +54,10 @@ namespace System.IOFrancis.FileSystem
         /// <summary>
         /// 使用指定的驱动器初始化对象
         /// </summary>
-        /// <param name="Drive">被封装的驱动器</param>
-        public DriveRealize(DriveInfo Drive)
+        /// <param name="drive">被封装的驱动器</param>
+        public DriveRealize(DriveInfo drive)
         {
-            PackDrive = Drive;
+            PackDrive = drive;
         }
         #endregion
     }

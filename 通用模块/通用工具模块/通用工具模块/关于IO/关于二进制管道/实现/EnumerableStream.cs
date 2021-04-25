@@ -113,10 +113,10 @@ namespace System.IOFrancis.Bit
         /// <summary>
         /// 使用指定的参数初始化对象
         /// </summary>
-        /// <param name="Bytes">一个枚举所有数据的枚举器，本对象的功能就是通过它实现的</param>
-        public EnumerableStream(IEnumerator<byte[]> Bytes)
+        /// <param name="bytes">一个枚举所有数据的枚举器，本对象的功能就是通过它实现的</param>
+        public EnumerableStream(IEnumerator<byte[]> bytes)
         {
-            this.Bytes = Bytes;
+            this.Bytes = bytes;
         }
         #endregion
     }
