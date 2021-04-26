@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Design.Direct;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -24,34 +23,31 @@ namespace System.DataFrancis
           然后“取前500条数据”用表达式“x=>x.Index<500”表示，x的类型是PlaceholderData*/
         #endregion
         #region 辅助方法
+        #region 转换迭代器
+        /// <summary>
+        /// 将一个枚举<see cref="IData"/>的异步迭代器，
+        /// 转换为等效的枚举<see cref="PlaceholderData"/>的同步迭代器
+        /// </summary>
+        /// <param name="datas">待转换的异步迭代器</param>
+        /// <returns></returns>
+        private static IEnumerable<PlaceholderData> Convert(IAsyncEnumerable<IData> datas)
+            => datas.ToEnumerable().PackIndex().
+            Select(x => new PlaceholderData(x.Elements, x.Index));
+        #endregion
         #region 筛选查询结果
         /// <summary>
-        /// 筛选查询结果
+        /// 不使用表达式树，而是直接执行委托来筛选查询结果
         /// </summary>
-        /// <param name="Data">待筛选的数据集</param>
-        /// <param name="Expression">用来筛选数据的表达式，
+        /// <param name="datas">待筛选的数据集</param>
+        /// <param name="expression">用来筛选数据的表达式，
         /// 它会被翻译为一个传入<see cref="IData"/>的等价表达式</param>
-        /// <returns>如果<paramref name="Expression"/>为<see langword="null"/>，则返回<paramref name="Data"/>，
+        /// <returns>如果<paramref name="expression"/>为<see langword="null"/>，则返回<paramref name="datas"/>，
         /// 否则将表达式翻译为传入<see cref="IData"/>的表达式，并筛选数据，返回结果</returns>
-        protected static IDirectView<IData> QueryTemplate(IEnumerable<IData> Data, Expression<Func<PlaceholderData, bool>>? Expression)
-            => (Expression == null ?
-            Data :
-            Data.PackIndex().
-            Select(x => new PlaceholderData(x.Elements, x.Index)).
-            Where(Expression.Compile()).
-            Select(x => x.Data)).ToDirectView();
-        #endregion
-        #region 统计查询结果
-        /// <summary>
-        /// 对查询结果进行统计，并返回统计结果
-        /// </summary>
-        /// <typeparam name="Ret">返回值类型</typeparam>
-        /// <param name="Data">待统计的数据集</param>
-        /// <param name="Expression">用来统计数据的表达式</param>
-        /// <returns></returns>
-        protected static Ret StatisticsTemplate<Ret>(IEnumerable<IData> Data, Expression<Func<IEnumerable<PlaceholderData>, Ret>> Expression)
-            => Expression.Compile().Invoke
-            (Data.PackIndex().Select(x => new PlaceholderData(x.Elements, x.Index)));
+        protected static IAsyncEnumerable<IData> QueryDirect(IAsyncEnumerable<IData> datas, Expression<Func<PlaceholderData, bool>>? expression)
+            => expression is null ?
+            datas :
+            Convert(datas).Where(expression.Compile()).
+            Select(x => x.Data).ToAsyncEnumerable();
         #endregion
         #endregion
         #region 获取是否支持绑定
@@ -68,36 +64,27 @@ namespace System.DataFrancis
           如果想要获取数据的总数，此时就应该使用统计API，
           如果先查询所有数据，然后再调用Sum()，可能在性能上会有严重损失*/
         #endregion
-        #region 同步方法
+        #region 正式方法
         /// <summary>
         /// 对数据进行统计，并返回统计结果
         /// </summary>
         /// <typeparam name="Ret">返回值类型</typeparam>
-        /// <param name="Expression">用来统计数据的表达式，参数就是抽象的数据集</param>
+        /// <param name="expression">用来统计数据的表达式，参数就是抽象的数据集</param>
         /// <returns></returns>
-        Ret Statistics<Ret>(Expression<Func<IEnumerable<PlaceholderData>, Ret>> Expression)
-            => StatisticsTemplate(Query(), Expression);
-        #endregion
-        #region 异步方法
-        /// <summary>
-        /// 对数据进行统计，并异步返回统计结果
-        /// </summary>
-        /// <typeparam name="Ret">返回值类型</typeparam>
-        /// <param name="Expression">用来统计数据的表达式，参数就是抽象的数据集</param>
-        /// <returns></returns>
-        Task<Ret> StatisticsAsyn<Ret>(Expression<Func<IEnumerable<PlaceholderData>, Ret>> Expression)
-            => Task.Run(() => Statistics(Expression));
+        Task<Ret> Statistics<Ret>(Expression<Func<IAsyncEnumerable<PlaceholderData>, Task<Ret>>> expression)
+            => expression.Compile().Invoke
+            (Convert(Query()).ToAsyncEnumerable());
         #endregion
         #endregion
-        #region 关于查询数据
+        #region 查询数据
         /// <summary>
         /// 通过管道查询数据，并返回结果集
         /// </summary>
-        /// <param name="Expression">一个用来指定查询条件的表达式，如果数据源不支持查询或不需要查询，则为<see langword="null"/></param>
-        /// <param name="Binding">如果这个值为<see langword="true"/>，
+        /// <param name="expression">一个用来指定查询条件的表达式，如果数据源不支持查询或不需要查询，则为<see langword="null"/></param>
+        /// <param name="binding">如果这个值为<see langword="true"/>，
         /// 则在查询数据的时候，还会将数据与数据源绑定，但数据源可能不支持绑定</param>
-        /// <returns>查询到的结果集，它是延迟加载的</returns>
-        IDirectView<IData> Query(Expression<Func<PlaceholderData, bool>>? Expression = null, bool Binding = false);
+        /// <returns></returns>
+        IAsyncEnumerable<IData> Query(Expression<Func<PlaceholderData, bool>>? expression = null, bool binding = false);
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using System.Design.Direct;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace System.DataFrancis
 {
@@ -20,31 +21,29 @@ namespace System.DataFrancis
           然后自行完成所有适配工作*/
         #endregion
         #region 获取是否支持绑定
-        /// <summary>
-        /// 如果这个值为<see langword="true"/>，代表该数据管道支持绑定
-        /// </summary>
+        /// <inheritdoc cref="IDataPipeQuery.CanBinding"/>
         bool CanBinding => false;
         #endregion
         #region 关于添加数据
-        #region 同步添加数据
+        #region 传入同步集合
         /// <summary>
         /// 通过管道将数据添加到数据源
         /// </summary>
-        /// <param name="Data">待添加的数据</param>
-        /// <param name="Binding">如果这个值为<see langword="true"/>，
+        /// <param name="datas">待添加的数据</param>
+        /// <param name="binding">如果这个值为<see langword="true"/>，
         /// 则在添加数据的时候，还会将数据与数据源绑定，但数据源可能不支持绑定</param>
-        void Add(IDirectView<IData> Data, bool Binding = false);
+        Task Add(IEnumerable<IData> datas, bool binding = false);
         #endregion
-        #region 异步添加数据
+        #region 传入异步集合
         /// <summary>
         /// 通过管道将数据异步添加到数据源
         /// </summary>
-        /// <param name="Data">待添加的数据</param>
-        /// <param name="Binding">如果这个值为<see langword="true"/>，
+        /// <param name="datas">待添加的数据</param>
+        /// <param name="binding">如果这个值为<see langword="true"/>，
         /// 则在添加数据的时候，还会将数据与数据源绑定，但数据源可能不支持绑定</param>
         /// <returns>一个异步对象，等待它以完成添加数据操作</returns>
-        Task AddAsyn(IDirectView<IData> Data, bool Binding = false)
-           => Task.Run(() => Add(Data, Binding));
+        Task Add(IAsyncEnumerable<IData> datas, bool binding = false)
+            => Add(datas.ToEnumerable(), binding);
         #endregion
         #endregion 
     }

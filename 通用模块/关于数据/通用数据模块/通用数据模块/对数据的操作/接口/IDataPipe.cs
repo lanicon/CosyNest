@@ -11,9 +11,7 @@ namespace System.DataFrancis
     public interface IDataPipe : IDataPipeAdd, IDataPipeQuery
     {
         #region 获取是否支持绑定
-        /// <summary>
-        /// 如果这个值为<see langword="true"/>，代表该数据管道支持绑定
-        /// </summary>
+        /// <inheritdoc cref="IDataPipeQuery.CanBinding"/>
         new bool CanBinding => false;
         #endregion
         #region 关于删除数据
@@ -27,21 +25,12 @@ namespace System.DataFrancis
           答：不是，即便没有实现IDataPipe接口，通过IDataPipeAdd和IDataPipeQuery获取到的数据，
           仍然可以通过直接调用IData.Delete()来删除数据，但是这种方法必须先获取数据，后删除，性能较低*/
         #endregion
-        #region 同步方法
+        #region 正式方法
         /// <summary>
         /// 直接从数据源中删除符合指定谓词的数据，不返回结果集
         /// </summary>
-        /// <param name="Expression">一个用来指定删除条件的表达式</param>
-        void Delete(Expression<Func<PlaceholderData, bool>> Expression);
-        #endregion
-        #region 异步方法
-        /// <summary>
-        /// 直接从数据源中异步删除符合指定谓词的数据，不返回结果集
-        /// </summary>
-        /// <param name="Expression">一个用来指定删除条件的表达式</param>
-        /// <returns>一个异步任务对象，可以等待它以完成删除操作</returns>
-        Task DeleteAsyn(Expression<Func<PlaceholderData, bool>> Expression)
-            => Task.Run(() => Delete(Expression));
+        /// <param name="expression">一个用来指定删除条件的表达式</param>
+        Task Delete(Expression<Func<PlaceholderData, bool>> expression);
         #endregion
         #endregion
     }

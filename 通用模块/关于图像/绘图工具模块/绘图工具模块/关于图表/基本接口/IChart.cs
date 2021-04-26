@@ -1,5 +1,4 @@
-﻿using System.Design.Direct;
-using System.Maths;
+﻿using System.Maths;
 using System.DataFrancis;
 
 namespace System.DrawingFrancis.Chart

@@ -16,10 +16,10 @@
         /// <summary>
         /// 通过列名获取数据占位符
         /// </summary>
-        /// <param name="ColumnName">数据占位符的列名</param>
+        /// <param name="columnName">数据占位符的列名</param>
         /// <returns></returns>
-        public PlaceholderValue this[string ColumnName]
-             => new(Data[ColumnName]);
+        public PlaceholderValue this[string columnName]
+             => new(Data[columnName]);
         #endregion
         #region 返回数据的索引
         /// <summary>
@@ -36,12 +36,12 @@
         /// <summary>
         /// 使用指定的数据和索引初始化对象
         /// </summary>
-        /// <param name="Data">被封装的数据</param>
-        /// <param name="Index">数据在数据集中的索引</param>
-        internal PlaceholderData(IData Data, int Index)
+        /// <param name="data">被封装的数据</param>
+        /// <param name="index">数据在数据集中的索引</param>
+        public PlaceholderData(IData data, int index)
         {
-            this.Data = Data;
-            this.Index = Index;
+            this.Data = data;
+            this.Index = index;
         }
         #endregion
     }

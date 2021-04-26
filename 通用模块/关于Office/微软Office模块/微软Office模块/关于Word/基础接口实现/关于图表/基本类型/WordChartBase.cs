@@ -1,5 +1,4 @@
 ﻿using System.DataFrancis;
-using System.Design.Direct;
 using System.Maths;
 using System.Office.Chart;
 using System.Office.Excel;

@@ -53,10 +53,10 @@
         /// <summary>
         /// 使用指定的值初始化占位符
         /// </summary>
-        /// <param name="Value">占位符封装的数据的值</param>
-        internal PlaceholderValue(object? Value)
+        /// <param name="value">占位符封装的数据的值</param>
+        public PlaceholderValue(object? value)
         {
-            this.Value = Value;
+            this.Value = value;
         }
         #endregion
     }
