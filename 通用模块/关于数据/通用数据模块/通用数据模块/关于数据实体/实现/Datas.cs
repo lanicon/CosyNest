@@ -13,6 +13,7 @@ namespace System.DataFrancis
         #region 接口实现
         #region 架构约束
         private ISchema? SchemaField;
+
         public ISchema? Schema
         {
             get => SchemaField;
@@ -28,26 +29,26 @@ namespace System.DataFrancis
         /// <summary>
         /// 通过键写入值，如果键不存在，会引发异常
         /// </summary>
-        /// <param name="ColumnName">数据的列名</param>
-        /// <param name="NewValue">数据的新值</param>
-        private void SetValueAided(string ColumnName, object? NewValue)
+        /// <param name="columnName">数据的列名</param>
+        /// <param name="newValue">数据的新值</param>
+        private void SetValueAided(string columnName, object? newValue)
         {
-            if (PackDictionary.ContainsKey(ColumnName))
+            if (PackDictionary.ContainsKey(columnName))
             {
-                PackDictionary[ColumnName] = NewValue;
-                this.Changed(PropertyChanged, ColumnName);
+                PackDictionary[columnName] = newValue;
+                this.Changed(PropertyChanged, columnName);
             }
-            else throw new KeyNotFoundException($"列名{ColumnName}不存在于数据中");
+            else throw new KeyNotFoundException($"列名{columnName}不存在于数据中");
         }
         #endregion
         #region 索引器
-        public override object? this[string ColumnName]
+        public override object? this[string columnName]
         {
-            get => PackDictionary[ColumnName];
+            get => PackDictionary[columnName];
             set
             {
-                SetValueAided(ColumnName, value);
-                Binding?.NoticeUpdateToSource(ColumnName, value);
+                SetValueAided(columnName, value);
+                Binding?.NoticeUpdateToSource(columnName, value);
             }
         }
         #endregion
@@ -67,12 +68,12 @@ namespace System.DataFrancis
             get => BindingField;
             set
             {
-                if (BindingField != null)
+                if (BindingField is { })
                 {
                     BindingField.NoticeUpdateToData -= SetValueAided;
                     BindingField.NoticeDeleteToData -= DeleteAided;
                 }
-                if (value != null)
+                if (value is { })
                 {
                     value.NoticeUpdateToData += SetValueAided;
                     value.NoticeDeleteToData += DeleteAided;
@@ -119,15 +120,15 @@ namespace System.DataFrancis
         /// <summary>
         /// 用一个键是列名的键值对集合（通常是字典）初始化数据
         /// </summary>
-        /// <param name="Dict">一个键值对集合，它的元素的键</param>
-        /// <param name="CopyValue">如果这个值为真，则会复制键值对的值，否则不复制</param>
-        public Datas(IEnumerable<KeyValuePair<string, object?>> Dict, bool CopyValue = false)
+        /// <param name="dictionary">一个键值对集合，它的元素的键</param>
+        /// <param name="copyValue">如果这个值为真，则会复制键值对的值，否则不复制</param>
+        public Datas(IEnumerable<KeyValuePair<string, object?>> dictionary, bool copyValue = false)
         {
-            foreach (var (key, value) in Dict)
-                PackDictionary[key] = CopyValue ? value : null;
+            foreach (var (key, value) in dictionary)
+                PackDictionary[key] = copyValue ? value : null;
         }
         /*注释：
-          #Dict参数不使用IDictionary的原因在于：
+          #dictionary参数不使用IDictionary的原因在于：
           使用IEnumerable这个类型，
           可以同时兼容IDictionary和IReadOnlyDictionary*/
         #endregion

@@ -7,13 +7,21 @@
     public interface IDataBinding
     {
         #region 数据通知数据源
+        #region 说明文档
+        /*问：向数据源发出通知很可能是一个耗时的方法，
+          那么这些API为什么不设计为异步？
+          答：事实上，它们已经是异步方法了，
+          因为void方法也可以作为异步方法，只是无法等待而已，
+          但是作者认为它们也不需要等待，因为数据被修改后的效果已经在客户端生效，
+          等待服务端更新完成意义不大*/
+        #endregion
         #region 通知修改
         /// <summary>
         /// 当数据发生修改时，可以调用这个方法通知数据源
         /// </summary>
-        /// <param name="ColumnName">发生修改的列名</param>
-        /// <param name="NewValue">修改后的新值</param>
-        void NoticeUpdateToSource(string ColumnName, object? NewValue);
+        /// <param name="columnName">发生修改的列名</param>
+        /// <param name="newValue">修改后的新值</param>
+        void NoticeUpdateToSource(string columnName, object? newValue);
         #endregion
         #region 通知删除
         /// <summary>

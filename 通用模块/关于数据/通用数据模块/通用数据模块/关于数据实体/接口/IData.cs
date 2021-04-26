@@ -44,26 +44,26 @@ namespace System.DataFrancis
         /// <summary>
         /// 返回这个数据的副本
         /// </summary>
-        /// <param name="CopyValue">如果这个值为<see langword="true"/>，则复制列名和值，
+        /// <param name="copyValue">如果这个值为<see langword="true"/>，则复制列名和值，
         /// 否则只复制列名，不复制值</param>
         /// <returns></returns>
-        IData Copy(bool CopyValue = true)
-           => new Datas(this, CopyValue);
+        IData Copy(bool copyValue = true)
+           => new Datas(this, copyValue);
         #endregion
         #region 复制且对修改部分列
         /// <summary>
         /// 返回这个数据的副本，并且修改其中部分列的值
         /// </summary>
-        /// <param name="Modify">这个集合枚举被修改的列名，以及修改后的新值</param>
+        /// <param name="modify">这个集合枚举被修改的列名，以及修改后的新值</param>
         /// <returns></returns>
-        IData With(params (string ColumnName, object? NewValue)[] Modify)
+        IData With(params (string ColumnName, object? NewValue)[] modify)
         {
-            var NewData = Copy();
-            foreach (var (name, value) in Modify)
+            var newData = Copy();
+            foreach (var (name, value) in modify)
             {
-                NewData[name] = value;
+                newData[name] = value;
             }
-            return NewData;
+            return newData;
         }
         #endregion
         #endregion

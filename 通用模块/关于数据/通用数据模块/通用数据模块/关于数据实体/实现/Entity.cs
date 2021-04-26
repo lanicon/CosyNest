@@ -89,19 +89,19 @@ namespace System.DataFrancis
         /// 如果需要让数据支持绑定，
         /// 那么在属性发生更改时，应该在Set访问器中调用本方法
         /// </summary>
-        /// <param name="PropertyName">发生更改的属性名称，可自动填入</param>
-        /// <param name="NewValue">属性的新值</param>
-        protected void Changed([CallerMemberName] string PropertyName = "", object? NewValue = null)
+        /// <param name="propertyName">发生更改的属性名称，可自动填入</param>
+        /// <param name="newValue">属性的新值</param>
+        protected void Changed([CallerMemberName] string propertyName = "", object? newValue = null)
         {
-            Interface.Binding?.NoticeUpdateToSource(PropertyName!, NewValue);
-            this.Changed(PropertyChangedField, PropertyName);
+            Interface.Binding?.NoticeUpdateToSource(propertyName!, newValue);
+            this.Changed(PropertyChangedField, propertyName);
         }
         #endregion
         #region 读写属性，会引发异常
-        object? IRestrictedDictionary<string, object?>.this[string PropertyName]
+        object? IRestrictedDictionary<string, object?>.this[string key]
         {
-            get => Propertys[PropertyName].GetValue(this);
-            set => Propertys[PropertyName].SetValue(this, value);
+            get => Propertys[key].GetValue(this);
+            set => Propertys[key].SetValue(this, value);
         }
         #endregion
         #region 读写属性，不会引发异常
@@ -149,14 +149,15 @@ namespace System.DataFrancis
         #region 关于绑定
         #region 获取或设置绑定对象
         private IDataBinding? BindingField;
+
         IDataBinding? IData.Binding
         {
             get => BindingField;
             set
             {
                 #region 用来写入数据的本地函数
-                void SetValueAided(string Name, object? NewValue)
-                    => this.GetTypeData().FieldFind(Name + "Field").SetValue(this, NewValue);
+                void SetValueAided(string name, object? newValue)
+                    => this.GetTypeData().FieldFind(name + "Field").SetValue(this, newValue);
                 #endregion
                 if (BindingField != null)
                 {
