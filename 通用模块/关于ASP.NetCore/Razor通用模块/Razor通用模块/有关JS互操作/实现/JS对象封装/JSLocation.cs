@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Design;
+using System.Design.Async;
 using System.Threading.Tasks;
 
 namespace Microsoft.JSInterop
