@@ -45,12 +45,12 @@ namespace System.Design.Direct
         /// 通过属性名称读取属性，并转换为指定的类型返回
         /// </summary>
         /// <typeparam name="Ret">返回值类型</typeparam>
-        /// <param name="PropertyName">要读取属性的名称</param>
+        /// <param name="propertyName">要读取属性的名称</param>
         /// <exception cref="KeyNotFoundException">要读写的属性名称不存在</exception>
         /// <exception cref="ExceptionTypeUnlawful">无法转换为指定的类型</exception>
         /// <returns></returns>
-        Ret? GetValue<Ret>(string PropertyName)
-            => this[PropertyName].To<Ret>();
+        Ret? GetValue<Ret>(string propertyName)
+            => this[propertyName].To<Ret>();
         #endregion
     }
 }

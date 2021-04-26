@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace System
 {
@@ -73,6 +74,21 @@ namespace System
             b = a;
             a = C;
         }
+        #endregion
+        #region 调用异步事件
+        /// <summary>
+        /// 异步调用一个委托的所有调用列表，
+        /// 这个方法通常用于异步事件
+        /// </summary>
+        /// <param name="delegate">要异步调用的委托</param>
+        /// <param name="parameters">委托的参数列表</param>
+        /// <exception cref="NotSupportedException">委托的任意一个调用列表不返回<see cref="Task"/>，
+        /// 或返回<see langword="null"/></exception>
+        /// <returns>一个<see cref="Task"/>，它用于等待委托的所有调用列表执行完毕</returns>
+        public static Task AsyncInvoke(Delegate @delegate, params object[] parameters)
+            => Task.WhenAll(@delegate.GetInvocationList().
+                Select(x => x.DynamicInvoke(parameters) is Task t ?
+                t : throw new NotSupportedException($"该委托的返回值不是{nameof(Task)}")));
         #endregion
     }
 }
