@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Design;
+using System.Design.Direct;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace System
@@ -37,6 +41,32 @@ namespace System
         public static void Changed(this INotifyPropertyChanged obj, PropertyChangedEventHandler? @delegate, [CallerMemberName] string propertyName = "")
             => @delegate?.Invoke(obj, new PropertyChangedEventArgs(propertyName));
         #endregion
+        #endregion
+        #endregion
+        #region 检查IDirect的架构
+        #region 同步迭代器版本
+        /// <summary>
+        /// 检查一个<see cref="IDirect"/>集合的架构，
+        /// 如果出现任何架构不一致的元素，则抛出异常
+        /// </summary>
+        /// <param name="directs">待检查架构的集合</param>
+        /// <returns></returns>
+        public static IEnumerable<IDirect> CheckSchema(this IEnumerable<IDirect> directs)
+        {
+            var (first, other, hasElements) = directs.First(true);
+            if (!hasElements)
+                yield break;
+            var schema = first.Schema ?? CreateDesign.Schema(first);
+            yield return first;
+            foreach (var item in other)
+            {
+                schema.SchemaCompatible(item, true);
+                yield return item;
+            }
+        }
+        #endregion
+        #region 异步迭代器版本
+
         #endregion
         #endregion
     }

@@ -56,7 +56,7 @@ namespace System.DataFrancis
         /// </summary>
         bool CanBinding => false;
         #endregion
-        #region 关于统计数据
+        #region 统计数据
         #region 说明文档
         /*问：统计数据的API有什么作用？
           和查询数据的API有何不同？

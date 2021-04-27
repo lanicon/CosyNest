@@ -17,22 +17,19 @@ namespace System.Design.Direct
         #region 检查架构兼容性
         #region 说明文档
         /*说明文档：
-          假设有架构A，B，若满足以下条件，
-          则判断为A兼容B，但是除非A和B完全相同，反之不成立：
-          A的数据名称是B的子集或真子集，且A的数据类型与B的对应数据相同
-          
+          假设有架构A，B，若满足以下条件，则判断为A兼容B：
+          A的数据名称是B的子集或真子集，且B的数据可以赋值给A的对应数据
+          但是，A兼容B，不代表B兼容A，除非AB的数据名称和类型完全相同
+
           举例说明：
           假设架构A存在以下数据：
-          名称：Age，类型：int
-          
+          名称：Age，类型：object
+
           假设架构B存在以下数据：
           名称：Age，类型：int
           名称：Name，类型：string
-        
-          则：A兼容B，但是B不兼容A
-          但是，如果不是判断两个架构，
-          而是一个架构和一条数据之间的兼容性，
-          则数据的类型应该支持逆变*/
+
+          则：A兼容B，但是B不兼容A*/
         #endregion
         #region 基础方法
         /// <summary>
@@ -41,13 +38,13 @@ namespace System.Design.Direct
         /// <typeparam name="Value">字典的值类型</typeparam>
         /// <param name="data">指定要判断架构兼容性的字典，
         /// 它可以是另一个架构，也可以是一条数据</param>
-        /// <param name="screening">用于比较本架构和<paramref name="data"/>同名Value类型的委托，
-        /// 如果它返回<see langword="true"/>，表示架构不兼容</param>
+        /// <param name="isCompatible">用于比较本架构和<paramref name="data"/>同名<typeparamref name="Value"/>类型的委托，
+        /// 如果它返回<see langword="true"/>，表示架构兼容</param>
         /// <param name="throw">如果这个值为<see langword="true"/>，
         /// 则在架构不兼容时，不是返回异常，而是直接抛出异常</param>
         /// <returns>如果架构兼容，返回<see langword="null"/>，
         /// 否则返回一个<see cref="ExceptionSchema"/>，报告第一个发现的兼容性问题</returns>
-        private ExceptionSchema? SchemaCompatibleBase<Value>(IReadOnlyDictionary<string, Value> data, Func<Type, Value, bool> screening, bool @throw)
+        private ExceptionSchema? SchemaCompatibleBase<Value>(IReadOnlyDictionary<string, Value> data, Func<Type, Value, bool> isCompatible, bool @throw)
         {
             #region 本地函数
             ExceptionSchema? Get()
@@ -56,7 +53,7 @@ namespace System.Design.Direct
                 {
                     if (data.TryGetValue(name, out var value))
                     {
-                        if (screening(type, value))
+                        if (!isCompatible(type, value))
                             return new ExceptionSchemaType(name, value, type);
                     }
                     else return new ExceptionSchemaNotFound(name);
@@ -81,7 +78,7 @@ namespace System.Design.Direct
         /// <returns>如果架构兼容，返回<see langword="null"/>，
         /// 否则返回一个<see cref="ExceptionSchema"/>，报告第一个发现的兼容性问题</returns>
         ExceptionSchema? SchemaCompatible(ISchema schema, bool @throw = false)
-            => SchemaCompatibleBase(schema.Schema, (t, v) => t != v, @throw);
+            => SchemaCompatibleBase(schema.Schema, (t, v) => t.IsAssignableFrom(v), @throw);
         #endregion
         #region 确定架构是否兼容（传入数据）
         /// <summary>
@@ -93,7 +90,7 @@ namespace System.Design.Direct
         /// <returns>如果架构兼容，返回<see langword="null"/>，
         /// 否则返回一个<see cref="ExceptionSchema"/>，报告第一个发现的兼容性问题</returns>
         ExceptionSchema? SchemaCompatible(IReadOnlyDictionary<string, object?> data, bool @throw = false)
-            => SchemaCompatibleBase(data, (t, v) => !t.IsAssignableFrom(v), @throw);
+            => SchemaCompatibleBase(data, (t, v) => t.IsAssignableFrom(v), @throw);
         #endregion
         #endregion
     }
