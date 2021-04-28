@@ -22,9 +22,9 @@
         /// 如果<see cref="CanModify"/>为<see langword="false"/>，
         /// 在写入值的时候会引发异常
         /// </summary>
-        /// <param name="Key">用来获取值的键</param>
+        /// <param name="key">用来获取值的键</param>
         /// <returns></returns>
-        new Value this[Key Key] { get; set; }
+        new Value this[Key key] { get; set; }
         #endregion
         #region 添加元素
         #region 传入键和值
