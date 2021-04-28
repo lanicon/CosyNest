@@ -28,16 +28,16 @@ namespace System.Collections.Generic
         #region 正式方法
         public IEnumerator<Obj> GetEnumerator()
         {
-            var Enumerable = Cache ?? GetEnumeratorRealize();
-            if (Enumerable is
+            var enumerable = Cache ?? GetEnumeratorRealize();
+            if (enumerable is
                 ICollection<Obj> or
                 Array or
                 IReadOnlyCollection<Obj> or
                 EnumerableCache<Obj>)           //如果迭代器不是延迟返回的，则无需缓存
             {
-                return Enumerable.GetEnumerator();
+                return enumerable.GetEnumerator();
             }
-            return (CacheAll ? CacheAllMode(Enumerable) : CacheOneByOneMode(Enumerable)).GetEnumerator();
+            return (CacheAll ? CacheAllMode(enumerable) : CacheOneByOneMode(enumerable)).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -56,11 +56,11 @@ namespace System.Collections.Generic
         /// 获取遍历第一个元素时缓存全部元素的迭代器，
         /// 它在<see cref="CacheAll"/>为<see langword="true"/>时工作
         /// </summary>
-        /// <param name="list">待缓存的迭代器</param>
+        /// <param name="collections">待缓存的迭代器</param>
         /// <returns></returns>
-        private IEnumerable<Obj> CacheAllMode(IEnumerable<Obj> list)
+        private IEnumerable<Obj> CacheAllMode(IEnumerable<Obj> collections)
         {
-            Cache = list.ToArray();
+            Cache = collections.ToArray();
             Clean();
             return Cache;
         }
@@ -70,12 +70,12 @@ namespace System.Collections.Generic
         /// 获取逐个缓存元素的迭代器，
         /// 它在<see cref="CacheAll"/>为<see langword="false"/>时工作
         /// </summary>
-        /// <param name="list">待缓存的迭代器</param>
+        /// <param name="collections">待缓存的迭代器</param>
         /// <returns></returns>
-        private IEnumerable<Obj> CacheOneByOneMode(IEnumerable<Obj> list)
+        private IEnumerable<Obj> CacheOneByOneMode(IEnumerable<Obj> collections)
         {
             var cache = new LinkedList<Obj>();
-            foreach (var item in list)
+            foreach (var item in collections)
             {
                 yield return item;
                 cache.AddLast(item);
@@ -96,11 +96,11 @@ namespace System.Collections.Generic
         /// <summary>
         /// 使用指定的缓存模式初始化对象
         /// </summary>
-        /// <param name="CacheAll">如果这个值为<see langword="true"/>，表示在获取第一个元素时缓存全部元素，
+        /// <param name="cacheAll">如果这个值为<see langword="true"/>，表示在获取第一个元素时缓存全部元素，
         /// 否则代表逐个缓存元素，正确指定这个参数可以改善性能</param>
-        public EnumerableCache(bool CacheAll)
+        public EnumerableCache(bool cacheAll)
         {
-            this.CacheAll = CacheAll;
+            this.CacheAll = cacheAll;
         }
         #endregion
     }

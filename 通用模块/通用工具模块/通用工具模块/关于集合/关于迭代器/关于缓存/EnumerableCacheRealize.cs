@@ -32,13 +32,13 @@
         /// <summary>
         /// 使用指定的参数初始化对象
         /// </summary>
-        /// <param name="PackEnumerable">实际用来迭代元素的迭代器</param>
-        /// <param name="CacheAll">如果这个值为<see langword="true"/>，表示在获取第一个元素时缓存全部元素，
+        /// <param name="packEnumerable">实际用来迭代元素的迭代器</param>
+        /// <param name="cacheAll">如果这个值为<see langword="true"/>，表示在获取第一个元素时缓存全部元素，
         /// 否则代表逐个缓存元素，正确指定这个参数可以改善性能</param>
-        public EnumerableCacheRealize(IEnumerable<Obj> PackEnumerable, bool CacheAll)
-            : base(CacheAll)
+        public EnumerableCacheRealize(IEnumerable<Obj> packEnumerable, bool cacheAll)
+            : base(cacheAll)
         {
-            this.PackEnumerable = PackEnumerable;
+            this.PackEnumerable = packEnumerable;
         }
         #endregion
     }
